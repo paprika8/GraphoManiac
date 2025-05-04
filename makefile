@@ -6,7 +6,7 @@ SRC_NAME := $(subst ./,/,$(SRC))
 OBJS  := $(addprefix obj, $(SRC_NAME:.cpp=.o)) 
 DEPS := $(addprefix obj, $(SRC_NAME:.cpp=.d)) 
 LIB := -lgdiplus -lgdi32
-FLAGS := -O2 -fpermissive -Wextra -MMD -MP -w -DUNICODE -std=c++20 -Wl,--subsystem,windows -static-libgcc -static-libstdc++#-fcompare-debug-second
+FLAGS := -g -fpermissive -Wextra -MMD -MP -w -DUNICODE -std=c++20 -Wl,--subsystem,windows -static-libgcc -static-libstdc++#-fcompare-debug-second
 ARGS := $(FLAGS)
 TARGET := Grach
 .PHONY: all clear clear_all
@@ -29,8 +29,8 @@ obj/%.o:  %.cpp
 -include $(DEPS)
 
 clear: 
-	rm -f obj/*.o
-	rm -f obj/*.d
+	rm -f $(OBJS)
+	rm -f $(DEPS)
 
 clear_all: clear
 	rm -f build/$(TARGET).exe

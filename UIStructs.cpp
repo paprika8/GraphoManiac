@@ -1,6 +1,6 @@
 #include "UIStructs.h"
 
-namespace BoolApp {
+namespace Graphs {
 	Size Size::plusRight(Size b, Margin m) {
 		return Size((short)(width + b.width + m.left + m.right), std::max((int)height, b.height + m.top + m.bottom));
 	}

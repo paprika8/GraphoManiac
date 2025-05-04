@@ -11,15 +11,28 @@ struct custom_vector
 		size = 0;
 	}
 
+	custom_vector(custom_vector<T> &other){
+		size = other.size;
+		data = malloc(size * sizeof(T));
+
+		memcpy(data, other.data, size * sizeof(T));
+
+	}
+
 	int len()
 	{
 		return size;
 	}
 
-	void push(T &a)
+	void push(T a)
 	{
 		data = realloc(data, size * sizeof(T) + sizeof(T));
 		data[size++] = a;
+	}
+	void pop()
+	{
+		data = realloc(data, size * sizeof(T) - sizeof(T));
+		size--;
 	}
 
 	bool remove(T &a)
@@ -47,6 +60,11 @@ struct custom_vector
 	T &operator[](int i)
 	{
 		return data[i];
+	}
+
+	bool &operator==(custom_vector<T> &other)
+	{
+		return data == other.data;
 	}
 
 	~custom_vector()
@@ -144,8 +162,7 @@ struct custom_vector
 	{
 		return iterator(data + size);
 	}
-
-private:
-	T *data;
 	size_t size;
+private:
+	T *data = 0;
 };

@@ -2,7 +2,7 @@
 #include "../positioner.h"
 
 
-namespace BoolApp{
+namespace Graphs{
 	void PComponent::add(ProcessView *apview)
 	{
 		delete child;

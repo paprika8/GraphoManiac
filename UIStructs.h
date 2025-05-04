@@ -8,8 +8,23 @@ typedef unsigned long long ull;
 typedef unsigned int uint;
 typedef unsigned short ushort;
 
-namespace BoolApp
+namespace Graphs
 {
+
+	template<typename T>
+	T min(T a, T b){
+		if(a < b)
+			return a;
+		return b;
+	}
+
+	template<typename T>
+	T max(T a, T b){
+		if(a > b)
+			return a;
+		return b;
+	}
+
 	enum MarginType : char
 	{
 		CONTENT = 0b01000000,
@@ -80,6 +95,10 @@ namespace BoolApp
 		}
 		void operator-=(short a) {
 			value -= a;
+		}
+
+		pointUI operator-() {
+			return pointUI(-value, type);
 		}
 
 		operator short() {
@@ -234,6 +253,10 @@ namespace BoolApp
 						   top.toAbsolut(original.height),
 						   right.toAbsolut(original.width),
 						   bottom.toAbsolut(original.height));
+		}
+
+		Padding operator-(){
+			return Padding(-left, -top, -right, -bottom);
 		}
 	};
 

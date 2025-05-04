@@ -2,7 +2,7 @@
 #include "../component/component.h"
 #include "../composite/composite.h"
 
-namespace BoolApp{
+namespace Graphs{
 
 	enum ShowType : char{
 		HIDE,

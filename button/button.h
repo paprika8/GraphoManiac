@@ -2,7 +2,8 @@
 #include "../oopWin.h"
 #include <functional>
 #include "../positioner.h"
-namespace BoolApp
+#include "../text_util/text_drawer.h"
+namespace Graphs
 {
 
 	class PButton : public ProcessView
@@ -11,26 +12,23 @@ namespace BoolApp
 		bool isDown = 0;
 		PButton(HWND ahwnd, View *aview);
 
-		Size GetContentSize(Size size) override {
-			if(margin.type & MarginType::CONTENT)
-				return 
-			return size;
-		}
+		Size GetContentSize(Size size) override;
 
 		void construction() override;
 
+		void Move(Point apoint, Size asize) override;
 	private:
 	};
 
 	class Button : public View
 	{
 	public:
-		std::wstring text = L"";
+		Gdiplus::StringFormat* stringFormat = new Gdiplus::StringFormat ();
+		int text_size = 16;
+		custom_wstr text = L"";
+		bool text_resizer = 0;
 		Gdiplus::Color text_color = Gdiplus::Color(0, 0, 0);
-		int flag_format = 0;
 		std::function<void(Button *)> click = [](Button *) -> void {};
-		HFONT font = CreateFontA(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET,
-								 OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_ROMAN, "Times New Roman");
 		bool safe_down = 0;
 
 		Button(Builder *abuilder = new DefaultBuilder()) : View(abuilder)
@@ -40,24 +38,9 @@ namespace BoolApp
 
 		void set_font_size(int size)
 		{
-			DeleteObject(font);
-			font = CreateFontA(
-				size,
-				0,
-				0,
-				0,
-				FW_NORMAL,
-				FALSE,
-				FALSE,
-				FALSE,
-				DEFAULT_CHARSET,
-				OUT_DEFAULT_PRECIS,
-				CLIP_DEFAULT_PRECIS,
-				DEFAULT_QUALITY,
-				DEFAULT_PITCH | FF_ROMAN,
-				"Times New Roman");
-			if (PV)
-				SendMessage(PV->hwnd, WM_SETFONT, font, true);
+			text_size = size;
+			if(PV)
+				InvalidateRect(PV->hwnd, 0, 0);
 		}
 
 		std::wstring getSzWindowClass() override

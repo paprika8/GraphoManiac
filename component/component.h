@@ -2,7 +2,7 @@
 #include "../oopWin.h"
 #include "../custom_vector.h"
 
-namespace BoolApp{
+namespace Graphs{
 	
 	class PComponent : public ProcessView{
 		public:

@@ -6,7 +6,7 @@
 #include <string>
 #include "component/component.h"
 #include "composite/composite.h"
-namespace BoolApp 
+namespace Graphs 
 {
 	class Positionable
 	{

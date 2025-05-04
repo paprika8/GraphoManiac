@@ -1,12 +1,13 @@
 #pragma once
 #include "../component/component.h"
 #include "../composite/composite.h"
+#include "../text_util/text_drawer.h"
 //#include <gdiplus.h>
 //using namespace Gdiplus;
 
 //#pragma comment (lib, "Gdiplus.lib")
 
-namespace BoolApp {
+namespace Graphs {
 
 	class ScrollText;
 
@@ -31,7 +32,6 @@ namespace BoolApp {
 		bool isDown = 0;
 	};
 
-	Gdiplus::Font *createFont ( int size );
 	const uint WM_SETSCROLLEDTEXT = 0x0401;
 
 	class ScrollText : public View
@@ -39,7 +39,7 @@ namespace BoolApp {
 	public:
 		
 		Gdiplus::StringFormat* stringFormat = new Gdiplus::StringFormat ();
-		Gdiplus::Font* font = createFont ( 16 );
+		Gdiplus::Font* font = get_font ( 16 );
 		Gdiplus::Color background;
 		Gdiplus::Color text_color = Gdiplus::Color(0, 0, 0);
 

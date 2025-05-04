@@ -2,7 +2,7 @@
 #include "../Text/Text.h"
 #include "../custom_wstr.h"
 
-namespace BoolApp
+namespace Graphs
 {
 	class Edit;
 

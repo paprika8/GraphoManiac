@@ -15,7 +15,15 @@ struct custom_wstr
 		size_t s = wcslen(str);
 		data = malloc(s * sizeof(wchar_t) + sizeof(wchar_t));
 		size = s;
-		memmove(data, str, s * sizeof(wchar_t));
+		memcpy(data, str, s * sizeof(wchar_t));
+		data[size] = L'\0';
+	}
+	custom_wstr(custom_wstr& str)
+	{
+		size_t s = str.size;
+		data = malloc(s * sizeof(wchar_t) + sizeof(wchar_t));
+		size = s;
+		memcpy(data, str.data, s * sizeof(wchar_t));
 		data[size] = L'\0';
 	}
 
@@ -80,7 +88,14 @@ struct custom_wstr
 		size_t s = wcslen(str);
 		data = realloc(data, s * sizeof(wchar_t) + sizeof(wchar_t));
 		size = s;
-		memmove(data, str, s * sizeof(wchar_t));
+		memcpy(data, str, s * sizeof(wchar_t));
+		data[size] = L'\0';
+	}
+	void operator=(custom_wstr& str){
+		size_t s = str.size;
+		data = realloc(data, s * sizeof(wchar_t) + sizeof(wchar_t));
+		size = s;
+		memcpy(data, str.data, s * sizeof(wchar_t));
 		data[size] = L'\0';
 	}
 

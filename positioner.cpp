@@ -1,6 +1,6 @@
 #include "positioner.h"
 
-namespace BoolApp
+namespace Graphs
 {
 	void PositioningOne(PComponent* comp) {
 		if (!comp->getPView()) {

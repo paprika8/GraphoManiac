@@ -1,6 +1,6 @@
 #include "LinearContainer.h"
 
-namespace BoolApp
+namespace Graphs
 {
 	void PLContainer::construction()
 	{

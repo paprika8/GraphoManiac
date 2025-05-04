@@ -1,7 +1,7 @@
 #include "Edit.h"
 //#include <time.h>
 
-namespace BoolApp {
+namespace Graphs {
 	void PEdit::construction()
 	{
 		hwnd = CreateWindowEx(
@@ -231,8 +231,8 @@ namespace BoolApp {
 			f->padding.reSize ( buff );
 			Gdiplus::Rect rect1 ( 0 , 0 , buff.width , 0 );
 			Gdiplus::Rect rect2;
-			Gdiplus::Graphics graph ( GetDC ( 0 ) );
-			//graph.MeasureString ( text.c_str () , -1 , font , rect1 , stringFormat , &rect2 , 0 , 0 );
+			Gdiplus::Graphics Graphs ( GetDC ( 0 ) );
+			//Graphs.MeasureString ( text.c_str () , -1 , font , rect1 , stringFormat , &rect2 , 0 , 0 );
 			rect_text(GetDC(hwnd), rect1, rect2);
 			f->MaxTextHeight = rect2.Height - buff.height;
 			f->TextHeight = rect2.Height;

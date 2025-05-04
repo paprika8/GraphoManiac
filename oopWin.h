@@ -14,7 +14,7 @@ Gdiplus::Color operator+(Gdiplus::Color start, Gdiplus::Color DeltaColor);
 Gdiplus::Color operator-(Gdiplus::Color start, int Delta);
 Gdiplus::Color operator+(Gdiplus::Color start, int Delta);
 
-namespace BoolApp
+namespace Graphs
 {
 
 	extern HINSTANCE instance;
@@ -61,7 +61,7 @@ namespace BoolApp
 			return size;
 		}
 
-		void Move(Point apoint, Size asize) {
+		virtual void Move(Point apoint, Size asize) {
 			point = apoint;
 			MoveWindow(hwnd, point.x, point.y, asize.width, asize.height, 1);
 		}
@@ -126,7 +126,7 @@ namespace BoolApp
 		void sregister() {
 			WNDCLASS wca = { 0 };
 			// адрес ф-ции обработки сообщений
-			wca.lpfnWndProc = (WNDPROC)BoolApp::wndProc;
+			wca.lpfnWndProc = (WNDPROC)Graphs::wndProc;
 			// стиль окна
 			wca.style = CS_HREDRAW | CS_VREDRAW;
 			// дискриптор экземпляра приложения

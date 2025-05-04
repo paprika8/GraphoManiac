@@ -1,11 +1,11 @@
 #include "window.h"
 
-void BoolApp::PWindow::construction()
+void Graphs::PWindow::construction()
 {
 	hwnd = CreateWindowEx(
 		WS_EX_TRANSPARENT,
 		view->getSzWindowClass().c_str(),
-		L"BoolApp",
+		L"Graphs",
 		WS_VISIBLE | (WS_OVERLAPPED | /*WS_CAPTION | WS_SYSMENU |*/ WS_THICKFRAME/* | WS_MINIMIZEBOX*/ | WS_MAXIMIZEBOX) | WS_CLIPCHILDREN | WS_BORDER,
 		CW_USEDEFAULT, CW_USEDEFAULT, 500, 500,
 		hwnd,
@@ -16,7 +16,7 @@ void BoolApp::PWindow::construction()
 	SetWindowLongPtr(hwnd, 0, (LONG_PTR) this);
 };
 
-LRESULT BoolApp::Window::wndProc(HWND ahwnd, UINT message, WPARAM wparam, LPARAM lparam, ProcessView *ptr)
+LRESULT Graphs::Window::wndProc(HWND ahwnd, UINT message, WPARAM wparam, LPARAM lparam, ProcessView *ptr)
 {
 	PWindow* pWindow = (PWindow*)ptr;
 

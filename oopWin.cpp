@@ -1,7 +1,7 @@
 #include "oopWin.h"
 #include "positioner.h"
 
-namespace BoolApp
+namespace Graphs
 {
 
 	template <class T>

@@ -4,6 +4,7 @@
 #include "LinearContainer/LinearContainer.h"
 #include "button/button.h"
 #include "Text/Text.h"
+#include "code_edit/CodeEdit.h"
 #include "Edit/Edit.h"
 
 const Gdiplus::Color bg (255, 244, 204);

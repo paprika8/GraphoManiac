@@ -15,8 +15,17 @@ struct custom_vector
 		size = other.size;
 		data = malloc(size * sizeof(T));
 
-		memcpy(data, other.data, size * sizeof(T));
+		if(size * sizeof(T))
+			memcpy(data, other.data, size * sizeof(T));
+	}
 
+	custom_vector<T>& operator=(custom_vector<T> &other){
+		size = other.size;
+		data = malloc(size * sizeof(T));
+
+		if(size * sizeof(T))
+			memcpy(data, other.data, size * sizeof(T));
+		return *this;
 	}
 
 	int len()

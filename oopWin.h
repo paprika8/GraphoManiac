@@ -124,6 +124,7 @@ namespace Graphs
 		virtual ProcessView* VConstruct(ProcessView* apv) = 0;
 
 		void sregister() {
+			int i = GetLastError();
 			WNDCLASS wca = { 0 };
 			// адрес ф-ции обработки сообщений
 			wca.lpfnWndProc = (WNDPROC)Graphs::wndProc;
@@ -142,6 +143,7 @@ namespace Graphs
 			Register(wca);
 			// регистрация класса
 			RegisterClass(&wca);
+			i = GetLastError();
 		}
 
 		virtual ~View() {

@@ -3,13 +3,40 @@
 #include "../custom_wstr.h"
 #include "../custom_vector.h"
 #include <map>
+#include <vector>
+
 
 namespace Graphs
 {
 
 	struct text_model{
 		short text_height = 0;
-		custom_vector<custom_vector<short>> metriks;
+		std::vector<short> widths;
+		std::vector<std::vector<short>> metriks;
+
+		text_model(){
+
+		}
+		text_model(text_model& other){
+			text_height = other.text_height;
+			widths = other.widths;
+			//for(int i = 0; i < other.metriks.size; i++)
+			//	other.metriks[i].~custom_vector();
+			metriks = other.metriks;
+		}
+
+		text_model& operator=(text_model other){
+			text_height = other.text_height;
+			widths = other.widths;
+			//for(int i = 0; i < other.metriks.size; i++)
+			//	other.metriks[i].~custom_vector();
+			metriks = other.metriks;
+			return *this;
+		}
+
+		~text_model(){
+
+		}
 	};
 
 	extern const wchar_t* fonts_name[];
@@ -27,7 +54,8 @@ namespace Graphs
 
 	text_model generate_model(HDC hdc, custom_wstr text);
 
-	void insert_to_model(HDC hdc, text_model &model, wchar_t a, int corsorX, int corsorY);
-	void erase_to_model(HDC hdc, RECT rect, text_model &model, int corsorX, int corsorY);
+	void insert_to_model(HDC hdc, text_model &model, wchar_t a, int corsor);
+	void erase_to_model(HDC hdc, text_model &model, int corsor);
 	int cursor_from_model(text_model &model, int X, int Y);
+	void rect_text(text_model &model, Size rect, Size& res);
 }

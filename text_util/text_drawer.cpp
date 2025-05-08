@@ -150,9 +150,10 @@ namespace Graphs{
 	text_model generate_model(HDC hdc, custom_wstr text) {
 		text_model model;
 		{
-			custom_vector<short> line;
-			line.push(0);
-			model.metriks.push(line);
+			std::vector<short> line;
+			line.push_back(0);
+			model.metriks.push_back(line);
+			model.widths.push_back(0);
 		}
 		TEXTMETRIC tm;
 		GetTextMetrics(hdc, &tm);
@@ -164,42 +165,60 @@ namespace Graphs{
 		while(*it){
 			if(*it == L'\n'){
 				it++;
-				custom_vector<short> line;
-				line.push(0);
+				std::vector<short> line;
+				line.push_back(0);
 				itY++;
-				model.metriks.push(line);
+				model.metriks.push_back(line);
+				model.widths.push_back(0);
 				continue;
 			}
 			ABC abc;
 			GetCharABCWidthsW(hdc, *it, *it, &abc);
 			cursorX += abc.abcA + abc.abcB + abc.abcC;
-			model.metriks[itY].push(abc.abcA + abc.abcB + abc.abcC);
+			model.metriks[itY].push_back(abc.abcA + abc.abcB + abc.abcC);
+			model.widths[itY] = cursorX;
 			it++;
 		}
 		return text_model();
 	}
-	void insert_to_model(HDC hdc, text_model &model, wchar_t a, int corsorX, int corsorY){
+	void insert_to_model(HDC hdc, text_model &model, wchar_t a, int cursor){
+		int cursorX = 0;
+		int cursorY = 0;
+		while(cursor > model.widths[cursorY]){
+			cursor -= model.widths[cursorY];
+			cursorY++;
+		}
+		cursorX = cursor;
 		ABC abc;
 		GetCharABCWidthsW(hdc, a, a, &abc);
-		model.metriks[corsorY].push(0);
+		model.metriks[cursorY].push_back(0);
+		model.widths[cursorY] += abc.abcA + abc.abcB + abc.abcC;
 		int char_size = abc.abcA + abc.abcB + abc.abcC;
-		int line_size = model.metriks[corsorY].size;
-		for(int i = corsorX; i < line_size; i++){
-			int back = model.metriks[corsorY][i];
-			model.metriks[corsorY][i] = char_size;
+		int line_size = model.metriks[cursorY].size();
+		for(int i = cursorX; i < line_size; i++){
+			int back = model.metriks[cursorY][i];
+			model.metriks[cursorY][i] = char_size;
 			char_size = back;
 		}
 	}
-	void erase_to_model(HDC hdc, RECT rect, text_model &model, int corsorX, int corsorY){
-		int line_size = model.metriks[corsorY].size;
-		for(int i = corsorX; i < line_size - 1; i++) model.metriks[corsorY][i] = model.metriks[corsorY][i + 1];
-		model.metriks[corsorY].pop();
+	void erase_to_model(HDC hdc, text_model &model, int cursor){
+		int cursorX = 0;
+		int cursorY = 0;
+		while(cursor > model.widths[cursorY]){
+			cursor -= model.widths[cursorY];
+			cursorY++;
+		}
+		cursorX = cursor;
+		int line_size = model.metriks[cursorY].size();
+		model.widths[cursorY] -= model.metriks[cursorY][cursorX];
+		for(int i = cursorX; i < line_size - 1; i++) model.metriks[cursorY][i] = model.metriks[cursorY][i + 1];
+		model.metriks[cursorY].pop_back();
 	}
 	int cursor_from_model(text_model &model, int X, int Y){
-		int itY = min(model.text_height / Y, (int)model.metriks.size - 1);
+		int itY = min(model.text_height / Y, (int)model.metriks.size() - 1);
 		int cursor = 0;
 		for(int i = 0; i < itY; i++){
-			cursor += model.metriks[i].size;
+			cursor += model.metriks[i].size();
 		}
 		if(X < 0)
 			return cursor;
@@ -210,5 +229,13 @@ namespace Graphs{
 			X -= x;
 		}
 		return cursor;
+	}
+	void rect_text(text_model& model, Size rect, Size& res) {
+		res.height = model.metriks.size() * model.text_height;
+		int max = model.widths[0];
+		for(auto x : model.widths)
+			if(max < x)
+				max = x;
+		res.width = max;
 	}
 }

@@ -53,12 +53,11 @@ LinearContainer* create_page_main(){
 	close_bt->stringFormat->SetFormatFlags(Gdiplus::StringFormatFlags::StringFormatFlagsNoWrap | close_bt->stringFormat->GetFormatFlags());
 	lc->add(close_bt);
 
-	/*
+
 	Edit* text = new Edit(new SizeBuilder(Size(pointUI(100), pointUI(60)), Margin(5, 5, 5, 5), Padding(0,0,20,0)));
 	text->SetText(L"TEXT УБОГИЙ");
+	text->background = button;
 	lc->add(text);
-	*/
-
 
 	return lc;
 }
@@ -66,6 +65,7 @@ LinearContainer* create_page_main(){
 int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 
+	::instance = instance;
 	Gdiplus::Status st = Gdiplus::GdiplusStartup ( &gdiplusToken , &gdiplusStartupInput , NULL );
 	if ( st != Gdiplus::Ok )
 	{

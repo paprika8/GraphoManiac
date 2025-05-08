@@ -1,39 +1,41 @@
 #include "positioner.h"
+#include "Main.h"
 
 namespace Graphs
 {
-	void PositioningOne(PComponent* comp) {
+	/*void PositioningOne(View* comp) {
 		if (!comp->getPView()) {
 			return;
 		}
-		Size absolutParentSize = comp->getAbsoluteSize();// размер текущего эл
+		Size_ absolutParentSize = comp->getAbsoluteSize();// размер текущего эл
 		Padding padding = comp->padding;
 		padding = padding.toAbsolut(absolutParentSize);// паддинг
-		Point cord = (0, 0);
+		Point_ cord = (0, 0);
 		padding.reRect(cord, absolutParentSize);// применение паддинга
 
-		Size absolutSize = comp->getPView()->size.toAbsolut(absolutParentSize);// размер дочернего
+		Size_ absolutSize = comp->getPView()->size.toAbsolut(absolutParentSize);// размер дочернего
 		MarginType marginType = (comp->margin.type & ~MarginType::PARENT) | (comp->getPView()->margin.type & MarginType::PARENT);
 		comp->getPView()->margin.toAbsolut(absolutParentSize).reRect(cord, absolutParentSize, absolutSize, marginType);// получить координаты и размер для размещения
 		comp->getPView()->Move(cord, absolutSize);
 		Positioning(comp->getPView());
-	}
-	void PositioningFew(PComposite* compos) {
-		Point cursor = (0, 0);
-		Size size = compos->getAbsoluteSize();
+	}*/
+
+	void PositioningFew(Composite* compos, int deep) {
+		Point_ cursor = (0, 0);
+		Size_ size = compos->get_abs_size();
 		compos->padding.reRect(cursor, size);
 
 		MarginType buf = compos->margin.type & MarginType::CONTENT;
 		compos->margin.type = compos->margin.type | MarginType::CONTENT;
-		Size contSize = compos->GetContentSize(size);
+		Size_ contSize = compos->get_content_size(size);
 		compos->margin.type = compos->margin.type & ~MarginType::CONTENT | buf;
 		Margin tempMargin = Margin(0, 0, 0, 0);
-		Point start = (0, 0);
-		Size buffer = Size(size);
+		Point_ start = (0, 0);
+		Size_ buffer = Size_(size);
 		tempMargin.reRect(start, buffer, contSize, compos->margin.type);
 		MarginType MBuffer = compos->margin.type;
 
-		Size contentSize = size;
+		Size_ contentSize = size;
 
 		if (start.x < cursor.x) {
 			MBuffer = (MarginType)(MBuffer ^ MarginType::HCENTER | MarginType::LEFT);
@@ -43,17 +45,18 @@ namespace Graphs
 		}
 		cursor.y = start.y;
 		cursor.x = start.x;
-		for (int cont = 0; cont < compos->len(); cont++) {
-			Margin amargin = compos->getPView(cont)->margin.toAbsolut(size);
-			//Size asize = compos->getPView(cont)->size.toAbsolut(size);
-			Size asize = compos->getPView(cont)->GetContentSize(compos->getPView(cont)->size).toAbsolut(size);
-			Point cord = cursor;
-			MarginType marginType = MBuffer & ~MarginType::PARENT | (compos->getPView(cont)->margin.type & MarginType::PARENT);
+		for (int cont = 0; cont < compos->children.size(); cont++) {
+			Margin amargin = compos->children[cont]->margin.toAbsolut(size);
+			//Size_ asize = compos->getPView(cont)->size.toAbsolut(size);
+			Size_ asize = compos->children[cont]->get_content_size(compos->children[cont]->size).toAbsolut(size);
+			Point_ cord = cursor;
+			MarginType marginType = MBuffer & ~MarginType::PARENT | (compos->children[cont]->margin.type & MarginType::PARENT);
 			// amargin.reRect ( cord , contentSize , asize , marginType);
 			cord.x += amargin.left;
 			cord.y += amargin.top;
-			compos->getPView(cont)->Move(cord, asize);
-			Positioning(compos->getPView(cont));
+			compos->children[cont]->move(cord.x, cord.y);
+			compos->children[cont]->resize(asize.width, asize.height);
+			Positioning(compos->children[cont], deep);
 
 			if (compos->is_vert_orientation) {
 				if (marginType & MarginType::LEFT)
@@ -68,22 +71,22 @@ namespace Graphs
 			contentSize = size;
 		}
 	}
-	void Positioning(ProcessView* pv) {
+	void Positioning(View* pv, int deep) {
 		Positionable* posit = dynamic_cast<Positionable*>(pv);
 		if (posit) {
 			posit->position();
 		}
 		else {
-			PComponent* comp = dynamic_cast<PComponent*>(pv);
+			Composite* comp = dynamic_cast<Composite*>(pv);
 			if (comp) {
-				PositioningOne(comp);
-			}
-			else {
-				PComposite* compos = dynamic_cast<PComposite*>(pv);
-				if (compos) {
-					PositioningFew(compos);
-				}
+				PositioningFew(comp, deep);
 			}
 		}
+		if (!deep)
+		{
+			if(win)
+				InvalidateRect(win->hwnd, 0, 0);
+		}
+		
 	}
 }

@@ -1,4 +1,5 @@
 #include "text_drawer.h"
+#include "../Main.h"
 
 namespace Graphs{
 	const wchar_t* fonts_name[] = { L"Times New Roman", L"Consolas" };
@@ -12,8 +13,8 @@ namespace Graphs{
 			fonts[{size, id}] = create_font(size, id);
 		return fonts[{size, id}];
 	}
-	void rect_text(custom_wstr text, HDC hdc, HFONT font, Gdiplus::Rect rect, Gdiplus::Rect& res) {
-		wchar_t* it = text.data;
+	void rect_text(std::wstring text, HDC hdc, HFONT font, Gdiplus::Rect rect, Gdiplus::Rect& res) {
+		const wchar_t* it = text.c_str();
 		int row = rect.Y, cursor = rect.X;
 		SelectObject(hdc, font);
 		TEXTMETRIC tm;
@@ -37,205 +38,76 @@ namespace Graphs{
 		res.Y = rect.Y;
 		res.X = rect.X;
 	}
-	Size get_size(custom_wstr text, Gdiplus::StringFormat* format, int width, int size) {
+	Size get_size(std::wstring text, Gdiplus::StringFormat* format, int width, int size) {
 		if(width == -1)
 			width = 100000;
 		Gdiplus::RectF r_in(0., 0., width, 100000.);
 		Gdiplus::RectF r_out;
 		Gdiplus::Graphics g(GetDC(0));
-		g.MeasureString(text.data, -1, get_font(size), r_in, format, &r_out);
+		g.MeasureString(text.c_str(), -1, get_font(size), r_in, format, &r_out);
 		return Size(r_out.Width, r_out.Height);
 	}
-	Size get_size(Gdiplus::Graphics* g, custom_wstr text, Gdiplus::StringFormat* format, int width, int size) {
+	Size get_size(Gdiplus::Graphics* g, std::wstring text, Gdiplus::StringFormat* format, int width, int size) {
 		Gdiplus::RectF r_in(0., 0., width, 100000.);
 		Gdiplus::RectF r_out;
-		g->MeasureString(text.data, -1, get_font(size), r_in, format, &r_out);
+		g->MeasureString(text.c_str(), -1, get_font(size), r_in, format, &r_out);
 		return Size(r_out.Width, r_out.Height);
 	}
-	int generate_text_size_no_wrap(Gdiplus::Graphics *g, custom_wstr text, Gdiplus::StringFormat* format, int size, Size fill_size){
-		Gdiplus::PointF p(0., 0.);
+	int generate_text_size_no_wrap(Gdiplus::Graphics *g, std::wstring text, Gdiplus::StringFormat* format, int size, Size_ fill_size){
+		Gdiplus::RectF r_in(0., 0., 100000., 100000.);
 		Gdiplus::RectF r_out;
-		g->MeasureString(text.data, -1, get_font(size), p, format, &r_out);
-		int last_size = size;
-		int next_size;
-		if(r_out.Height > fill_size.height || r_out.Width > fill_size.width){
-			last_size = size / 2;
-			next_size = size;
-			g->MeasureString(text.data, -1, get_font(last_size), p, format, &r_out);
-			while(r_out.Height > fill_size.height || r_out.Width > fill_size.width){
-				next_size = last_size;
-				last_size = last_size / 2;
-				if(last_size <= 1)
-					return 1;
-				g->MeasureString(text.data, -1, get_font(last_size), p, format, &r_out);
-			}
-		}
-		else{
-			next_size = size * 2;
-			g->MeasureString(text.data, -1, get_font(next_size), p, format, &r_out);
-			while(r_out.Height < fill_size.height && r_out.Width < fill_size.width){
-				last_size = next_size;
-				next_size = next_size * 2;
-				if(next_size == 0)
-					return 1;
-				g->MeasureString(text.data, -1, get_font(next_size), p, format, &r_out);
-			}
-		}
-		int mid_s;
-		do{
-			mid_s = (last_size + next_size) / 2;
-			g->MeasureString(text.data, -1, get_font(mid_s), p, format, &r_out);
-			if(r_out.Height > fill_size.height || r_out.Width > fill_size.width)
-				next_size = mid_s;
-			else
-				last_size = mid_s;
-		} while(next_size > last_size + 1);
-		while(1){
-			g->MeasureString(text.data, -1, get_font(last_size), p, format, &r_out);
-			if(r_out.Height > fill_size.height || r_out.Width > fill_size.width)
-				last_size--;
-			else break;
-		}
-		return last_size;
+		int h_size = fill_size.height * 72 / DPI;
+		g->MeasureString(text.c_str(), -1, get_font(size), r_in, format, &r_out);
+		size = size * r_out.Width / fill_size.width;
+		return min(size, h_size);
 	}
-	int generate_text_size(HWND hwnd, custom_wstr text, Gdiplus::StringFormat* format, int size, Size fill_size) {
+	int generate_text_size(HWND hwnd, std::wstring text, Gdiplus::StringFormat* format, int size, Size_ fill_size) {
 		Gdiplus::Graphics g(GetDC(hwnd));
 		if(format->GetFormatFlags() | Gdiplus::StringFormatFlags::StringFormatFlagsNoWrap)
 			return generate_text_size_no_wrap(&g, text, format, size, fill_size);
 		Gdiplus::RectF r_in(0., 0., fill_size.width, 100000.);
 		Gdiplus::RectF r_out;
-		g.MeasureString(text.data, -1, get_font(size), r_in, format, &r_out);
+		g.MeasureString(text.c_str(), -1, get_font(size), r_in, format, &r_out);
 		int last_size = size;
 		int next_size;
 		if(r_out.Height > fill_size.height){
 			last_size = size / 2;
 			next_size = size;
-			g.MeasureString(text.data, -1, get_font(last_size), r_in, format, &r_out);
+			g.MeasureString(text.c_str(), -1, get_font(last_size), r_in, format, &r_out);
 			while(r_out.Height > fill_size.height){
 				next_size = last_size;
 				last_size = last_size / 2;
 				if(last_size <= 1)
 					return 1;
-				g.MeasureString(text.data, -1, get_font(last_size), r_in, format, &r_out);
+				g.MeasureString(text.c_str(), -1, get_font(last_size), r_in, format, &r_out);
 			}
 		}
 		else{
 			next_size = size * 2;
-			g.MeasureString(text.data, -1, get_font(next_size), r_in, format, &r_out);
+			g.MeasureString(text.c_str(), -1, get_font(next_size), r_in, format, &r_out);
 			while(r_out.Height < fill_size.height){
 				last_size = next_size;
 				next_size = next_size * 2;
 				if(next_size == 0)
 					return 1;
-				g.MeasureString(text.data, -1, get_font(next_size), r_in, format, &r_out);
+				g.MeasureString(text.c_str(), -1, get_font(next_size), r_in, format, &r_out);
 			}
 		}
 		int mid_s;
 		do{
 			mid_s = (last_size + next_size) / 2;
-			g.MeasureString(text.data, -1, get_font(mid_s), r_in, format, &r_out);
+			g.MeasureString(text.c_str(), -1, get_font(mid_s), r_in, format, &r_out);
 			if(r_out.Height > fill_size.height)
 				next_size = mid_s;
 			else
 				last_size = mid_s;
 		} while(next_size > last_size + 1);
 		while(1){
-			g.MeasureString(text.data, -1, get_font(last_size), r_in, format, &r_out);
+			g.MeasureString(text.c_str(), -1, get_font(last_size), r_in, format, &r_out);
 			if(r_out.Height > fill_size.height)
 				last_size--;
 			else break;
 		}
 		return last_size;
-	}
-	text_model generate_model(HDC hdc, custom_wstr text) {
-		text_model model;
-		{
-			std::vector<short> line;
-			line.push_back(0);
-			model.metriks.push_back(line);
-			model.widths.push_back(0);
-		}
-		TEXTMETRIC tm;
-		GetTextMetrics(hdc, &tm);
-		model.text_height = tm.tmHeight;
-		int stepY = tm.tmHeight;
-		int itY = 0, itX = 0;
-		int cursorX = 0;
-		wchar_t* it = text.data;
-		while(*it){
-			if(*it == L'\n'){
-				it++;
-				std::vector<short> line;
-				line.push_back(0);
-				itY++;
-				model.metriks.push_back(line);
-				model.widths.push_back(0);
-				continue;
-			}
-			ABC abc;
-			GetCharABCWidthsW(hdc, *it, *it, &abc);
-			cursorX += abc.abcA + abc.abcB + abc.abcC;
-			model.metriks[itY].push_back(abc.abcA + abc.abcB + abc.abcC);
-			model.widths[itY] = cursorX;
-			it++;
-		}
-		return text_model();
-	}
-	void insert_to_model(HDC hdc, text_model &model, wchar_t a, int cursor){
-		int cursorX = 0;
-		int cursorY = 0;
-		while(cursor > model.widths[cursorY]){
-			cursor -= model.widths[cursorY];
-			cursorY++;
-		}
-		cursorX = cursor;
-		ABC abc;
-		GetCharABCWidthsW(hdc, a, a, &abc);
-		model.metriks[cursorY].push_back(0);
-		model.widths[cursorY] += abc.abcA + abc.abcB + abc.abcC;
-		int char_size = abc.abcA + abc.abcB + abc.abcC;
-		int line_size = model.metriks[cursorY].size();
-		for(int i = cursorX; i < line_size; i++){
-			int back = model.metriks[cursorY][i];
-			model.metriks[cursorY][i] = char_size;
-			char_size = back;
-		}
-	}
-	void erase_to_model(HDC hdc, text_model &model, int cursor){
-		int cursorX = 0;
-		int cursorY = 0;
-		while(cursor > model.widths[cursorY]){
-			cursor -= model.widths[cursorY];
-			cursorY++;
-		}
-		cursorX = cursor;
-		int line_size = model.metriks[cursorY].size();
-		model.widths[cursorY] -= model.metriks[cursorY][cursorX];
-		for(int i = cursorX; i < line_size - 1; i++) model.metriks[cursorY][i] = model.metriks[cursorY][i + 1];
-		model.metriks[cursorY].pop_back();
-	}
-	int cursor_from_model(text_model &model, int X, int Y){
-		int itY = min(model.text_height / Y, (int)model.metriks.size() - 1);
-		int cursor = 0;
-		for(int i = 0; i < itY; i++){
-			cursor += model.metriks[i].size();
-		}
-		if(X < 0)
-			return cursor;
-		for(short x : model.metriks[itY]){
-			if(X < 0)
-				return cursor;
-			cursor++;
-			X -= x;
-		}
-		return cursor;
-	}
-	void rect_text(text_model& model, Size rect, Size& res) {
-		res.height = model.metriks.size() * model.text_height;
-		int max = model.widths[0];
-		for(auto x : model.widths)
-			if(max < x)
-				max = x;
-		res.width = max;
 	}
 }

@@ -1,5 +1,4 @@
-#include "edge.h"
-#include "node.h"
+#include "node_edge.h"
 #include <set>
 
 class graph
@@ -11,7 +10,7 @@ public:
     graph() {};
 
     ~graph() {
-        nodes.clear;
+        nodes.clear();
     }
 
     void insert(node n) {

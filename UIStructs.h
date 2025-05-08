@@ -106,19 +106,19 @@ namespace Graphs
 		}
 	};
 
-	struct Point
+	struct Point_
 	{
 		short x;
 		short y;
-		Point() {
+		Point_() {
 			x = 0;
 			y = 0;
 		}
-		Point(short ax, short ay) {
+		Point_(short ax, short ay) {
 			x = ax;
 			y = ay;
 		}
-		Point(int l) {
+		Point_(int l) {
 			*((int*)this) = l;
 		}
 		int toInt() {
@@ -126,57 +126,57 @@ namespace Graphs
 		}
 	};
 
-	struct Size
+	struct Size_
 	{
 		using enum CalcType;
 		pointUI width;
 		pointUI height;
 
-		Size() {
+		Size_() {
 			width.type = px;
 			height.type = px;
 			width = 0;
 			height = 0;
 		}
-		Size(short w, short h) {
+		Size_(short w, short h) {
 			width.type = px;
 			height.type = px;
 			width = w;
 			height = h;
 		}
-		Size(pointUI w, pointUI h) {
+		Size_(pointUI w, pointUI h) {
 			width = w;
 			height = h;
 		}
-		Size(int l) {
+		Size_(int l) {
 			*((int*)this) = l;
 		}
-		Size plusRight(Size b) {
-			return Size((short)width + b.width, std::max((short)height, (short)b.height));
+		Size_ plusRight(Size_ b) {
+			return Size_((short)width + b.width, std::max((short)height, (short)b.height));
 		}
-		Size plusRight(Size b, Margin m);
-		Size minusRight(Size b, Margin m);
-		Size plusBottom(Size b) {
-			return Size(std::max((short)width, (short)b.width), (short)height + b.height);
+		Size_ plusRight(Size_ b, Margin m);
+		Size_ minusRight(Size_ b, Margin m);
+		Size_ plusBottom(Size_ b) {
+			return Size_(std::max((short)width, (short)b.width), (short)height + b.height);
 		}
-		Size plusBottom(Size b, Margin margin);
-		Size minusBottom(Size b, Margin margin);
+		Size_ plusBottom(Size_ b, Margin margin);
+		Size_ minusBottom(Size_ b, Margin margin);
 		int toInt() {
 			return *((int*)this);
 		}
 
-		Size toAbsolut(Size original) {
+		Size_ toAbsolut(Size_ original) {
 			if(width.type == fr){
 				auto h = height.toAbsolut(original.height);
-				return Size(width.toAbsolut(h),
+				return Size_(width.toAbsolut(h),
 						h);
 			}
 			if(height.type == fr){
 				auto w = width.toAbsolut(original.width);
-				return Size(w,
+				return Size_(w,
 							height.toAbsolut(w));
 			}
-			return Size(width.toAbsolut(original.width),
+			return Size_(width.toAbsolut(original.width),
 						height.toAbsolut(original.height));
 		}
 
@@ -197,7 +197,7 @@ namespace Graphs
 			bottom = 0;
 		}
 
-		virtual void reRect(Point& point, Size& contentSize) {
+		virtual void reRect(Point_& point, Size_& contentSize) {
 			Padding abs = toAbsolut(contentSize);
 			point.x += abs.left;
 			contentSize.width -= abs.left + abs.right;
@@ -205,18 +205,18 @@ namespace Graphs
 			contentSize.height -= abs.top + abs.bottom;
 		}
 		virtual void reRect(RECT& rect) {
-			Padding abs = toAbsolut(Size(rect.right - rect.left, rect.bottom - rect.top));
+			Padding abs = toAbsolut(Size_(rect.right - rect.left, rect.bottom - rect.top));
 			rect.left += abs.left;
 			rect.right -= abs.right;
 			rect.top += abs.top;
 			rect.bottom -= abs.bottom;
 		}
 
-		virtual void reSize(Size& size) {
+		virtual void reSize(Size_& size) {
 			size.width -= left + right;
 			size.height -= top + bottom;
 		}
-		virtual void plusSize(Size& size) {
+		virtual void plusSize(Size_& size) {
 			size.width += left + right;
 			size.height += top + bottom;
 		}
@@ -248,7 +248,7 @@ namespace Graphs
 			return *((ull*)this);
 		}
 
-		Padding toAbsolut(Size original) {
+		Padding toAbsolut(Size_ original) {
 			return Padding(left.toAbsolut(original.width),
 						   top.toAbsolut(original.height),
 						   right.toAbsolut(original.width),
@@ -306,14 +306,14 @@ namespace Graphs
 		ull toLong() {
 			return *((ull*)this);
 		}
-		Margin toAbsolut(Size original) {
+		Margin toAbsolut(Size_ original) {
 			return Margin(left.toAbsolut(original.width),
 						  top.toAbsolut(original.height),
 						  right.toAbsolut(original.width),
 						  bottom.toAbsolut(original.height));
 		}
 
-		virtual void reRect(Point& point, Size& contentSize, Size& thisSize, MarginType type) {
+		virtual void reRect(Point_& point, Size_& contentSize, Size_& thisSize, MarginType type) {
 			short x = point.x;
 			short y = point.y;
 			ushort w = thisSize.width;
@@ -360,7 +360,7 @@ namespace Graphs
 			contentSize.height = contentSize.height - h - top - bottom;
 		}
 
-		virtual void reSize(Size& size) {
+		virtual void reSize(Size_& size) {
 			size.width += left + right;
 			size.height += top + bottom;
 		}

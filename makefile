@@ -1,4 +1,4 @@
-DIRS := button Edit component composite LinearContainer Text window design text_util code_edit
+DIRS := text_util
 
 SRC  := $(addprefix /,$(wildcard *.cpp))  $(foreach dir,$(DIRS), $(addprefix /,$(wildcard $(dir)/*.cpp)))          #$(shell find . -name '*.cpp') #$(addprefix /,$(wildcard *.cpp))
 HDR := $(wildcard *.h)  $(foreach dir,$(DIRS), $(wildcard $(dir)/*.h))                              #$(addprefix /,$(wildcard *.h)) #$(shell find . -name '*.h')
@@ -8,7 +8,7 @@ DEPS := $(addprefix obj, $(SRC_NAME:.cpp=.d))
 LIB := -lgdiplus -lgdi32
 FLAGS := -g -fpermissive -Wextra -MMD -MP -w -DUNICODE -std=c++20 -Wl,--subsystem,windows -static-libgcc -static-libstdc++#-fcompare-debug-second
 ARGS := $(FLAGS)
-TARGET := Grach
+TARGET := Graph
 .PHONY: all clear clear_all
 
 all: build/$(TARGET).exe

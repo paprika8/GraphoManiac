@@ -144,6 +144,13 @@ namespace Graphs
 		View(View* aparent){
 			parent = aparent;
 		}
+
+		virtual void child_deleted(View* child){};
+
+		~View(){
+			if(parent) parent->child_deleted(this);
+		}
+
 		//функция проверки на принадлежность точки к элементу интерфейса через регион
 		bool is_my(int X, int Y){
 			X -= abs_position.x;
@@ -239,6 +246,10 @@ namespace Graphs
 		//удаление view
 		void remove(View* value);
 		void remove(int index);
+
+		void child_deleted(View* child){
+			remove(child);
+		};
 
 		Size_ get_content_size(Size_ size = Size_()) override{
 			if(!(margin.type & MarginType::CONTENT))

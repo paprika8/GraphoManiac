@@ -158,7 +158,7 @@ namespace Graphs
 			//return X >= abs_position.x && Y >= abs_position.y && X < abs_position.x + abs_size.width && Y < abs_position.y + abs_size.height;
 			return rgn->heve_point(X, Y);
 		}
-		//функция обработки перемещения елемента интерфейса
+		//функция обработки перемещения элемента интерфейса
 		int move(int X, int Y);
 		//функция отрисовки
 		int paint(BufferHDC &hdc);
@@ -166,11 +166,11 @@ namespace Graphs
 		int resize(int width, int height);
 
 		//функции обработки всяких событий
-		//событие выхода курсора мыши из елемента
+		//событие выхода курсора мыши из элемента
 		virtual int mouse_leave_event(){return 0;};
 		//событие перемещения мыши в окне
 		virtual int mouse_move_event(int x, int y, int virtual_key){return 0;};
-		//событие нажатия мыши в елементе
+		//событие нажатия мыши в элементе
 		virtual int mouse_event(mouse_buttons button, click_event type, int x, int y, int virtual_key){return 0;};
 		//событие скрола
 		virtual int mouse_wheel_event(int x, int y, int delta, int virtual_key){return 0;};
@@ -178,25 +178,25 @@ namespace Graphs
 		virtual int key_event(struct_key_event key, int virtual_key){return 0;};
 		//событие ввода букав с учётом зажатых shift и caps
 		virtual int char_event(struct_key_event key, wchar_t c){return 0;};
-		//событие изменения размера елемента
+		//событие изменения размера элемента
 		virtual int resize_event(){
 			((RGN_rect*)rgn)->width = abs_size.width;
 			((RGN_rect*)rgn)->height = abs_size.height;
 			return 0;
 		};
-		//событие перемещения елемента
+		//событие перемещения элемента
 		virtual int move_event(){return 0;};
 
-		//событие отрисовки контента елемента
+		//событие отрисовки контента элемента
 		virtual int paint_event(BufferHDC &hdc){return 0;};
-		//событие отрисовки фона елемента
+		//событие отрисовки фона элемента
 		virtual int paint_background_event(BufferHDC &hdc) {
 			hdc.graphic->FillRectangle(&background, abs_position.x, abs_position.y, abs_size.width, abs_size.height);
 			return 0;
 		};
-		//событие установки фокуса на елементе (например, нажатие кнопки мыши. обрабатывается в Composite). нужно для захвата мыши или клавиатуры
+		//событие установки фокуса на элементе (например, нажатие кнопки мыши. обрабатывается в Composite). нужно для захвата мыши или клавиатуры
 		virtual int set_focus_event(){return 0;};
-		//событие удаления фокуса с елемента (например, нажатие кнопки мыши на другом елементе. обрабатывается в Composite)
+		//событие удаления фокуса с элемента (например, нажатие кнопки мыши на другом элементе. обрабатывается в Composite)
 		virtual int kill_focus_event(){return 0;};
 
 		//функция захвата мыши
@@ -217,7 +217,7 @@ namespace Graphs
 			parent->key_re_capture(view);
 		}
 
-		//получения абсолютного размера елемента
+		//получения абсолютного размера элемента
 		Size_ get_abs_size(){
 			return abs_size;
 		}

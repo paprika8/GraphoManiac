@@ -8,7 +8,7 @@ using namespace Gdiplus;
 
 namespace Graphs
 {
-	//Регион. Ограничивает зону работы елемента интерфейса
+	//Регион. Ограничивает зону работы элемента интерфейса
 	struct RGN
 	{
 		virtual bool heve_point(int x, int y) = 0;

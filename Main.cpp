@@ -43,34 +43,41 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 		return -1;
 	}
 
+	//создание окна
 	win = new Window();
 
+	//...
 	DPI = GetSystemDpi();
-
+	//регистрация окна
 	win->regist();
-
+	//создание и отображение окна
 	win->show(SW_NORMAL);
 
+	//получаем ссылку на screen из win
 	Composite* screen = dynamic_cast<Composite*>(win->screen);
+	//задаём выравнивание дочерних элементов по центру
 	screen->margin.type |= MarginType::HCENTER | MarginType::VCENTER;
 
+	//создаём кнопку
 	Button* bt1 = new Button(screen);
 	bt1->size = Size_(100, 100);
 	bt1->margin = Margin(10,10,10,10);
 	screen->add(bt1);
 
+	//создаём кнопку
 	Button* bt2 = new Button(screen);
 	bt2->size = Size_(100, 100);
 	bt2->margin = Margin(10,10,10,10);
 	screen->add(bt2);
 
+	//создаём текстовый блок
 	Line_Text* tx = new Line_Text(screen);
 	tx->size = Size_(100, 100);
 	tx->margin = Margin(10,10,10,10);
 	tx->text = L"17";
 	screen->add(tx);
 
-	
+	//отображаем окно снова... так работает лучше наверное...
 	win->show(SW_NORMAL);
 
 	int res = run();

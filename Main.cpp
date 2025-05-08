@@ -1,0 +1,79 @@
+#include "Main.h"
+#include <winuser.h>
+
+#include "Button.h"
+#include "Text.h"
+
+UINT GetSystemDpi(){
+	HDC hdc = GetDC(NULL);
+	UINT dpi = GetDeviceCaps(hdc, LOGPIXELSX);
+	ReleaseDC(NULL, hdc);
+	return dpi;
+}
+
+namespace Graphs{
+	Window* win = 0;
+	int DPI = 0;
+}
+
+
+ULONG_PTR gdiplusToken = 0;
+
+int run(){
+	MSG msg;
+	while (GetMessage(&msg, NULL, 0, 0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	return (int)msg.wParam;
+}
+
+int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+
+	::instance = instance;
+	Gdiplus::Status st = Gdiplus::GdiplusStartup ( &gdiplusToken , &gdiplusStartupInput , NULL );
+	if ( st != Gdiplus::Ok )
+	{
+		MessageBox ( NULL ,
+			L"Call to GdiplusStartup failed!" ,
+			L"GdiplusStartup ist kaputt" ,
+			NULL );
+		return -1;
+	}
+
+	win = new Window();
+
+	DPI = GetSystemDpi();
+
+	win->regist();
+
+	win->show(SW_NORMAL);
+
+	Composite* screen = dynamic_cast<Composite*>(win->screen);
+	screen->margin.type |= MarginType::HCENTER | MarginType::VCENTER;
+
+	Button* bt1 = new Button(screen);
+	bt1->size = Size_(100, 100);
+	bt1->margin = Margin(10,10,10,10);
+	screen->add(bt1);
+
+	Button* bt2 = new Button(screen);
+	bt2->size = Size_(100, 100);
+	bt2->margin = Margin(10,10,10,10);
+	screen->add(bt2);
+
+	Line_Text* tx = new Line_Text(screen);
+	tx->size = Size_(100, 100);
+	tx->margin = Margin(10,10,10,10);
+	tx->text = L"17";
+	screen->add(tx);
+
+	
+	win->show(SW_NORMAL);
+
+	int res = run();
+	Gdiplus::GdiplusShutdown ( gdiplusToken );
+	return res;
+}

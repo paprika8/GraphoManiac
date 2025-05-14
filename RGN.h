@@ -11,7 +11,7 @@ namespace Graphs
 	//Регион. Ограничивает зону работы элемента интерфейса
 	struct RGN
 	{
-		virtual bool heve_point(int x, int y) = 0;
+		virtual bool has_point(int x, int y) = 0;
 
 		//не работает
 		virtual void set_clip(Graphics* g) = 0;
@@ -28,7 +28,7 @@ namespace Graphs
 			width = awidth;
 			height = aheight;
 		}
-		bool heve_point(int ax, int ay) {
+		bool has_point(int ax, int ay) {
 			return ax >= x && ax < width + x && ay >= y && ay < height + y;
 		}
 		void set_clip(Graphics* g) override {
@@ -50,7 +50,7 @@ namespace Graphs
 			a = aa;
 			b = ab;
 		}
-		bool heve_point(int x, int y) override {
+		bool has_point(int x, int y) override {
 			x -= this->x;
 			y -= this->y;
 			return (y * y) / (a * a) + (x * x) / (b * b) <= 1;
@@ -65,7 +65,7 @@ namespace Graphs
 		}
 		Gdiplus::Region* get_Region(Gdiplus::Region* full) override {
 			Gdiplus::Rect rect(x, y, a * 2, b * 2);
-			Gdiplus::Region *rectRegion = new Gdiplus::Region(rect);
+			Gdiplus::Region* rectRegion = new Gdiplus::Region(rect);
 			Gdiplus::GraphicsPath ellipsePath;
 			ellipsePath.AddEllipse(rect);
 			rectRegion->Union(&ellipsePath);
@@ -80,13 +80,13 @@ namespace Graphs
 			a = aa;
 			b = ab;
 		}
-		bool heve_point(int x, int y);
+		bool has_point(int x, int y);
 
 		void set_clip(Graphics* g) override {
-			Gdiplus::Region *fill = new Gdiplus::Region();
+			Gdiplus::Region* fill = new Gdiplus::Region();
 			g->GetClip(fill);
-			Gdiplus::Region *r1 = a->get_Region(fill);
-			Gdiplus::Region *r2 = b->get_Region(fill);
+			Gdiplus::Region* r1 = a->get_Region(fill);
+			Gdiplus::Region* r2 = b->get_Region(fill);
 
 			r1->Intersect(r2);
 
@@ -96,8 +96,8 @@ namespace Graphs
 			delete r2;
 		}
 		Gdiplus::Region* get_Region(Gdiplus::Region* full) override {
-			Gdiplus::Region *r1 = a->get_Region(full);
-			Gdiplus::Region *r2 = b->get_Region(full);
+			Gdiplus::Region* r1 = a->get_Region(full);
+			Gdiplus::Region* r2 = b->get_Region(full);
 
 			r1->Intersect(r2);
 
@@ -118,13 +118,13 @@ namespace Graphs
 			a = aa;
 			b = ab;
 		}
-		bool heve_point(int x, int y);
+		bool has_point(int x, int y);
 
 		void set_clip(Graphics* g) override {
-			Gdiplus::Region *fill = new Gdiplus::Region();
+			Gdiplus::Region* fill = new Gdiplus::Region();
 			g->GetClip(fill);
-			Gdiplus::Region *r1 = a->get_Region(fill);
-			Gdiplus::Region *r2 = b->get_Region(fill);
+			Gdiplus::Region* r1 = a->get_Region(fill);
+			Gdiplus::Region* r2 = b->get_Region(fill);
 
 			r1->Union(r2);
 
@@ -134,8 +134,8 @@ namespace Graphs
 			delete r2;
 		}
 		Gdiplus::Region* get_Region(Gdiplus::Region* full) override {
-			Gdiplus::Region *r1 = a->get_Region(full);
-			Gdiplus::Region *r2 = b->get_Region(full);
+			Gdiplus::Region* r1 = a->get_Region(full);
+			Gdiplus::Region* r2 = b->get_Region(full);
 
 			r1->Union(r2);
 
@@ -155,12 +155,12 @@ namespace Graphs
 		RGN_not(RGN* aa) {
 			a = aa;
 		}
-		bool heve_point(int x, int y);
+		bool has_point(int x, int y);
 
 		void set_clip(Graphics* g) override {
-			Gdiplus::Region *fill = new Gdiplus::Region();
+			Gdiplus::Region* fill = new Gdiplus::Region();
 			g->GetClip(fill);
-			Gdiplus::Region *r1 = a->get_Region(fill);
+			Gdiplus::Region* r1 = a->get_Region(fill);
 
 			r1->Exclude(r1);
 
@@ -169,7 +169,7 @@ namespace Graphs
 			delete r1;
 		}
 		Gdiplus::Region* get_Region(Gdiplus::Region* full) override {
-			Gdiplus::Region *r1 = a->get_Region(full);
+			Gdiplus::Region* r1 = a->get_Region(full);
 
 			r1->Exclude(r1);
 

@@ -2,9 +2,11 @@
 
 #include "UIStructs.h"
 #include "RGN.h"
+#include "text_util/text_drawer.h"
 
 #include <Windows.h>
 
+#include <string>
 #include <vector>
 #include <algorithm>
 #include <functional>

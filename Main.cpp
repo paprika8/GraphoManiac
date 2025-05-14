@@ -2,6 +2,7 @@
 #include <winuser.h>
 
 #include "Button.h"
+#include "graphs/draw_graph.h"
 #include "Text.h"
 
 UINT GetSystemDpi(){
@@ -71,10 +72,9 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 	screen->add(bt2);
 
 	//создаём текстовый блок
-	Line_Text* tx = new Line_Text(screen);
+	GraphView* tx = new GraphView(screen);
 	tx->size = Size_(100, 100);
 	tx->margin = Margin(10,10,10,10);
-	tx->text = L"17";
 	screen->add(tx);
 
 	//отображаем окно снова... так работает лучше наверное...

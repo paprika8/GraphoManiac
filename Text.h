@@ -2,7 +2,7 @@
 
 #include "Views.h"
 
-#include "text_util/text_drawer.h"
+
 
 namespace Graphs{
 	struct Line_Text : public View{

@@ -72,7 +72,7 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 
 	//создаём текстовый блок
 	GraphView* tx = new GraphView(screen);
-	tx->size = Size_(100, 100);
+	tx->size = Size_(200, 200);
 	tx->margin = Margin(10, 10, 10, 10);
 	screen->add(tx);
 

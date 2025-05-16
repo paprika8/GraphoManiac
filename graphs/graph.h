@@ -15,11 +15,12 @@ namespace Graphs
     {
         friend class edge;
     private:
-        std::set<edge*> edges;
         graph* gr = 0;
     public:
         int id;
         char mark; // Для маркировки
+
+        std::set<edge*> edges;
 
         int x, y;
         int old_x, old_y;
@@ -105,5 +106,13 @@ namespace Graphs
         ~edge();
 
         void draw(Graphs::BufferHDC& hdc);
+
+        node* get_node1(){
+            return point1;
+        }
+
+        node* get_node2(){
+            return point2;
+        }
     };
 }

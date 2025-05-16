@@ -2,8 +2,6 @@
 
 #include "Views.h"
 
-
-
 namespace Graphs
 {
 	struct Button : public View{

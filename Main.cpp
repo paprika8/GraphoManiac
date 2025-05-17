@@ -44,6 +44,8 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 		return -1;
 	}
 
+	BufferHDC::block = 0;
+
 	//создание окна
 	win = new Window();
 
@@ -61,20 +63,20 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 
 	//создаём кнопку
 	Button* bt1 = new Button(screen);
-	bt1->size = Size_(100, 100);
-	bt1->margin = Margin(10,10,10,10);
+	bt1->size = Size_(pointUI(90, percent), pointUI(1000, fr));
+	bt1->margin = Margin(pointUI(5, percent),10,pointUI(5, percent),10);
 	screen->add(bt1);
 
 	//создаём кнопку
 	Button* bt2 = new Button(screen);
-	bt2->size = Size_(100, 100);
-	bt2->margin = Margin(10,10,10,10);
+	bt2->size = Size_(pointUI(90, percent), pointUI(1000, fr));
+	bt2->margin = Margin(pointUI(5, percent),10,pointUI(5, percent),10);
 	screen->add(bt2);
 
 	//создаём текстовый блок
 	GraphView* tx = new GraphView(screen);
-	tx->size = Size_(200, 200);
-	tx->margin = Margin(10,10,10,10);
+	tx->size = Size_(pointUI(800, percent), pointUI(1000, percent));
+	//tx->margin = Margin(10,10,10,10);
 	screen->add(tx);
 
 	//отображаем окно снова... так работает лучше наверное...

@@ -4,6 +4,8 @@
 namespace Graphs
 {
 
+	bool BufferHDC::block = false;
+
 	int View::move(int X, int Y)
 	{
 		abs_position = Point_(X, Y);
@@ -11,6 +13,8 @@ namespace Graphs
 	}
 	int View::paint(BufferHDC &hdc)
 	{
+		if(!hdc.buffer)
+			return;
 		Gdiplus::Rect rc(abs_position.x, abs_position.y, abs_size.width, abs_size.height);
 		hdc.graphic->SetClip(rc);
 		paint_background_event(hdc);

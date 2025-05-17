@@ -196,7 +196,7 @@ namespace Graphs
 
 		case WM_KEYUP:
 		case WM_KEYDOWN: {
-			if (ptr) ptr->screen->char_event(lparam, wparam);//VK_ codes
+			if (ptr) ptr->screen->key_event(lparam, wparam);//VK_ codes
             return 0;
         }
 

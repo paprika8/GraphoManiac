@@ -70,13 +70,19 @@ namespace Graphs
 	//Обеспечивает буферизацию отрисовки окна, создаёт буфер в конструкторе и применяет буфер в деструкторе (при удалении). Работает с WinApi. Обьяснение сложное
 	struct BufferHDC
 	{
+		static bool block;
 		HDC src;
-		HDC buffer;
+		HDC buffer = 0;
 		Gdiplus::Graphics* graphic;
 		int cx;
 		int cy;
 		Point_ offset = Point_(0, 0);
 		BufferHDC(HDC asrc, Size_ size) {
+			if(block)
+				return;
+
+			block = true;
+
 			src = asrc;
 
 			cx = size.width;
@@ -97,6 +103,11 @@ namespace Graphs
 			graphic = new Gdiplus::Graphics(buffer);
 		}
 		BufferHDC(HDC asrc, Size_ size, View*) {
+			if(block)
+				return;
+
+			block = true;
+			
 			src = asrc;
 
 			cx = size.width;
@@ -116,6 +127,9 @@ namespace Graphs
 			graphic = new Gdiplus::Graphics(buffer);
 		}
 		~BufferHDC() {
+			if(!buffer)
+				return;
+
 			SetViewportOrgEx(buffer, ptOldOrigin.x, ptOldOrigin.y, NULL);
 
 			delete graphic;
@@ -129,6 +143,8 @@ namespace Graphs
 			SelectObject(buffer, hOldBmp);
 			DeleteObject(hBmp);
 			DeleteDC(buffer);
+
+			block = false;
 		}
 	private:
 		HBITMAP hBmp;

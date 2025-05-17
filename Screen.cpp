@@ -16,7 +16,7 @@ namespace Graphs {
 		return Composite::mouse_wheel_event(x, y, delta, virtual_key);
 	};
 	int Screen::key_event(struct_key_event key, int virtual_key)  {
-		if(view_key_capture) return view_key_capture->char_event(key, virtual_key);
+		if(view_key_capture) return view_key_capture->key_event(key, virtual_key);
 		return Composite::char_event(key, virtual_key);
 	};
 	int Screen::char_event(struct_key_event key, wchar_t c)  {

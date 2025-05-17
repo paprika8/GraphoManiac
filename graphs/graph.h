@@ -1,5 +1,5 @@
 #include "../Views.h"
-
+#include <string>
 #include <math.h>
 #include <set>
 
@@ -14,11 +14,10 @@ namespace Graphs
     class node
     {
         friend class edge;
-    private:
-        graph* gr = 0;
     public:
+				graph* gr = 0;
         int id;
-        char mark; // Для маркировки
+        std::string mark = null; // Для маркировки
 
         std::set<edge*> edges;
 

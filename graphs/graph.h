@@ -1,5 +1,5 @@
 #include "../Views.h"
-
+#include <string>
 #include <math.h>
 #include <set>
 
@@ -17,14 +17,14 @@ namespace Graphs
     class node
     {
         friend class edge;
-    private:
-        
-        graph* gr = 0;
     public:
         std::set<edge*> edges;
-
+		graph* gr = 0;
+        
         int id;
-        char mark; // Для маркировки
+        std::string mark = null; // Для маркировки
+
+        std::set<edge*> edges;
 
         int x, y;
         int old_x = 0, old_y = 0;
@@ -60,7 +60,6 @@ namespace Graphs
 
         ~graph() {
             for (auto x : nodes) delete x;
-            nodes.clear();
         }
 
         void insert(node* n) {
@@ -112,5 +111,13 @@ namespace Graphs
         ~edge();
 
         void draw(Graphs::BufferHDC& hdc);
+
+        node* get_node1() {
+            return point1;
+        }
+
+        node* get_node2() {
+            return point2;
+        }
     };
 }

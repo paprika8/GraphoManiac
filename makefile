@@ -1,4 +1,4 @@
-DIRS := text_util graphs
+DIRS := text_util graphs tasks
 
 SRC  := $(addprefix /,$(wildcard *.cpp))  $(foreach dir,$(DIRS), $(addprefix /,$(wildcard $(dir)/*.cpp)))          #$(shell find . -name '*.cpp') #$(addprefix /,$(wildcard *.cpp))
 HDR := $(wildcard *.h)  $(foreach dir,$(DIRS), $(wildcard $(dir)/*.h))                              #$(addprefix /,$(wildcard *.h)) #$(shell find . -name '*.h')

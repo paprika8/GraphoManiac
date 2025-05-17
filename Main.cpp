@@ -5,14 +5,15 @@
 #include "graphs/draw_graph.h"
 #include "Text.h"
 
-UINT GetSystemDpi(){
+UINT GetSystemDpi() {
 	HDC hdc = GetDC(NULL);
 	UINT dpi = GetDeviceCaps(hdc, LOGPIXELSX);
 	ReleaseDC(NULL, hdc);
 	return dpi;
 }
 
-namespace Graphs{
+namespace Graphs
+{
 	Window* win = 0;
 	int DPI = 0;
 }
@@ -20,10 +21,9 @@ namespace Graphs{
 
 ULONG_PTR gdiplusToken = 0;
 
-int run(){
+int run() {
 	MSG msg;
-	while (GetMessage(&msg, NULL, 0, 0))
-	{
+	while (GetMessage(&msg, NULL, 0, 0)) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
@@ -34,13 +34,12 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 
 	::instance = instance;
-	Gdiplus::Status st = Gdiplus::GdiplusStartup ( &gdiplusToken , &gdiplusStartupInput , NULL );
-	if ( st != Gdiplus::Ok )
-	{
-		MessageBox ( NULL ,
-			L"Call to GdiplusStartup failed!" ,
-			L"GdiplusStartup ist kaputt" ,
-			NULL );
+	Gdiplus::Status st = Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+	if (st != Gdiplus::Ok) {
+		MessageBox(NULL,
+				   L"Call to GdiplusStartup failed!",
+				   L"GdiplusStartup ist kaputt",
+				   NULL);
 		return -1;
 	}
 
@@ -83,6 +82,6 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 	win->show(SW_NORMAL);
 
 	int res = run();
-	Gdiplus::GdiplusShutdown ( gdiplusToken );
+	Gdiplus::GdiplusShutdown(gdiplusToken);
 	return res;
 }

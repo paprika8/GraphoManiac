@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../Views.h"
 #include <string>
 #include <math.h>
@@ -20,11 +22,9 @@ namespace Graphs
     public:
         std::set<edge*> edges;
 		graph* gr = 0;
-        
-        int id;
-        std::string mark = null; // Для маркировки
 
-        std::set<edge*> edges;
+        int id;
+        char mark = 'a'; // Для маркировки
 
         int x, y;
         int old_x = 0, old_y = 0;

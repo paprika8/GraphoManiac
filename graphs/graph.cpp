@@ -27,7 +27,7 @@ namespace Graphs
 	void node::draw(Graphs::BufferHDC& hdc) {
 		int radius = gr->node_radius;
 		//Gdiplus::Color col(255, 255, 80);
-		Gdiplus::SolidBrush br = Gdiplus::SolidBrush(*colors[mark - 'a']);
+		Gdiplus::SolidBrush br = Gdiplus::SolidBrush(*colors[(char)(mark - 'a')]);
 		hdc.graphic->FillEllipse(&br, x, y, radius, radius);
 		Gdiplus::StringFormat format;
 		format.SetAlignment(Gdiplus::StringAlignment::StringAlignmentCenter);
@@ -87,6 +87,10 @@ namespace Graphs
 			colors.push_back(new Color(80, 255, 255));
 			colors.push_back(new Color(80, 80, 255));
 			colors.push_back(new Color(80, 80, 80));
+			for(int i = 0; i < 255; i+= 20){
+				colors.push_back(new Color(i, 80, i));
+				colors.push_back(new Color(80, i, 80));
+			}
 		}
 	}
 }

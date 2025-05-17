@@ -4,14 +4,17 @@
 
 namespace Graphs
 {
+    // Depth First Search - обход в глубину
     void DFS(node* first) {
-        std::set<int> checked_nodes;
-        checked_nodes.insert(first->id);
         bool deadlocked = false;
         for (auto edge : first->edges) {
             node* next = edge->get_node1() == first ? edge->get_node2() : edge->get_node1();
-            while (true) {
 
+            while (next != first) {
+                if (next->mark != 'c') {
+                    next->mark = 'c';
+
+                }
             }
         }
     }

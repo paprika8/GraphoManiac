@@ -3,4 +3,4 @@
 *.to
 *.exe
 *.d
-makefile
+/makefile

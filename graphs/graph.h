@@ -53,28 +53,27 @@ namespace Graphs
         graph() {};
 
         ~graph() {
-            for(auto x : nodes) delete x;
-            nodes.clear();
+            for (auto x : nodes) delete x;
         }
 
         void insert(node* n) {
             nodes.insert(n);
         }
 
-        void erase(node *n) {
+        void erase(node* n) {
             nodes.erase(n);
             delete n;
         }
 
         node* find(int x, int y) {
-            for(auto n: nodes){
+            for (auto n : nodes) {
                 int radius = node_radius / 2;
 
                 int xx = n->x - x + radius;
                 int yy = n->y - y + radius;
 
 
-                if(radius*radius > xx*xx + yy*yy){
+                if (radius * radius > xx * xx + yy * yy) {
                     return n;
                 }
             }
@@ -129,11 +128,11 @@ namespace Graphs
 
         void draw(Graphs::BufferHDC& hdc);
 
-        node* get_node1(){
+        node* get_node1() {
             return point1;
         }
 
-        node* get_node2(){
+        node* get_node2() {
             return point2;
         }
     };

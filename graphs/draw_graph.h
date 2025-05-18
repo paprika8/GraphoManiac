@@ -148,7 +148,7 @@ namespace Graphs {
 				y -= offset_y;
 				if(moving_obj != mt_create_edge)
 					moving_obj = mt_none;
-				else if(!gr.find(x, y)){
+				else if(!gr.find(x, y) && moving_obj != mt_none){
 					moving_obj = mt_none;
 					if(tmp_node){ 
 						tmp_node->mark = 'a';

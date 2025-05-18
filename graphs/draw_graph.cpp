@@ -5,7 +5,9 @@ namespace Graphs
 {
 	GraphView::GraphView(View* aparent) : View(aparent) {
 		gr.insert(new node(1, 'a', &gr));
-		*stop = 1;
+
+		*stop = 1;// 0 -stop    1-wait    2-run     3-complite
+
 		std::thread tr = std::thread([this]() {
 			int i = 0;
 			double kf = 1;
@@ -16,7 +18,7 @@ namespace Graphs
 					gr.edge_width = 1;
 					distance = 40;
 				}
-				else if (distance < 700) {
+				else if (distance < 2000) {
 					gr.node_radius = 50;
 					gr.edge_width = 2.5;
 					distance = 70;
@@ -38,14 +40,22 @@ namespace Graphs
 						a->mark = 'a';
 					comp_cnt(&gr);
 				}
-			}});
+				{
+					BufferHDC hdc = BufferHDC(win->getDC(), win->size, this);
+					paint(hdc);
+				}
+				i++;
+				Sleep(50);
+			}
+			*stop = 3;
+		});
 
 
-			tr.detach();
+		tr.detach();
 
-			background.SetColor(Color(40, 40, 180));
+		background.SetColor(Color(40, 40, 180));
 
-			aparent->key_capture(this);
+		aparent->key_capture(this);
 	}
 
 

@@ -4,7 +4,7 @@
 namespace Graphs
 {
 
-	bool BufferHDC::block = false;
+	std::deque<BufferHDC*> BufferHDC::block;
 
 	int View::move(int X, int Y)
 	{

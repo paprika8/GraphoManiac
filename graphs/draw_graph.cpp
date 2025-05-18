@@ -18,7 +18,7 @@ namespace Graphs
 					gr.edge_width = 1;
 					distance = 40;
 				}
-				else if (distance < 700) {
+				else if (distance < 2000) {
 					gr.node_radius = 50;
 					gr.edge_width = 2.5;
 					distance = 70;

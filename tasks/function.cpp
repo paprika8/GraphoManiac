@@ -2,19 +2,6 @@
 
 namespace Graphs
 {
-	void DFS(node* curr) {
-		int counter = 1;
-		curr->mark = 'a' + counter;
-		for (auto edge : curr->edges) {
-			node* next = edge->get_node1() != curr ? edge->get_node1() : edge->get_node2();
-			if (next->mark == 'a') {
-				node* new_curr = next;
-				counter++;
-				new_curr->mark = counter + 'a';
-				DFS_rec(new_curr, counter);
-			}
-		}
-	}
 	void DFS_rec(node* current, int& counter) {
 		for (auto edge : current->edges) {
 			if (counter >= current->gr->nodes.size()) {
@@ -26,6 +13,20 @@ namespace Graphs
 				counter++;
 				new_current->mark = counter + 'a';
 				DFS_rec(new_current, counter);
+			}
+		}
+	}
+
+	void DFS(node* curr) {
+		int counter = 1;
+		curr->mark = 'a' + counter;
+		for (auto edge : curr->edges) {
+			node* next = edge->get_node1() != curr ? edge->get_node1() : edge->get_node2();
+			if (next->mark == 'a') {
+				node* new_curr = next;
+				counter++;
+				new_curr->mark = counter + 'a';
+				DFS_rec(new_curr, counter);
 			}
 		}
 	}
@@ -65,28 +66,26 @@ namespace Graphs
 
 	void BFS(node* curr) {
 		int counter = 1;
-		int depth_lvl = 1;
 		int sz = curr->gr->nodes.size();
 		curr->mark = 'a' + counter;
 
-		while (counter < sz) {
-			for (auto edge : curr->edges) {
-				node* next = edge->get_node1() != curr ? edge->get_node1() : edge->get_node2();
-				counter++;
-				next->mark = counter + 'a';
-			}
-			int i = 1;
-			while (i < depth_lvl) {
-				// пу пу пу...
-			}
-		}
-	}
+		std::vector<node*> cur_lvl = { curr };
+		std::vector<node*> next_lvl;
 
-	void BFS_check_one_lvl(node* current, int counter, int lvl_cnt) {
-		for (auto edge : current->edges) {
-			node* next = edge->get_node1() != current ? edge->get_node1() : edge->get_node2();
-			counter++;
-			next->mark = counter + 'a';
+		while (counter < sz) {
+			for (auto cur_node : cur_lvl) {
+				for (auto edge : cur_node->edges) {
+					node* next = edge->get_node1() != cur_node ? edge->get_node1() : edge->get_node2();
+					if (next->mark == 'a') {
+						counter++;
+						next->mark = counter + 'a';
+						next_lvl.push_back(next);
+					}
+				}
+			}
+
+			cur_lvl = next_lvl;
+			next_lvl.clear();
 		}
 	}
 }

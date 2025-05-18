@@ -12,5 +12,5 @@ namespace Graphs
 	// Depth First Search - обход в глубину
 	void DFS(node* curr);
 
-	void DFS_rec(node* current, int &counter);
+	void BFS(node* curr);
 }

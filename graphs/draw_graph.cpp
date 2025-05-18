@@ -30,8 +30,10 @@ namespace Graphs {
 					distance *= 3;
 					int min = gr.normalize(distance * kf);
 					min /= kf;
-					if(i > 50){
-						kf = (double)distance / min;
+					if(i > 50){ 
+						double bkf = (double)distance / min;
+						if(kf / bkf > 1.1 || bkf / kf > 1.1)
+							kf = bkf;
 						i = 0;
 						for(auto a : gr.nodes)
 							a->mark = 'a';

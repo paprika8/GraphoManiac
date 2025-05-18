@@ -43,8 +43,6 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 		return -1;
 	}
 
-	BufferHDC::block = 0;
-
 	//создание окна
 	win = new Window();
 

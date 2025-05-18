@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include <deque>
 #include <algorithm>
 #include <functional>
 
@@ -70,7 +71,7 @@ namespace Graphs
 	//Обеспечивает буферизацию отрисовки окна, создаёт буфер в конструкторе и применяет буфер в деструкторе (при удалении). Работает с WinApi. Обьяснение сложное
 	struct BufferHDC
 	{
-		static bool block;
+		static std::deque<BufferHDC*> block;
 		HDC src;
 		HDC buffer = 0;
 		Gdiplus::Graphics* graphic;
@@ -78,10 +79,10 @@ namespace Graphs
 		int cy;
 		Point_ offset = Point_(0, 0);
 		BufferHDC(HDC asrc, Size_ size) {
-			if(block)
-				return;
 
-			block = true;
+			block.push_back(this);
+			while(block[0] != this)
+				Sleep(20);
 
 			src = asrc;
 
@@ -103,10 +104,9 @@ namespace Graphs
 			graphic = new Gdiplus::Graphics(buffer);
 		}
 		BufferHDC(HDC asrc, Size_ size, View*) {
-			if(block)
-				return;
-
-			block = true;
+			block.push_back(this);
+			while(block[0] != this)
+				Sleep(20);
 			
 			src = asrc;
 
@@ -144,7 +144,7 @@ namespace Graphs
 			DeleteObject(hBmp);
 			DeleteDC(buffer);
 
-			block = false;
+			block.pop_front();
 		}
 	private:
 		HBITMAP hBmp;

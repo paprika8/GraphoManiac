@@ -36,7 +36,7 @@ namespace Graphs
 					i = 0;
 					for (auto a : gr.nodes)
 						a->mark = 'a';
-					BFS(*gr.nodes.begin());
+					comp_cnt(&gr);
 				}
 			}});
 

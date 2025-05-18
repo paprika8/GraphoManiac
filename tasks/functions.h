@@ -13,4 +13,6 @@ namespace Graphs
 	void DFS(node* curr);
 
 	void BFS(node* curr);
+
+	void comp_cnt(graph* gr);
 }

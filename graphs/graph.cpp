@@ -37,6 +37,9 @@ namespace Graphs
 		Gdiplus::RectF rc(x, y, radius, radius);
 
 		hdc.graphic->DrawString(std::to_wstring(id).c_str(), -1, get_font(12), rc, &format, &br);
+		rc.X += 10;
+		wchar_t *char_ = std::to_wstring(mark- 'a').data();
+		hdc.graphic->DrawString(char_, -1, get_font(12), rc, &format, &br);
 	}
 
 	int graph::normalize(int distance) {
@@ -61,6 +64,8 @@ namespace Graphs
 					minimal = std::min(minimal, (int)d);
 					int delta = d - distance;
 					delta /= 8;
+					if(delta < 3 && delta > -3)
+						delta = 0;
 					dx -= delta / d * x;
 					dy -= delta / d * y;
 				}

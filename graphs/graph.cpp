@@ -64,6 +64,8 @@ namespace Graphs
 					minimal = std::min(minimal, (int)d);
 					int delta = d - distance;
 					delta /= 8;
+					if(delta < 3 && delta > -3)
+						delta = 0;
 					dx -= delta / d * x;
 					dy -= delta / d * y;
 				}

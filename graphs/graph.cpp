@@ -14,7 +14,12 @@ namespace Graphs
 	edge::~edge() {
 		point1->edges.erase(this);
 		point2->edges.erase(this);
-		point1->gr->edges.erase(this);
+		gr->edges.erase(this);
+	}
+
+	node::~node() {
+		for (auto el : edges)
+			delete el;
 	}
 
 	void node::create_edge(node* other) {
@@ -38,7 +43,7 @@ namespace Graphs
 
 		hdc.graphic->DrawString(std::to_wstring(id).c_str(), -1, get_font(12), rc, &format, &br);
 		rc.X += 10;
-		wchar_t *char_ = std::to_wstring(mark- 'a').data();
+		wchar_t* char_ = std::to_wstring(mark - 'a').data();
 		hdc.graphic->DrawString(char_, -1, get_font(12), rc, &format, &br);
 	}
 
@@ -64,7 +69,7 @@ namespace Graphs
 					minimal = std::min(minimal, (int)d);
 					int delta = d - distance;
 					delta /= 8;
-					if(delta < 3 && delta > -3)
+					if (delta < 3 && delta > -3)
 						delta = 0;
 					dx -= delta / d * x;
 					dy -= delta / d * y;
@@ -92,7 +97,7 @@ namespace Graphs
 			colors.push_back(new Color(80, 255, 255));
 			colors.push_back(new Color(80, 80, 255));
 			colors.push_back(new Color(80, 80, 80));
-			for(int i = 0; i < 255; i+= 20){
+			for (int i = 0; i < 255; i += 20) {
 				colors.push_back(new Color(i, 80, i));
 				colors.push_back(new Color(80, i, 80));
 			}

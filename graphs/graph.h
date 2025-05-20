@@ -33,9 +33,7 @@ namespace Graphs
 
         node(int i, char m, graph* agr) : id(i), mark(m), gr(agr) {};
 
-        ~node() {
-            for (auto el : edges) delete el;
-        }
+        virtual ~node();
 
         void create_edge(node* other);
 
@@ -45,8 +43,8 @@ namespace Graphs
     class graph
     {
     public:
-        friend class node;
-        friend class edge;
+        //friend class node;
+        //friend class edge;
 
         std::set<node*> nodes;
         std::set<edge*> edges;
@@ -108,7 +106,7 @@ namespace Graphs
         edge(edge& other) = delete;
         edge operator=(edge& other) = delete;
 
-        ~edge();
+        virtual ~edge();
 
         void draw(Graphs::BufferHDC& hdc);
 

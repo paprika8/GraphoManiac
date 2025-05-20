@@ -9,6 +9,19 @@ namespace Graphs
 		Gdiplus::Pen pen = Gdiplus::Pen(col, gr->edge_width);
 		int dradius = gr->node_radius / 2;
 		hdc.graphic->DrawLine(&pen, point1->x + dradius, point1->y + dradius, point2->x + dradius, point2->y + dradius);
+		if(!value)
+			return;
+		int rx = (point1->x + point2->x) / 2 + dradius, ry = (point1->y + point2->y) / 2 + dradius;
+		rx -= 15;
+		ry -= 15;
+		SolidBrush br(Color(255, 255, 255));
+		hdc.graphic->FillEllipse(&br, rx, ry, 30, 30);
+		Gdiplus::RectF rc(rx, ry, 30, 30);
+		br.SetColor(Color(0,0,0));
+		Gdiplus::StringFormat format;
+		format.SetAlignment(Gdiplus::StringAlignment::StringAlignmentCenter);
+		format.SetLineAlignment(Gdiplus::StringAlignment::StringAlignmentCenter);
+		hdc.graphic->DrawString(std::to_wstring(value).c_str(), -1, get_font(12), rc, &format, &br);
 	}
 
 	edge::~edge() {

@@ -98,7 +98,7 @@ namespace Graphs
     public:
         node* point1;
         node* point2;
-        int value;
+        int value = 0;
 
         edge(node* p1, node* p2, int val, graph* agr) : value(val), point1(p1), point2(p2), gr(agr) {};
 

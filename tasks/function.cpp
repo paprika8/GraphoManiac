@@ -163,4 +163,42 @@ namespace Graphs
 		return ans;
 	}
 
+	graph decodding_Prufer(std::vector<int>& prufer_code) {
+		int n = prufer_code.size() + 2;
+		std::vector<int> code_word;
+		for (int i = n - 2; i > 0; --i) {
+			if (prufer_code[i] > n) { // Не код Прюфера
+				throw std::_INVALID_ARGUMENT;
+			}
+			code_word.push_back(prufer_code[i]);
+		}
+
+		graph res;
+		// Ищем числа, которых нет в кодовом слове
+		std::unordered_set<int> code(prufer_code.begin(), prufer_code.end());
+		std::vector<int> anticode;
+
+		for (int i = n; i > 0; --i) {
+			if (code.find(i) == code.end()) {
+				anticode.push_back(i);
+			}
+		}
+
+		while (code_word.size() > 0) {
+			int id1 = code_word[code_word.size() - 1];
+			node a(id1, 'a', res);
+			int id2 = anticode[code_word.size() - 1];
+			node b(id2, 'a', res);
+			a.create_edge(&b);
+			code_word.pop_back();
+			anticode.pop_back();
+			code.erase(code.begin(), ++code.begin());
+			if (code.find(id1)) { // сделать поиск, оптимизировать все это
+				anticode.push_back(id1);
+			}
+
+		}
+		return res;
+	}
+
 }

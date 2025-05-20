@@ -4,6 +4,8 @@
 #include "../graphs/draw_graph.h"
 #include <set>
 #include <string>
+#include <algorithm>
+#include <unordered_set>
 
 
 

@@ -4,6 +4,8 @@
 #include "../graphs/draw_graph.h"
 #include <set>
 #include <string>
+#include <algorithm>
+#include <unordered_set>
 
 
 
@@ -14,5 +16,11 @@ namespace Graphs
 
 	void BFS(node* curr);
 
-	void comp_cnt(graph* gr);
+	int comp_cnt(graph* gr);
+
+	bool has_cycle(graph* gr);
+
+	bool is_tree(graph* gr);
+
+	std::vector<int> codding_Prufer(graph gr);
 }

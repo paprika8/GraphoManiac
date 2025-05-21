@@ -71,7 +71,7 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 	screen->add(bt2);
 
 	//создаём текстовый блок
-	GraphView* tx = new GraphView(screen);
+	MassGraphView* tx = new MassGraphView(screen);
 	tx->size = Size_(pointUI(800, percent), pointUI(1000, percent));
 	//tx->margin = Margin(10,10,10,10);
 	screen->add(tx);

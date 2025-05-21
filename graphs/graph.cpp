@@ -9,12 +9,30 @@ namespace Graphs
 		Gdiplus::Pen pen = Gdiplus::Pen(col, gr->edge_width);
 		int dradius = gr->node_radius / 2;
 		hdc.graphic->DrawLine(&pen, point1->x + dradius, point1->y + dradius, point2->x + dradius, point2->y + dradius);
+		if(!value)
+			return;
+		int rx = (point1->x + point2->x) / 2 + dradius, ry = (point1->y + point2->y) / 2 + dradius;
+		rx -= 15;
+		ry -= 15;
+		SolidBrush br(Color(255, 255, 255));
+		hdc.graphic->FillEllipse(&br, rx, ry, 30, 30);
+		Gdiplus::RectF rc(rx, ry, 30, 30);
+		br.SetColor(Color(0,0,0));
+		Gdiplus::StringFormat format;
+		format.SetAlignment(Gdiplus::StringAlignment::StringAlignmentCenter);
+		format.SetLineAlignment(Gdiplus::StringAlignment::StringAlignmentCenter);
+		hdc.graphic->DrawString(std::to_wstring(value).c_str(), -1, get_font(12), rc, &format, &br);
 	}
 
 	edge::~edge() {
 		point1->edges.erase(this);
 		point2->edges.erase(this);
-		point1->gr->edges.erase(this);
+		gr->edges.erase(this);
+	}
+
+	node::~node() {
+		for (auto el : edges)
+			delete el;
 	}
 
 	void node::create_edge(node* other) {
@@ -38,7 +56,7 @@ namespace Graphs
 
 		hdc.graphic->DrawString(std::to_wstring(id).c_str(), -1, get_font(12), rc, &format, &br);
 		rc.X += 10;
-		wchar_t *char_ = std::to_wstring(mark- 'a').data();
+		wchar_t* char_ = std::to_wstring(mark - 'a').data();
 		hdc.graphic->DrawString(char_, -1, get_font(12), rc, &format, &br);
 	}
 
@@ -64,7 +82,7 @@ namespace Graphs
 					minimal = std::min(minimal, (int)d);
 					int delta = d - distance;
 					delta /= 8;
-					if(delta < 3 && delta > -3)
+					if (delta < 3 && delta > -3)
 						delta = 0;
 					dx -= delta / d * x;
 					dy -= delta / d * y;
@@ -92,7 +110,7 @@ namespace Graphs
 			colors.push_back(new Color(80, 255, 255));
 			colors.push_back(new Color(80, 80, 255));
 			colors.push_back(new Color(80, 80, 80));
-			for(int i = 0; i < 255; i+= 20){
+			for (int i = 0; i < 255; i += 20) {
 				colors.push_back(new Color(i, 80, i));
 				colors.push_back(new Color(80, i, 80));
 			}

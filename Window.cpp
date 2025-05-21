@@ -194,11 +194,22 @@ namespace Graphs
 			return 0;
 		}
 
-		case WM_KEYUP:
-		case WM_KEYDOWN: {
-			if (ptr) ptr->screen->key_event(lparam, wparam);//VK_ codes
+		case WM_KEYUP:{
+			struct_key_event st = lparam;
+			st.transition_state = 1;
+			st.is_first_message = 0;
+			if (ptr) ptr->screen->key_event(st, wparam);//VK_ codes
             return 0;
-        }
+			break;
+		}
+		case WM_KEYDOWN: {
+			struct_key_event st = lparam;
+			st.transition_state = 0;
+			st.is_first_message = 1;
+			if (ptr) ptr->screen->key_event(st, wparam);//VK_ codes
+            return 0;
+			break;
+    }
 
 		case WM_KILLFOCUS:
 		if (ptr) ptr->screen->kill_focus_event();

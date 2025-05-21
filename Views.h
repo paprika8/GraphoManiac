@@ -80,7 +80,11 @@ namespace Graphs
 		Point_ offset = Point_(0, 0);
 		BufferHDC(HDC asrc, Size_ size) {
 
-			//block.lock();
+			block.lock();
+
+			/*FILE* log = fopen("log.txt", "a");
+			fprintf(log, "lock g\n");
+			fclose(log);*/
 
 			src = asrc;
 
@@ -103,8 +107,12 @@ namespace Graphs
 		}
 		BufferHDC(HDC asrc, Size_ size, View*) {
 
-			//block.lock();
-			
+			block.lock();
+
+			/*FILE* log = fopen("log.txt", "a");
+			fprintf(log, "lock c\n");
+			fclose(log);*/
+
 			src = asrc;
 
 			cx = size.width;
@@ -125,7 +133,10 @@ namespace Graphs
 		}
 		~BufferHDC() {
 
-			//block.unlock();
+			block.unlock();
+			/*FILE* log = fopen("log.txt", "a");
+			fprintf(log, "unlock\n");
+			fclose(log);*/
 
 			if(!buffer)
 				return;

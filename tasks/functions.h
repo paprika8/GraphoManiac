@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../graphs/graph.h"
-#include "../graphs/draw_graph.h"
 #include <set>
 #include <string>
 #include <algorithm>
@@ -23,4 +22,6 @@ namespace Graphs
 	bool is_tree(graph* gr);
 
 	std::vector<int> codding_Prufer(graph gr);
+
+	void deikstra(graph* gr, std::vector<int> &start);
 }

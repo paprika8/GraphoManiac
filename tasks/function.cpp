@@ -94,21 +94,6 @@ namespace Graphs
 		return cnt;
 	}
 
-	bool has_cycle(graph* gr) {
-		bool res = false;
-		for (auto cur_node : gr->nodes) {
-			for (auto edge : cur_node->edges) {
-				node* next = edge->get_node1() != cur_node ? edge->get_node1() : edge->get_node2();
-				next->mark = 't';
-				has_cycle_rec(cur_node, next, res);
-				if (res) {
-					return res;
-				}
-			}
-		}
-		return res;
-	}
-
 	void has_cycle_rec(node* prev, node* current, bool& flag) {
 		if (flag) {
 			return;
@@ -127,6 +112,23 @@ namespace Graphs
 		}
 	}
 
+	bool has_cycle(graph* gr) {
+		bool res = false;
+		for (auto cur_node : gr->nodes) {
+			for (auto edge : cur_node->edges) {
+				node* next = edge->get_node1() != cur_node ? edge->get_node1() : edge->get_node2();
+				next->mark = 't';
+				has_cycle_rec(cur_node, next, res);
+				if (res) {
+					return res;
+				}
+			}
+		}
+		return res;
+	}
+
+
+
 	bool is_tree(graph* gr) {
 		if (comp_cnt(gr) == 1)
 			return !(has_cycle(gr));
@@ -136,7 +138,8 @@ namespace Graphs
 
 	std::vector<int> codding_Prufer(graph gr) {
 		if (!is_tree(&gr)) {
-			throw std::_INVALID_ARGUMENT;
+			//throw std::_INVALID_ARGUMENT;
+			return std::vector<int>();
 		}
 
 		auto set_comparator = [](node* first, node* second) { return first->id < second->id; };
@@ -163,17 +166,80 @@ namespace Graphs
 		return ans;
 	}
 
+	bool is_deikstra_empty(std::vector<int> &v){
+		for(auto x: v){
+			if(x != -2)
+				return false;
+		}
+		return true;
+	}
+
+	void deikstra(graph* gr, std::vector<int> &start) {
+		if(start.size() != 1)
+			return;
+			for(auto x: gr->nodes){
+				((deikstra_node*) x)->value;
+			}
+		std::vector<int> ids(gr->nodes.size(), -1);
+		std::vector<int> res(gr->nodes.size(), -1);
+		ids[start[0]] = 0;
+		res[start[0]] = 0;
+		while(!is_deikstra_empty(ids)){
+			int id = 0;
+			int min = -1;
+			for(int i = 0; i < ids.size(); i++){
+				if(ids[i] == -1 || ids[i] == -2)
+					continue;
+				if(min == -1){
+					min = ids[i];
+					id = i;
+				}
+				else{
+					if(min > ids[i]){
+						min = ids[i];
+						id = i;
+					}
+				}
+			}
+			res[id] = ids[id];
+			ids[id] = -2;
+			id++;
+			deikstra_node* current = gr->find(id);
+			for(auto ed: current->edges){
+				deikstra_node* _n = 0;
+				if(ed->point1 == current){
+					_n = ed->point2;
+				}
+				else{
+					_n = ed->point1;
+				}
+				if(ids[_n->id - 1] == -2);
+				else if(ids[_n->id - 1] == -1)
+					ids[_n->id - 1] = current->value + ed->value;
+				else{
+					ids[_n->id - 1] = std::min(current->value + ed->value, ids[_n->id - 1]);
+				}
+			}
+		}
+		for(int i = 0; i < res.size(); i++){
+			deikstra_node* current = gr->find(i + 1);
+			current->value = res[i];
+		}
+	}
+
 	graph decodding_Prufer(std::vector<int>& prufer_code) {
 		int n = prufer_code.size() + 2;
 		std::vector<int> code_word;
+		graph res;
 		for (int i = n - 2; i > 0; --i) {
 			if (prufer_code[i] > n) { // Не код Прюфера
-				throw std::_INVALID_ARGUMENT;
+				//throw std::_INVALID_ARGUMENT;
+				return res;
 			}
 			code_word.push_back(prufer_code[i]);
 		}
 
-		graph res;
+		
 		// Ищем числа, которых нет в кодовом слове
 		std::unordered_set<int> code(prufer_code.begin(), prufer_code.end());
 		std::vector<int> anticode;
@@ -186,14 +252,14 @@ namespace Graphs
 
 		while (code_word.size() > 0) {
 			int id1 = code_word[code_word.size() - 1];
-			node a(id1, 'a', res);
+			node a(id1, 'a', &res);
 			int id2 = anticode[code_word.size() - 1];
-			node b(id2, 'a', res);
+			node b(id2, 'a', &res);
 			a.create_edge(&b);
 			code_word.pop_back();
 			anticode.pop_back();
 			code.erase(code.begin(), ++code.begin());
-			if (code.find(id1)) { // сделать поиск, оптимизировать все это
+			if (code.find(id1) != code.end()) { // сделать поиск, оптимизировать все это
 				anticode.push_back(id1);
 			}
 

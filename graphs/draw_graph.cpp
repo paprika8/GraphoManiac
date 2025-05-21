@@ -55,7 +55,7 @@ namespace Graphs
 				Sleep(50);
 			}
 			*stop = 3;
-																 });
+		});
 
 		tr.detach();
 
@@ -177,7 +177,7 @@ namespace Graphs
 						n_b_x = x - n_b_x;
 						n_b_y = y - n_b_y;
 
-						if (n_b_x * n_b_x + n_b_y * n_b_y < radius * radius) {
+						if (n_b_x * n_b_x + n_b_y * n_b_y < radius * radius / 4) {
 							moving_obj = mt_new_node;
 							mouse_offset_x = n_b_x;
 							mouse_offset_y = n_b_y;
@@ -190,7 +190,7 @@ namespace Graphs
 						if (n_b_x > abs_size.width - radius - radius / 16 && n_b_y > radius / 8 + radius && n_b_x < abs_size.width - radius / 16 && n_b_y < radius / 8 + 2 * radius) {
 							is_seting_answer = !is_seting_answer;
 							if (is_seting_answer) {
-								ans_task = 0;
+								ans_ids.clear();
 								for (auto x : gr.nodes)
 									x->mark = 'a';
 							}
@@ -219,8 +219,8 @@ namespace Graphs
 						node* n = gr.find(x, y);
 						if (n) {
 							if (is_seting_answer) {
-								ans_task = ans_task ^ (1 << (n->id - 1));
-								n->mark = 'a';
+								ans_ids.push_back(n->id - 1);
+								n->mark = 'b';
 							}
 							else
 								moving_obj = mt_node;

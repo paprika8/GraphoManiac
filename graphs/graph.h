@@ -37,7 +37,19 @@ namespace Graphs
 
         void create_edge(node* other);
 
-        void draw(Graphs::BufferHDC& hdc);
+        virtual void draw(Graphs::BufferHDC& hdc);
+    };
+
+    class deikstra_node : public node
+    {
+    public:
+        int value = 0;
+
+        deikstra_node(graph* agr) : node(agr) {};
+
+        deikstra_node(int i, char m, graph* agr) : node(i, m, agr) {};
+
+        void draw(Graphs::BufferHDC& hdc) override;
     };
 
     class graph
@@ -78,6 +90,14 @@ namespace Graphs
 
 
                 if (radius * radius > xx * xx + yy * yy) {
+                    return n;
+                }
+            }
+            return 0;
+        }
+        node* find(int id) {
+            for (auto n : nodes) {
+                if (n->id == id) {
                     return n;
                 }
             }

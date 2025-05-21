@@ -60,6 +60,27 @@ namespace Graphs
 		hdc.graphic->DrawString(char_, -1, get_font(12), rc, &format, &br);
 	}
 
+	void deikstra_node::draw(Graphs::BufferHDC& hdc){
+		int radius = gr->node_radius;
+		//Gdiplus::Color col(255, 255, 80);
+		Gdiplus::SolidBrush br = Gdiplus::SolidBrush(*colors[(char)(mark - 'a')]);
+		hdc.graphic->FillEllipse(&br, x, y, radius, radius);
+		Gdiplus::StringFormat format;
+		format.SetAlignment(Gdiplus::StringAlignment::StringAlignmentCenter);
+		format.SetLineAlignment(Gdiplus::StringAlignment::StringAlignmentCenter);
+		br.SetColor(Color(0, 0, 0));
+
+		Gdiplus::RectF rc(x, y, radius, radius);
+
+		hdc.graphic->DrawString(std::to_wstring(id).c_str(), -1, get_font(12), rc, &format, &br);
+		rc.X += radius - 10;
+		rc.Y -= 10;
+		rc.Width = 20;
+		rc.Height = 20;
+		wchar_t* char_ = std::to_wstring(value).data();
+		hdc.graphic->DrawString(char_, -1, get_font(12), rc, &format, &br);
+	}
+
 	int graph::normalize(int distance) {
 		int minimal = distance;
 		for (auto a : nodes) {

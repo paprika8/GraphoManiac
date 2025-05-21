@@ -55,7 +55,8 @@ namespace Graphs
 				Sleep(50);
 			}
 			*stop = 3;
-		});
+									 });
+
 
 		tr.detach();
 

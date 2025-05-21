@@ -24,4 +24,6 @@ namespace Graphs
 	std::vector<int> codding_Prufer(graph gr);
 
 	void deikstra(graph* gr, std::vector<int> &start);
+	
+	graph decodding_Prufer(std::vector<int>& prufer_code);
 }

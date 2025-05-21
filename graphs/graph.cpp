@@ -77,6 +77,9 @@ namespace Graphs
 		rc.Y -= 10;
 		rc.Width = 20;
 		rc.Height = 20;
+		br.SetColor(Color(255, 255, 255));
+		hdc.graphic->FillEllipse(&br, rc.X, rc.Y, rc.Width, rc.Height);
+		br.SetColor(Color(0, 0, 0));
 		wchar_t* char_ = std::to_wstring(value).data();
 		hdc.graphic->DrawString(char_, -1, get_font(12), rc, &format, &br);
 	}

@@ -45,7 +45,7 @@ namespace Graphs
 						a->mark = 'a';
 					if (is_run)
 						trigger(&gr);
-					DFS(*gr.nodes.begin());
+					//DFS(*gr.nodes.begin());
 				}
 				{
 					BufferHDC hdc = BufferHDC(win->getDC(), win->size, this);

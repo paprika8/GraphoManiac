@@ -291,10 +291,11 @@ namespace Graphs
 					_n = ed->point1;
 				}
 				if (ids[_n->id - 1] == -2);
-				else if (ids[_n->id - 1] == -1)
+				else if (ids[_n->id - 1] == -1){
 					ids[_n->id - 1] = current->value + ed->value;
+				}
 				else {
-					ids[_n->id - 1] = std::min(current->value + ed->value, ids[_n->id - 1]);
+					ids[_n->id - 1] = std::min(res[current->id - 1] + ed->value, ids[_n->id - 1]);
 				}
 			}
 		}

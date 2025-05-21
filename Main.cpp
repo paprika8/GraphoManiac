@@ -4,6 +4,7 @@
 #include "Button.h"
 #include "graphs/draw_graph.h"
 #include "Text.h"
+#include "page8.h"
 
 UINT GetSystemDpi() {
 	HDC hdc = GetDC(NULL);
@@ -71,10 +72,12 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 	screen->add(bt2);
 
 	//создаём текстовый блок
-	MassGraphView* tx = new MassGraphView(screen);
+	/*MassGraphView* tx = new MassGraphView(screen);
 	tx->size = Size_(pointUI(800, percent), pointUI(1000, percent));
 	//tx->margin = Margin(10,10,10,10);
-	screen->add(tx);
+	screen->add(tx);*/
+
+	create_p8();
 
 	//отображаем окно снова... так работает лучше наверное...
 	win->show(SW_NORMAL);

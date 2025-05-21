@@ -8,7 +8,7 @@
 
 #include <string>
 #include <vector>
-#include <deque>
+#include <mutex>
 #include <algorithm>
 #include <functional>
 
@@ -71,7 +71,7 @@ namespace Graphs
 	//Обеспечивает буферизацию отрисовки окна, создаёт буфер в конструкторе и применяет буфер в деструкторе (при удалении). Работает с WinApi. Обьяснение сложное
 	struct BufferHDC
 	{
-		static std::deque<BufferHDC*> block;
+		static std::mutex block;
 		HDC src;
 		HDC buffer = 0;
 		Gdiplus::Graphics* graphic;
@@ -80,9 +80,7 @@ namespace Graphs
 		Point_ offset = Point_(0, 0);
 		BufferHDC(HDC asrc, Size_ size) {
 
-			block.push_back(this);
-			while(block[0] != this)
-				Sleep(20);
+			//block.lock();
 
 			src = asrc;
 
@@ -104,9 +102,8 @@ namespace Graphs
 			graphic = new Gdiplus::Graphics(buffer);
 		}
 		BufferHDC(HDC asrc, Size_ size, View*) {
-			block.push_back(this);
-			while(block[0] != this)
-				Sleep(20);
+
+			//block.lock();
 			
 			src = asrc;
 
@@ -127,6 +124,9 @@ namespace Graphs
 			graphic = new Gdiplus::Graphics(buffer);
 		}
 		~BufferHDC() {
+
+			//block.unlock();
+
 			if(!buffer)
 				return;
 
@@ -144,7 +144,7 @@ namespace Graphs
 			DeleteObject(hBmp);
 			DeleteDC(buffer);
 
-			block.pop_front();
+			//block.unlock();
 		}
 	private:
 		HBITMAP hBmp;
@@ -169,7 +169,7 @@ namespace Graphs
 
 		virtual void child_deleted(View* child) {};
 
-		~View() {
+		virtual ~View() {
 			if (parent) parent->child_deleted(this);
 		}
 
@@ -270,9 +270,7 @@ namespace Graphs
 		void remove(View* value);
 		void remove(int index);
 
-		void child_deleted(View* child) {
-			remove(child);
-		};
+		void child_deleted(View* child);
 
 		Size_ get_content_size(Size_ size = Size_()) override {
 			if (!(margin.type & MarginType::CONTENT))
@@ -292,7 +290,7 @@ namespace Graphs
 			return res;
 		}
 
-		~Composite() {
+		virtual ~Composite() {
 			for (int i = 0; i < children.size(); i++)
 				delete children[i];
 		}

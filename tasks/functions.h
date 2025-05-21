@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../graphs/graph.h"
-#include "../graphs/draw_graph.h"
 #include <set>
 #include <string>
 #include <algorithm>
@@ -25,4 +24,6 @@ namespace Graphs
 	std::vector<int> codding_Prufer(graph& gr);
 
 	void decodding_Prufer(std::vector<int>& prufer_code, graph& gr);
+
+	void deikstra(graph* gr, std::vector<int>& start);
 }

@@ -11,7 +11,7 @@ namespace Graphs {
 		graph gr;
 		int *stop = new int();
 		bool is_run = false;
-		unsigned short ans_task = 0;
+		std::vector<int> ans_ids;
 		bool is_seting_answer = 0;
 		bool is_enable_normalize = 0;
 
@@ -24,7 +24,7 @@ namespace Graphs {
 
 		GraphView(View* aparent);
 
-		~GraphView(){
+		virtual ~GraphView(){
 			parent->key_re_capture(this);
 			while(*stop != 3){
 				*stop = 0;
@@ -103,13 +103,29 @@ namespace Graphs {
 		bool is_shift = 0;
 		int mass = 0;
 
-		MassGraphView(View* aparent) : GraphView(aparent) {}
+		MassGraphView(View* aparent) : GraphView(aparent) {
+			gr.erase(*gr.nodes.begin());
+			lock_ids[1] = 0;
+		}
 
 
 		int key_event(struct_key_event key, int virtual_key) override;
 
 		int mouse_event(mouse_buttons button, click_event type, int x, int y, int virtual_key) override;
 
+	};
+
+	struct deikstraGraphView : public MassGraphView{
+	public:
+		edge* tmp_edge = 0;
+		bool is_shift = 0;
+		int mass = 0;
+
+		node* make_node(int _id, char mark) override {
+			return new deikstra_node(_id, mark, &gr);
+		}
+
+		deikstraGraphView(View* aparent) : MassGraphView(aparent) {}
 
 	};
 }

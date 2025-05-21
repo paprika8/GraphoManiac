@@ -45,7 +45,7 @@ namespace Graphs
 						a->mark = 'a';
 					if (is_run)
 						trigger(&gr);
-					//comp_cnt(&gr);
+					DFS(*gr.nodes.begin());
 				}
 				{
 					BufferHDC hdc = BufferHDC(win->getDC(), win->size, this);
@@ -56,7 +56,6 @@ namespace Graphs
 			}
 			*stop = 3;
 									 });
-
 
 		tr.detach();
 
@@ -231,7 +230,7 @@ namespace Graphs
 					}
 				}
 		if (type == click_event::up && moving_obj == mt_new_node &&
-				x < abs_size.width - radius - radius / 8 && !is_seting_answer) {
+			x < abs_size.width - radius - radius / 8 && !is_seting_answer) {
 			node* new_node = make_node(get_next_id(), 'a');
 			lock_ids[new_node->id] = 1;
 			x -= offset_x;

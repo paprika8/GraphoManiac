@@ -21,9 +21,9 @@ namespace Graphs
 
 	bool is_tree(graph* gr);
 
-	std::vector<int> codding_Prufer(graph gr);
+	std::vector<int> codding_Prufer(graph& gr);
 
-	void deikstra(graph* gr, std::vector<int> &start);
-	
-	graph decodding_Prufer(std::vector<int>& prufer_code);
+	void decodding_Prufer(std::vector<int>& prufer_code, graph& gr);
+
+	void deikstra(graph* gr, std::vector<int>& start);
 }

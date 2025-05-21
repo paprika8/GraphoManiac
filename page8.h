@@ -29,8 +29,8 @@ namespace Graphs{
 
 		bt1->click = [=](Button*)->void{
 			deikstra(&tx->gr, tx->ans_ids);
-			//BufferHDC hdc = BufferHDC(win->getDC(), win->size, tx);
-			//tx->paint(hdc);
+			BufferHDC hdc = BufferHDC(win->getDC(), win->size, tx);
+			tx->paint(hdc);
 		};
 
 		screen->add(tx);

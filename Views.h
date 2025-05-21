@@ -11,6 +11,8 @@
 #include <mutex>
 #include <algorithm>
 #include <functional>
+#include <sstream>
+#include <thread>
 
 #pragma comment (lib, "Gdiplus.lib")
 
@@ -81,11 +83,13 @@ namespace Graphs
 		BufferHDC(HDC asrc, Size_ size) {
 
 			block.lock();
-
-			/*FILE* log = fopen("log.txt", "a");
-			fprintf(log, "lock g\n");
-			fclose(log);*/
-
+/*{
+			FILE* log = fopen("log.txt", "a");
+			std::stringstream str;
+			str << std::this_thread::get_id();
+			fprintf(log, "lock g %s\n", str.str().c_str());
+			fclose(log);
+}*/
 			src = asrc;
 
 			cx = size.width;
@@ -108,11 +112,15 @@ namespace Graphs
 		BufferHDC(HDC asrc, Size_ size, View*) {
 
 			block.lock();
-
-			/*FILE* log = fopen("log.txt", "a");
-			fprintf(log, "lock c\n");
-			fclose(log);*/
-
+/*
+{
+			FILE* log = fopen("log.txt", "a");
+			std::stringstream str;
+			str << std::this_thread::get_id();
+			fprintf(log, "lock c %s\n", str.str().c_str());
+			fclose(log);
+}
+*/
 			src = asrc;
 
 			cx = size.width;
@@ -134,9 +142,13 @@ namespace Graphs
 		~BufferHDC() {
 
 			block.unlock();
-			/*FILE* log = fopen("log.txt", "a");
-			fprintf(log, "unlock\n");
-			fclose(log);*/
+/*{
+			FILE* log = fopen("log.txt", "a");
+			std::stringstream str;
+			str << std::this_thread::get_id();
+			fprintf(log, "unlock %s\n", str.str().c_str());
+			fclose(log);
+}*/
 
 			if(!buffer)
 				return;

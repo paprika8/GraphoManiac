@@ -37,8 +37,10 @@ namespace Graphs
 					if(is_down){
 						is_down = 0;
 						background.SetColor(normal_colour);
-						BufferHDC hdc = BufferHDC(win->getDC(), win->size, this);
-						paint(hdc);
+						{
+							BufferHDC hdc = BufferHDC(win->getDC(), win->size, this);
+							paint(hdc);
+						}
 						re_capture(this);
 						click(this);
 					}

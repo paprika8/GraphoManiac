@@ -38,6 +38,8 @@ namespace Graphs{
 			std::wstring str = accept_9(&tx->gr);
 			ct->text = str;
 			Positioning(screen);
+			BufferHDC hdc = BufferHDC(win->getDC(), win->size, tx);
+			tx->paint(hdc);
 		};
 
 		screen->add(tx);

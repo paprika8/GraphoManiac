@@ -1,5 +1,5 @@
 #include "functions.h"
-
+#include <format>
 namespace Graphs
 {
 	void DFS_rec(node* current, int& counter) {
@@ -74,21 +74,25 @@ namespace Graphs
 
 	int comp_cnt(graph* gr) {
 		int cnt = 0;
+		for (auto x : gr->nodes) {
+			x->mark = 'a';
+		}
 		for (auto cur_node : gr->nodes) {
 			if (cur_node->mark == 'a') {
 				cnt++;
 				cur_node->mark = cnt + 'a';
+				comp_rec(cur_node, cnt);
 			}
 			else {
 				continue;
 			}
-			for (auto edge : cur_node->edges) {
+			/*for (auto edge : cur_node->edges) {
 				node* next = edge->get_node1() != cur_node ? edge->get_node1() : edge->get_node2();
 				if (next->mark == 'a') {
 					next->mark = cnt + 'a';
 					comp_rec(cur_node, cnt);
 				}
-			}
+			}*/
 
 		}
 		return cnt;
@@ -252,10 +256,11 @@ namespace Graphs
 	}
 
 	void deikstra(graph* gr, std::vector<int>& start) {
-		if (start.size() != 1)
+		if (start.size() != 1 || comp_cnt(gr) != 1)
 			return;
 		for (auto x : gr->nodes) {
-			((deikstra_node*)x)->value;
+			((deikstra_node*)x)->value = 0;
+			x->mark = 'a';
 		}
 		std::vector<int> ids(gr->nodes.size(), -1);
 		std::vector<int> res(gr->nodes.size(), -1);
@@ -303,6 +308,33 @@ namespace Graphs
 			deikstra_node* current = gr->find(i + 1);
 			current->value = res[i];
 		}
+	}
+
+	std::wstring accept_9(graph* gr) {
+		std::wstring res;
+		std::vector<int> start;
+		start.push_back(0);
+		int n = gr->nodes.size();
+		res += L"    ";
+		for(int i = 0; i < n; i++)
+			res += std::format(L"{:4}", i + 1);
+		res += L"\n";
+
+		std::vector<int> buff(n);
+
+		for(int i = 0; i < n; i++){
+			start[0] = i;
+			deikstra(gr, start);
+			for (auto x : gr->nodes){
+				buff[((deikstra_node*)x)->id - 1] = ((deikstra_node*)x)->value;
+				((deikstra_node*)x)->value = 0;
+			}
+			res += std::format(L"{:4}", i + 1);
+			for(int j = 0; j < n; j++)
+				res += std::format(L"{:4}", buff[j]);
+			res += L"\n";
+		}
+		return res;
 	}
 
 }

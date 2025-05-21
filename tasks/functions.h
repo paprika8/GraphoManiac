@@ -26,4 +26,6 @@ namespace Graphs
 	void decodding_Prufer(std::vector<int>& prufer_code, graph& gr);
 
 	void deikstra(graph* gr, std::vector<int>& start);
+
+	std::wstring accept_9(graph* gr);
 }

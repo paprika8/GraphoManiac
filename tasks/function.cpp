@@ -94,21 +94,6 @@ namespace Graphs
 		return cnt;
 	}
 
-	bool has_cycle(graph* gr) {
-		bool res = false;
-		for (auto cur_node : gr->nodes) {
-			for (auto edge : cur_node->edges) {
-				node* next = edge->get_node1() != cur_node ? edge->get_node1() : edge->get_node2();
-				next->mark = 't';
-				has_cycle_rec(cur_node, next, res);
-				if (res) {
-					return res;
-				}
-			}
-		}
-		return res;
-	}
-
 	void has_cycle_rec(node* prev, node* current, bool& flag) {
 		if (flag) {
 			return;
@@ -127,6 +112,21 @@ namespace Graphs
 		}
 	}
 
+	bool has_cycle(graph* gr) {
+		bool res = false;
+		for (auto cur_node : gr->nodes) {
+			for (auto edge : cur_node->edges) {
+				node* next = edge->get_node1() != cur_node ? edge->get_node1() : edge->get_node2();
+				next->mark = 't';
+				has_cycle_rec(cur_node, next, res);
+				if (res) {
+					return res;
+				}
+			}
+		}
+		return res;
+	}
+
 	bool is_tree(graph* gr) {
 		if (comp_cnt(gr) == 1)
 			return !(has_cycle(gr));
@@ -134,9 +134,10 @@ namespace Graphs
 	}
 
 
-	std::vector<int> codding_Prufer(graph gr) {
+	std::vector<int> codding_Prufer(graph& gr) {
 		if (!is_tree(&gr)) {
-			throw std::_INVALID_ARGUMENT;
+			//throw std::exception("invalid argument");
+			return {};
 		}
 
 		auto set_comparator = [](node* first, node* second) { return first->id < second->id; };
@@ -144,61 +145,102 @@ namespace Graphs
 
 		std::vector<int> ans;
 		for (auto node : gr.nodes) { st.insert(node); }
-		int offset = 0;
+		auto it = st.begin();
+
 		while (st.size() > 2) {
-			node* cur_node = (*st.begin() + offset);
-			if (cur_node->edges.size() == 1) {
-				edge* edg = (*cur_node->edges.begin()); // Получение ребра 1-го эл-та сета
+			node* cur_node = *it;
+
+			if (cur_node->edges.size() == 1) { // Если узел является листом
+				edge* edg = *cur_node->edges.begin(); // Получение ребра 1-го эл-та сета
 				node* neigh = edg->get_node1() != cur_node ? edg->get_node1() : edg->get_node2();
-				ans.push_back(neigh->id);
-				st.erase(st.begin(), ++st.begin());
-				offset = 0;
-				delete neigh;
+				int id = neigh->id;
+				ans.push_back(id);
+
+				st.erase(it);
+				delete cur_node;
+				it = st.begin();
 			}
 			else {
-				offset++;
+				it++;
 			}
 		}
 
 		return ans;
 	}
 
-	graph decodding_Prufer(std::vector<int>& prufer_code) {
+	void decodding_Prufer(std::vector<int>& prufer_code, graph& gr) {
 		int n = prufer_code.size() + 2;
-		std::vector<int> code_word;
-		for (int i = n - 2; i > 0; --i) {
+		std::vector<int> code(n - 2);
+		for (int i = prufer_code.size() - 1, j = 0; i >= 0; --i, j++) {
 			if (prufer_code[i] > n) { // Не код Прюфера
-				throw std::_INVALID_ARGUMENT;
+				//throw std::exception("invalid argument");
+				return;
 			}
-			code_word.push_back(prufer_code[i]);
+			code[j] = prufer_code[i]; // Переворачиваем кодовое слово для удобной работы
 		}
 
-		graph res;
-		// Ищем числа, которых нет в кодовом слове
-		std::unordered_set<int> code(prufer_code.begin(), prufer_code.end());
+		// Составляем антикод, в котором вершины, отсутствующие в кодовом слове
 		std::vector<int> anticode;
-
-		for (int i = n; i > 0; --i) {
-			if (code.find(i) == code.end()) {
-				anticode.push_back(i);
+		int delta = n - code[0];
+		int cnt = 1;
+		while (delta > 0) {
+			anticode.push_back(n - cnt);
+			delta--;
+			cnt++;
+		}
+		for (int i = 0; i < code.size() - 1; i++) {
+			delta = code[i] - code[i + 1];
+			if (delta <= 1) {
+				continue;
+			}
+			else {
+				cnt = 1;
+				while (delta > 1) {
+					anticode.push_back(code[i] - cnt);
+					delta--;
+					cnt++;
+				}
 			}
 		}
 
-		while (code_word.size() > 0) {
-			int id1 = code_word[code_word.size() - 1];
-			node a(id1, 'a', res);
-			int id2 = anticode[code_word.size() - 1];
-			node b(id2, 'a', res);
-			a.create_edge(&b);
-			code_word.pop_back();
+		for (auto node : gr.nodes) delete node; // Очищаем исходный граф
+		// Далее следует сам алгоритм декодирования, с созданием узлов и ребер
+		std::set<int> st;
+		std::vector<node*> nodes(n);
+		for (int i = 0; i < n - 2; i++) { // Количество шагов фиксированное
+			int num1 = code.back();
+			int num2 = anticode.back();
+
+			if (st.find(num1) == st.end()) {
+				st.insert(num1);
+				node* new_node;
+				new_node->id = num1;
+				new_node->gr = &gr;
+				nodes[num1] = new_node;
+			}
+			if (st.find(num1) == st.end()) {
+				st.insert(num2);
+				node* new_node;
+				new_node->id = num2;
+				new_node->gr = &gr;
+				nodes[num2] = new_node;
+			}
+			edge new_edge(nodes[num1], nodes[num2], 0, &gr);
+
 			anticode.pop_back();
-			code.erase(code.begin(), ++code.begin());
-			if (code.find(id1)) { // сделать поиск, оптимизировать все это
-				anticode.push_back(id1);
+			int buf = code.back();
+			code.pop_back();
+			if (code.back() != buf) {
+				anticode.push_back(buf);
 			}
-
 		}
-		return res;
+		node* new_node = new node(anticode[0], 'a', &gr);
+		nodes[anticode[0]] = new_node;
+		edge new_edge(nodes[anticode[0]], nodes[anticode[1]], 0, &gr);
+
+		for (auto nod : nodes) {
+			gr.insert(nod);
+		}
 	}
 
 }

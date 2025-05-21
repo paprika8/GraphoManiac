@@ -45,7 +45,7 @@ namespace Graphs
 						a->mark = 'a';
 					if (is_run)
 						trigger(&gr);
-					//comp_cnt(&gr);
+					DFS(*gr.nodes.begin());
 				}
 				{
 					BufferHDC hdc = BufferHDC(win->getDC(), win->size, this);
@@ -55,12 +55,7 @@ namespace Graphs
 				Sleep(50);
 			}
 			*stop = 3;
-<<<<<<< HEAD
 									 });
-
-=======
-																 });
->>>>>>> 478c74c89e29450971e66a76dd4a7cdfc7e564d4
 
 		tr.detach();
 
@@ -235,7 +230,7 @@ namespace Graphs
 					}
 				}
 		if (type == click_event::up && moving_obj == mt_new_node &&
-				x < abs_size.width - radius - radius / 8 && !is_seting_answer) {
+			x < abs_size.width - radius - radius / 8 && !is_seting_answer) {
 			node* new_node = make_node(get_next_id(), 'a');
 			lock_ids[new_node->id] = 1;
 			x -= offset_x;

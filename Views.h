@@ -305,9 +305,16 @@ namespace Graphs
 				asize = children[i]->get_content_size(children[i]->size).toAbsolut(size);
 				amargin = children[i]->margin.toAbsolut(size);
 				if (!is_vert_orientation)
-					res = res.plusRight(asize, amargin);
+					if(amargin.type & MarginType::HPARENT)
+						return size;
+					else
+						res = res.plusRight(asize, amargin);
 				else
-					res = res.plusBottom(asize, amargin);
+					if(amargin.type & MarginType::VPARENT)
+						return size;
+					else
+						res = res.plusBottom(asize, amargin);
+				
 			}
 			(-abs_padding).reSize(res);
 			return res;

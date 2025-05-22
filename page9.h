@@ -27,7 +27,7 @@ namespace Graphs{
 		//создаём текстовый блок
 		deikstraGraphView* tx = new deikstraGraphView(screen);
 		tx->size = Size_(pointUI(400, percent), pointUI(1000, percent));
-		//tx->margin = Margin(10,10,10,10);
+		tx->margin = Margin(10,10,10,10, MarginType::PARENT);
 
 		Console_Text* ct = new Console_Text(screen);
 		ct->size = Size_(pointUI(90, percent), pointUI(1000, fr));

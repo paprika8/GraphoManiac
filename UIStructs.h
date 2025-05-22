@@ -310,7 +310,7 @@ namespace Graphs
 			return Margin(left.toAbsolut(original.width),
 						  top.toAbsolut(original.height),
 						  right.toAbsolut(original.width),
-						  bottom.toAbsolut(original.height));
+						  bottom.toAbsolut(original.height), type);
 		}
 
 		virtual void reRect(Point_& point, Size_& contentSize, Size_& thisSize, MarginType type) {

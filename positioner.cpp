@@ -51,7 +51,8 @@ namespace Graphs
 			Size_ asize = compos->children[cont]->get_content_size(compos->children[cont]->size).toAbsolut(size);
 			Point_ cord = cursor;
 			MarginType marginType = MBuffer & ~MarginType::PARENT | (compos->children[cont]->margin.type & MarginType::PARENT);
-			// amargin.reRect ( cord , contentSize , asize , marginType);
+			Point_ cord2 = cord;
+			amargin.reRect ( cord2 , contentSize , asize , marginType);
 			cord.x += amargin.left;
 			cord.y += amargin.top;
 			compos->children[cont]->move(cord.x, cord.y);
@@ -59,16 +60,18 @@ namespace Graphs
 			Positioning(compos->children[cont], deep);
 
 			if (compos->is_vert_orientation) {
-				if (marginType & MarginType::LEFT)
-					contentSize = contentSize.minusBottom(asize, amargin);
+				//if (marginType & MarginType::LEFT)
+					contentSize.width = size.width;
+					//contentSize = contentSize.minusBottom(asize, amargin);
 				cursor.y += asize.height + amargin.top + amargin.bottom;
 			}
 			else {
-				if (marginType & MarginType::TOP)
-					contentSize = contentSize.minusRight(asize, amargin);
+				//if (marginType & MarginType::TOP)
+					contentSize.height = size.height;
+					//contentSize = contentSize.minusRight(asize, amargin);
 				cursor.x += asize.width + amargin.left + amargin.right;
 			}
-			contentSize = size;
+			//contentSize = size;
 		}
 	}
 	void Positioning(View* pv, int deep) {

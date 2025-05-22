@@ -11,6 +11,8 @@
 #include <mutex>
 #include <algorithm>
 #include <functional>
+#include <sstream>
+#include <thread>
 
 #pragma comment (lib, "Gdiplus.lib")
 
@@ -80,8 +82,14 @@ namespace Graphs
 		Point_ offset = Point_(0, 0);
 		BufferHDC(HDC asrc, Size_ size) {
 
-			//block.lock();
-
+			block.lock();
+/*{
+			FILE* log = fopen("log.txt", "a");
+			std::stringstream str;
+			str << std::this_thread::get_id();
+			fprintf(log, "lock g %s\n", str.str().c_str());
+			fclose(log);
+}*/
 			src = asrc;
 
 			cx = size.width;
@@ -103,8 +111,16 @@ namespace Graphs
 		}
 		BufferHDC(HDC asrc, Size_ size, View*) {
 
-			//block.lock();
-			
+			block.lock();
+/*
+{
+			FILE* log = fopen("log.txt", "a");
+			std::stringstream str;
+			str << std::this_thread::get_id();
+			fprintf(log, "lock c %s\n", str.str().c_str());
+			fclose(log);
+}
+*/
 			src = asrc;
 
 			cx = size.width;
@@ -125,7 +141,14 @@ namespace Graphs
 		}
 		~BufferHDC() {
 
-			//block.unlock();
+			block.unlock();
+/*{
+			FILE* log = fopen("log.txt", "a");
+			std::stringstream str;
+			str << std::this_thread::get_id();
+			fprintf(log, "unlock %s\n", str.str().c_str());
+			fclose(log);
+}*/
 
 			if(!buffer)
 				return;
@@ -282,9 +305,16 @@ namespace Graphs
 				asize = children[i]->get_content_size(children[i]->size).toAbsolut(size);
 				amargin = children[i]->margin.toAbsolut(size);
 				if (!is_vert_orientation)
-					res = res.plusRight(asize, amargin);
+					if(amargin.type & MarginType::HPARENT)
+						return size;
+					else
+						res = res.plusRight(asize, amargin);
 				else
-					res = res.plusBottom(asize, amargin);
+					if(amargin.type & MarginType::VPARENT)
+						return size;
+					else
+						res = res.plusBottom(asize, amargin);
+				
 			}
 			(-abs_padding).reSize(res);
 			return res;

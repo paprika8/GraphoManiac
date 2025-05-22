@@ -28,4 +28,6 @@ namespace Graphs
 	void deikstra(graph* gr, std::vector<int>& start);
 
 	std::wstring accept_9(graph* gr);
+
+	void accept_12(graph* gr);
 }

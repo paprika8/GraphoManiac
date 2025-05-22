@@ -63,6 +63,7 @@ namespace Graphs
 
 	int Composite::resize_event()
 	{
+		View::resize_event();
 		Positioning(this);
 		return 0;
 	};

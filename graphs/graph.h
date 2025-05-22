@@ -26,7 +26,7 @@ namespace Graphs
         int id;
         char mark = 'a'; // Для маркировки
 
-        int x, y;
+        int x = 0, y = 0;
         int old_x = 0, old_y = 0;
 
         node(graph* agr) : id(0), mark(0), gr(agr) {};

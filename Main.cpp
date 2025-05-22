@@ -6,6 +6,8 @@
 #include "Text.h"
 #include "page8.h"
 #include "page9.h"
+#include "page10_11.h"
+#include "page12.h"
 
 UINT GetSystemDpi() {
 	HDC hdc = GetDC(NULL);
@@ -78,7 +80,7 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 	//tx->margin = Margin(10,10,10,10);
 	screen->add(tx);*/
 
-	create_p9();
+	create_p10_11();
 
 	//отображаем окно снова... так работает лучше наверное...
 	win->show(SW_NORMAL);

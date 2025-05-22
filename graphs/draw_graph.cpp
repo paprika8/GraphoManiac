@@ -4,8 +4,8 @@
 namespace Graphs
 {
 	GraphView::GraphView(View* aparent) : View(aparent) {
-		gr.insert(new node(1, 'a', &gr));
-		lock_ids[1] = 1;
+		//gr.insert(new node(1, 'a', &gr));
+		//lock_ids[1] = 1;
 
 		*stop = 1;// 0 -stop    1-wait    2-run     3-complite
 
@@ -41,8 +41,8 @@ namespace Graphs
 				}
 				if (i > 50) {
 					i = 0;
-					for (auto a : gr.nodes)
-						a->mark = 'a';
+					//for (auto a : gr.nodes)
+						//a->mark = 'a';
 					if (is_run)
 						trigger(&gr);
 					//DFS(*gr.nodes.begin());
@@ -163,6 +163,7 @@ namespace Graphs
 			}
 			else
 				if (type == click_event::down) {
+					parent->key_capture(this);
 					if (tmp_node && moving_obj != mt_none) {
 						moving_obj = mt_none;
 						tmp_node->mark = 'a';

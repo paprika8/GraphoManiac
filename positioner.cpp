@@ -30,7 +30,7 @@ namespace Graphs
 		Size_ contSize = compos->get_content_size(size);
 		compos->margin.type = compos->margin.type & ~MarginType::CONTENT | buf;
 		Margin tempMargin = Margin(0, 0, 0, 0);
-		Point_ start = (0, 0);
+		Point_ start = compos->abs_position;
 		Size_ buffer = Size_(size);
 		tempMargin.reRect(start, buffer, contSize, compos->margin.type);
 		MarginType MBuffer = compos->margin.type;
@@ -57,7 +57,7 @@ namespace Graphs
 			cord.y += amargin.top;
 			compos->children[cont]->move(cord.x, cord.y);
 			compos->children[cont]->resize(asize.width, asize.height);
-			Positioning(compos->children[cont], deep);
+			Positioning(compos->children[cont], deep + 1);
 
 			if (compos->is_vert_orientation) {
 				//if (marginType & MarginType::LEFT)

@@ -98,7 +98,7 @@ namespace Graphs
 		return cnt;
 	}
 
-	void has_cycle_rec(node* prev, node* current, bool& flag) {
+	/*void has_cycle_rec(node* prev, node* current, bool& flag) {
 		if (flag) {
 			return;
 		}
@@ -129,11 +129,12 @@ namespace Graphs
 			}
 		}
 		return res;
-	}
+	}*/
 
 	bool is_tree(graph* gr) {
 		if (comp_cnt(gr) == 1)
-			return !(has_cycle(gr));
+			return gr->nodes.size() - gr->edges.size() == 1;
+			//return !(has_cycle(gr));
 		return false;
 	}
 
@@ -156,20 +157,31 @@ namespace Graphs
 
 			if (cur_node->edges.size() == 1) { // Если узел является листом
 				edge* edg = *cur_node->edges.begin(); // Получение ребра 1-го эл-та сета
-				node* neigh = edg->get_node1() != cur_node ? edg->get_node1() : edg->get_node2();
+				node* neigh = (edg->get_node1() != cur_node ? edg->get_node1() : edg->get_node2());
 				int id = neigh->id;
 				ans.push_back(id);
 
 				st.erase(it);
-				delete cur_node;
+				gr.erase(cur_node);
 				it = st.begin();
 			}
 			else {
 				it++;
 			}
 		}
-
+		while(gr.nodes.size())
+			gr.erase(*gr.nodes.begin());
 		return ans;
+	}
+
+	int get_anticode(std::set<int> s){
+		int i = 1;
+		for(auto x: s){
+			if(x != i)
+				return i;
+			i++;
+		}
+		return i;
 	}
 
 	void decodding_Prufer(std::vector<int>& prufer_code, graph& gr) {
@@ -181,70 +193,35 @@ namespace Graphs
 				return;
 			}
 			code[j] = prufer_code[i]; // Переворачиваем кодовое слово для удобной работы
-		}
+		}//TODO
 
-		// Составляем антикод, в котором вершины, отсутствующие в кодовом слове
-		std::vector<int> anticode;
-		int delta = n - code[0];
-		int cnt = 1;
-		while (delta > 0) {
-			anticode.push_back(n - cnt);
-			delta--;
-			cnt++;
-		}
-		for (int i = 0; i < code.size() - 1; i++) {
-			delta = code[i] - code[i + 1];
-			if (delta <= 1) {
-				continue;
-			}
-			else {
-				cnt = 1;
-				while (delta > 1) {
-					anticode.push_back(code[i] - cnt);
-					delta--;
-					cnt++;
-				}
-			}
-		}
+		std::set<int> s(prufer_code.begin(), prufer_code.end());
 
-		for (auto node : gr.nodes) delete node; // Очищаем исходный граф
-		// Далее следует сам алгоритм декодирования, с созданием узлов и ребер
-		std::set<int> st;
-		std::vector<node*> nodes(n);
-		for (int i = 0; i < n - 2; i++) { // Количество шагов фиксированное
-			int num1 = code.back();
-			int num2 = anticode.back();
+		while(code.size()){
+			int id1 = code.back();
+			int id2 = get_anticode(s);
+			if(!gr.find(id1))
+				gr.insert(new node(id1, 'a', &gr));
+			if(!gr.find(id2))
+				gr.insert(new node(id2, 'a', &gr));
 
-			if (st.find(num1) == st.end()) {
-				st.insert(num1);
-				node* new_node;
-				new_node->id = num1;
-				new_node->gr = &gr;
-				nodes[num1] = new_node;
-			}
-			if (st.find(num1) == st.end()) {
-				st.insert(num2);
-				node* new_node;
-				new_node->id = num2;
-				new_node->gr = &gr;
-				nodes[num2] = new_node;
-			}
-			edge new_edge(nodes[num1], nodes[num2], 0, &gr);
+			gr.find(id1)->create_edge(gr.find(id2));
 
-			anticode.pop_back();
-			int buf = code.back();
+			s.insert(id2);
+			s.erase(id1);
 			code.pop_back();
-			if (code.back() != buf) {
-				anticode.push_back(buf);
-			}
+			for(auto x: code)
+				s.insert(x);
 		}
-		node* new_node = new node(anticode[0], 'a', &gr);
-		nodes[anticode[0]] = new_node;
-		edge new_edge(nodes[anticode[0]], nodes[anticode[1]], 0, &gr);
+		int id1 = get_anticode(s);
+		s.insert(id1);
+		int id2 = get_anticode(s);
+		if(!gr.find(id1))
+				gr.insert(new node(id1, 'a', &gr));
+			if(!gr.find(id2))
+				gr.insert(new node(id2, 'a', &gr));
 
-		for (auto nod : nodes) {
-			gr.insert(nod);
-		}
+		gr.find(id1)->create_edge(gr.find(id2));
 	}
 
 	bool is_deikstra_empty(std::vector<int>& v) {
@@ -335,6 +312,54 @@ namespace Graphs
 			res += L"\n";
 		}
 		return res;
+	}
+
+	//https://publications.hse.ru/pubs/share/folder/0rhqzr8ukk/133671897.pdf
+	void accept_12(graph* gr) {
+		for (auto x : gr->nodes) {
+			x->mark = 'a';
+		}
+		std::vector<std::vector<int>> mt;
+		int n = gr->nodes.size();
+		std::vector<int> flags(n);
+		int cnt = 0;
+		for(int i = 0; i < n; i++){	
+			mt.push_back(std::vector<int>());
+			for(int j = 0; j < n; j++){
+				mt[i].push_back(0);
+			}
+			mt[i][i] = 1;
+		}
+		for(auto ed: gr->edges){
+			int a = ed->point1->id;
+			int b = ed->point2->id;
+			--a;--b;
+			mt[a][b] = 1;
+			mt[b][a] = 1;
+		}
+		//матрицу заполнили
+		char colour = 'a' + 1;
+		while(cnt < n){
+			int f = 0;
+			for(;f < n && flags[f]; f++);
+
+			gr->find(f + 1)->mark = colour;
+
+			int inx = 0;
+			for(;inx < n && (flags[inx] || mt[f][inx]); inx++);
+
+			if(inx == n){
+				flags[f] = 1;
+				colour++;	
+				cnt++;
+			}
+			else{
+				gr->find(inx + 1)->mark = colour;
+				flags[inx] = 1;
+				cnt++;
+				for(int i = 0;i < n; i++) mt[f][i] |= mt[inx][i];
+			}
+		}
 	}
 
 }

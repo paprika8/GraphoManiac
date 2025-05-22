@@ -180,15 +180,15 @@ namespace Graphs
 
 		case WM_MOUSEMOVE:
 		if (ptr) ptr->screen->mouse_move_event(LOWORD ( lparam ), HIWORD ( lparam ), wparam);
-
+		break;
 		case WM_MOUSELEAVE:
 		if (ptr) ptr->screen->mouse_leave_event();
-
-		case WM_MOUSEACTIVATE:
+		break;
+		//case WM_MOUSEACTIVATE:
 
 		case WM_MOUSEWHEEL:
 		if (ptr) ptr->screen->mouse_wheel_event(LOWORD ( lparam ), HIWORD ( lparam ), HIWORD(wparam), LOWORD(wparam));
-
+		break;
 		case WM_CHAR:{
 			if (ptr) ptr->screen->char_event(lparam, wparam);
 			return 0;

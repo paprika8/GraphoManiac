@@ -193,7 +193,7 @@ namespace Graphs
 				return;
 			}
 			code[j] = prufer_code[i]; // Переворачиваем кодовое слово для удобной работы
-		}//TODO
+		}
 
 		std::set<int> s(prufer_code.begin(), prufer_code.end());
 

@@ -8,6 +8,25 @@
 #include "positioner.h"
 
 namespace Graphs{
+
+	std::vector<int> parsing10_11(std::wstring str) {
+		std::vector<int> res;
+		int i = 0;
+		for(auto x: str){
+			 if(x >= L'0' && x <= L'9'){
+				i *= 10;
+				i += x - L'0';
+			 }
+			 else{
+				if(i){
+					res.push_back(i);
+					i = 0;
+				}
+			 }
+		}
+		return res;
+	}
+
 	void create_p10_11(){
 		Composite* screen = dynamic_cast<Composite*>(win->screen);
 
@@ -69,10 +88,7 @@ namespace Graphs{
 		bt2->click = [=](Button*)->void{
 			std::wstring str = ct->text;
 
-			std::vector<int> res;
-			for(int i = 0; i < str.size(); i++){
-				res.push_back(str[i] - '0');
-			}
+			std::vector<int> res = parsing10_11(str);
 			decodding_Prufer(res, tx->gr);
 			for(auto i: res)
 				str += std::to_wstring(i);

@@ -45,7 +45,7 @@ namespace Graphs{
 
 	struct Edit_Text : public View{
 		StringFormat str_format; 
-		std::wstring text;
+		std::wstring text = L"";
 		int text_size = 16;
 
 		SolidBrush text_brush = SolidBrush(Color(0, 0, 0));
@@ -57,6 +57,11 @@ namespace Graphs{
 		int paint_event(BufferHDC &hdc) override {
 			Gdiplus::RectF rc(abs_position.x, abs_position.y, abs_size.width, abs_size.height);
 			hdc.graphic->DrawString(text.data(), -1, get_font(text_size), rc, &str_format, &text_brush);
+			return 0;
+		}
+
+		int mouse_event(mouse_buttons button, click_event type, int x, int y, int virtual_key) override{
+			parent->key_capture(this);
 			return 0;
 		}
 

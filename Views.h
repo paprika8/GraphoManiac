@@ -270,8 +270,9 @@ namespace Graphs
 		virtual Size_ get_content_size(Size_ size = Size_()) {
 			return size;
 		}
-	protected:
+
 		Point_ abs_position;
+	protected:
 		Size_ abs_size;
 		Padding abs_padding;
 	};

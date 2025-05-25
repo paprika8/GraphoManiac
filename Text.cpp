@@ -3,14 +3,15 @@
 
 namespace Graphs{
 	int Edit_Text::key_event(struct_key_event key, int virtual_key) { 
-			text.pop_back();
+			if(text.size() && key.scan_code == 14 && key.is_first_message) text.pop_back();
 			BufferHDC hdc = BufferHDC(win->getDC(), win->size, this);
 			paint(hdc);
 			return 0; 
 		};
 
 		int Edit_Text::char_event(struct_key_event key, wchar_t c) { 
-			text += c;
+			if(c != L'\b')
+				text.push_back(c);
 			BufferHDC hdc = BufferHDC(win->getDC(), win->size, this);
 			paint(hdc);
 			return 0; 

@@ -74,6 +74,8 @@ namespace Graphs {
 		int mouse_event(mouse_buttons button, click_event type, int x, int y, int virtual_key) override;
 
 		int paint_event(BufferHDC &hdc) override;
+
+		std::map<int, int> lock_ids;
 	protected:
 		enum moving_type{
 			mt_none,
@@ -88,7 +90,7 @@ namespace Graphs {
 		int mouse_offset_x = 0, mouse_offset_y = 0;
 		int offset_x = 0, offset_y = 0;
 		node* tmp_node = 0;
-		std::map<int, int> lock_ids;
+		
 
 		int get_next_id(){
 			int id = 1;
@@ -104,8 +106,8 @@ namespace Graphs {
 		int mass = 0;
 
 		MassGraphView(View* aparent) : GraphView(aparent) {
-			gr.erase(*gr.nodes.begin());
-			lock_ids[1] = 0;
+			//gr.erase(*gr.nodes.begin());
+			//lock_ids[1] = 0;
 		}
 
 

@@ -31,6 +31,16 @@ namespace Graphs
 		}
 	}
 
+	bool check_DFS(std::vector<int> traversal_order, graph& gr) {
+		if (traversal_order.size() != gr.nodes.size()) {
+			return false;
+		}
+
+		for (int i = 0; i < traversal_order.size(); i++) {
+
+		}
+	}
+
 	// Breadth First Search - обход в ширину
 
 	void BFS(node* curr) {
@@ -296,7 +306,7 @@ namespace Graphs
 					_n = ed->point1;
 				}
 				if (ids[_n->id - 1] == -2);
-				else if (ids[_n->id - 1] == -1){
+				else if (ids[_n->id - 1] == -1) {
 					ids[_n->id - 1] = current->value + ed->value;
 				}
 				else {
@@ -316,21 +326,21 @@ namespace Graphs
 		start.push_back(0);
 		int n = gr->nodes.size();
 		res += L"    ";
-		for(int i = 0; i < n; i++)
+		for (int i = 0; i < n; i++)
 			res += std::format(L"{:4}", i + 1);
 		res += L"\n";
 
 		std::vector<int> buff(n);
 
-		for(int i = 0; i < n; i++){
+		for (int i = 0; i < n; i++) {
 			start[0] = i;
 			deikstra(gr, start);
-			for (auto x : gr->nodes){
+			for (auto x : gr->nodes) {
 				buff[((deikstra_node*)x)->id - 1] = ((deikstra_node*)x)->value;
 				((deikstra_node*)x)->value = 0;
 			}
 			res += std::format(L"{:4}", i + 1);
-			for(int j = 0; j < n; j++)
+			for (int j = 0; j < n; j++)
 				res += std::format(L"{:4}", buff[j]);
 			res += L"\n";
 		}

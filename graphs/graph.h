@@ -21,7 +21,7 @@ namespace Graphs
         friend class edge;
     public:
         std::set<edge*> edges;
-		graph* gr = 0;
+        graph* gr = 0;
 
         int id;
         char mark = 'a'; // Для маркировки
@@ -38,6 +38,15 @@ namespace Graphs
         void create_edge(node* other);
 
         virtual void draw(Graphs::BufferHDC& hdc);
+
+        bool is_neighbour(node* other) {
+            for (auto edge : edges) {
+                if (edge->point1 == other || edge->point2 == other) {
+                    return true;
+                }
+            }
+            return false;
+        }
     };
 
     class deikstra_node : public node

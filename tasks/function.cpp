@@ -31,14 +31,46 @@ namespace Graphs
 		}
 	}
 
+	bool is_dead_end(node* curr) {
+		for (auto edge : curr->edges) {
+			node* next = edge->get_node1() != curr ? edge->get_node1() : edge->get_node2();
+			if (next->mark == 'a') {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	bool check_DFS(std::vector<int> traversal_order, graph& gr) {
 		if (traversal_order.size() != gr.nodes.size()) {
 			return false;
 		}
 
-		for (int i = 0; i < traversal_order.size(); i++) {
+		int order_cnt = 1;
 
+		node* curr = gr.find(traversal_order[0]);
+		curr->mark = 'a' + order_cnt;
+
+		check_DFS_rec(traversal_order, curr, order_cnt);
+
+	}
+
+	bool check_DFS_rec(std::vector<int>& trav_order, node* current, int& counter) {
+	back:
+		graph* gr = current->gr;
+		if (current->is_neighbour(gr->find(trav_order[counter]))) {
+			node* next = gr->find(trav_order[counter]);
+			next->mark = 'a' + counter;
+			counter++;
+			if (!check_DFS_rec(trav_order, next, counter)) {
+				return false;
+			}
+			goto back;
 		}
+		if (!is_dead_end(current)) {
+			return false;
+		}
+		return true;
 	}
 
 	// Breadth First Search - обход в ширину
@@ -144,7 +176,7 @@ namespace Graphs
 	bool is_tree(graph* gr) {
 		if (comp_cnt(gr) == 1)
 			return gr->nodes.size() - gr->edges.size() == 1;
-			//return !(has_cycle(gr));
+		//return !(has_cycle(gr));
 		return false;
 	}
 
@@ -179,15 +211,15 @@ namespace Graphs
 				it++;
 			}
 		}
-		while(gr.nodes.size())
+		while (gr.nodes.size())
 			gr.erase(*gr.nodes.begin());
 		return ans;
 	}
 
-	int get_anticode(std::set<int> s){
+	int get_anticode(std::set<int> s) {
 		int i = 1;
-		for(auto x: s){
-			if(x != i)
+		for (auto x : s) {
+			if (x != i)
 				return i;
 			i++;
 		}
@@ -207,12 +239,12 @@ namespace Graphs
 
 		std::set<int> s(prufer_code.begin(), prufer_code.end());
 
-		while(code.size()){
+		while (code.size()) {
 			int id1 = code.back();
 			int id2 = get_anticode(s);
-			if(!gr.find(id1))
+			if (!gr.find(id1))
 				gr.insert(new node(id1, 'a', &gr));
-			if(!gr.find(id2))
+			if (!gr.find(id2))
 				gr.insert(new node(id2, 'a', &gr));
 
 			gr.find(id1)->create_edge(gr.find(id2));
@@ -220,16 +252,16 @@ namespace Graphs
 			s.insert(id2);
 			s.erase(id1);
 			code.pop_back();
-			for(auto x: code)
+			for (auto x : code)
 				s.insert(x);
 		}
 		int id1 = get_anticode(s);
 		s.insert(id1);
 		int id2 = get_anticode(s);
-		if(!gr.find(id1))
-				gr.insert(new node(id1, 'a', &gr));
-			if(!gr.find(id2))
-				gr.insert(new node(id2, 'a', &gr));
+		if (!gr.find(id1))
+			gr.insert(new node(id1, 'a', &gr));
+		if (!gr.find(id2))
+			gr.insert(new node(id2, 'a', &gr));
 
 		gr.find(id1)->create_edge(gr.find(id2));
 	}
@@ -333,14 +365,14 @@ namespace Graphs
 		int n = gr->nodes.size();
 		std::vector<int> flags(n);
 		int cnt = 0;
-		for(int i = 0; i < n; i++){	
+		for (int i = 0; i < n; i++) {
 			mt.push_back(std::vector<int>());
-			for(int j = 0; j < n; j++){
+			for (int j = 0; j < n; j++) {
 				mt[i].push_back(0);
 			}
 			mt[i][i] = 1;
 		}
-		for(auto ed: gr->edges){
+		for (auto ed : gr->edges) {
 			int a = ed->point1->id;
 			int b = ed->point2->id;
 			--a;--b;
@@ -349,25 +381,25 @@ namespace Graphs
 		}
 		//матрицу заполнили
 		char colour = 'a' + 1;
-		while(cnt < n){
+		while (cnt < n) {
 			int f = 0;
-			for(;f < n && flags[f]; f++);
+			for (;f < n && flags[f]; f++);
 
 			gr->find(f + 1)->mark = colour;
 
 			int inx = 0;
-			for(;inx < n && (flags[inx] || mt[f][inx]); inx++);
+			for (;inx < n && (flags[inx] || mt[f][inx]); inx++);
 
-			if(inx == n){
+			if (inx == n) {
 				flags[f] = 1;
-				colour++;	
+				colour++;
 				cnt++;
 			}
-			else{
+			else {
 				gr->find(inx + 1)->mark = colour;
 				flags[inx] = 1;
 				cnt++;
-				for(int i = 0;i < n; i++) mt[f][i] |= mt[inx][i];
+				for (int i = 0;i < n; i++) mt[f][i] |= mt[inx][i];
 			}
 		}
 	}

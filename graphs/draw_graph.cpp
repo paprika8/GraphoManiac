@@ -52,7 +52,7 @@ namespace Graphs
 					paint(hdc);
 				}
 				i++;
-				Sleep(50);
+				Sleep(80);
 			}
 			*stop = 3;
 									 });

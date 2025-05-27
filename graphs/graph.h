@@ -35,7 +35,7 @@ namespace Graphs
 
         virtual ~node();
 
-        void create_edge(node* other);
+        edge* create_edge(node* other);
 
         virtual void draw(Graphs::BufferHDC& hdc);
     };

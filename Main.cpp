@@ -4,6 +4,7 @@
 #include "Button.h"
 #include "graphs/draw_graph.h"
 #include "Text.h"
+#include "page7.h"
 #include "page8.h"
 #include "page9.h"
 #include "page10_11.h"
@@ -80,7 +81,7 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 	//tx->margin = Margin(10,10,10,10);
 	screen->add(tx);*/
 
-	create_p10_11();
+	create_p7();
 
 	//отображаем окно снова... так работает лучше наверное...
 	win->show(SW_NORMAL);

@@ -362,4 +362,42 @@ namespace Graphs
 		}
 	}
 
+	void accept_7(graph* gr) {
+
+		int comp = comp_cnt(gr);
+		if(comp != 1)
+			return;
+
+		std::set<std::pair<int, std::pair<node*, node*>>> ns;
+
+		auto set_comparator = [](std::pair<int, std::pair<node*, node*>> first, std::pair<int, std::pair<node*, node*>> second) { 
+			if(first.first == second.first){
+				if(first.second.first == second.second.first)
+					return first.second.second < second.second.second;
+				return first.second.first < second.second.first;
+			}
+			return first.first < second.first; 
+		};
+		std::set<std::pair<int, std::pair<node*, node*>>, decltype(set_comparator)> edges(set_comparator);
+
+		for(auto ed: gr->edges){
+			edges.insert({ed->value, {ed->point1, ed->point2}});
+		}
+		while(gr->edges.size()){
+			delete *gr->edges.begin();
+		}
+
+		for(auto ed: edges){
+			int comp = comp_cnt(gr);
+			if(comp == 1)
+				break;
+			if(ed.second.first->mark == ed.second.second->mark){
+				continue;
+			}
+			ed.second.first->create_edge(ed.second.second)->value = ed.first;
+		}
+		for (auto x : gr->nodes) {
+			x->mark = 'a';
+		}
+	}
 }

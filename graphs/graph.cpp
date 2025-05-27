@@ -35,11 +35,12 @@ namespace Graphs
 			delete el;
 	}
 
-	void node::create_edge(node* other) {
+	edge* node::create_edge(node* other) {
 		edge* ed = new edge(this, other, 0, gr);
 		edges.insert(ed);
 		other->edges.insert(ed);
 		if (gr) gr->edges.insert(ed);
+		return ed;
 	}
 
 	void node::draw(Graphs::BufferHDC& hdc) {

@@ -35,7 +35,7 @@ namespace Graphs
 					min /= kf;
 					if (i > 50) {
 						double bkf = (double)distance / min;
-						if (kf / bkf > 1.1 || bkf / kf > 1.1)
+						if (kf / bkf > 1.03 || bkf / kf > 1.03)
 							kf = bkf;
 					}
 				}
@@ -52,7 +52,7 @@ namespace Graphs
 					paint(hdc);
 				}
 				i++;
-				Sleep(50);
+				Sleep(80);
 			}
 			*stop = 3;
 									 });

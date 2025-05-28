@@ -76,8 +76,7 @@ namespace Graphs
 	// Breadth First Search - обход в ширину
 
 	void BFS(node* curr) {
-		int counter = 1;
-		int depth_cnt = 1;
+		int counter = 1; // Считаем уровни глубины
 		int sz = curr->gr->nodes.size();
 		curr->mark = 'a' + counter;
 		counter++;
@@ -101,6 +100,51 @@ namespace Graphs
 			cur_lvl = next_lvl;
 			next_lvl.clear();
 		}
+	}
+
+	bool check_BFS(std::vector<int> traversal_order, graph& gr) {
+		int sz = gr.nodes.size();
+		if (traversal_order.size() != sz) {
+			return false;
+		}
+		// Считаем уровни глубины для узлов
+		for (auto cur_node : gr.nodes) {
+			for (auto edge : cur_node->edges) {
+				edge->value = 1; // Добавляем ребрам вес, чтобы посчитать уровни глубины алгоритмом Дейкстры
+			}
+		}
+
+		deikstra_node* curr = gr.find(traversal_order[0]); // считаем уровни глубины как кратчайшие расстояния от стартовой точки
+		deikstra(&gr, { curr->id });
+
+		for (auto cur_node : gr.nodes) {
+			for (auto edge : cur_node->edges) {
+				edge->value = 0; // убираем вес обратно
+			}
+		}
+
+		int curr_depth = 1;
+		for (int i = 1; i < sz; i++) {
+			deikstra_node* curr = gr.find(traversal_order[i]);
+			curr->mark = 'a' + curr_depth;
+			if (curr_depth < curr->value) {
+				if (curr->value - curr_depth > 1) {
+					return false;
+				}
+				for (deikstra_node* c_node : gr.nodes) {
+					if (c_node->value == curr_depth) {
+						if (c_node->mark == 'a') {
+							return false;
+						}
+					}
+				}
+				curr_depth++;
+			}
+			else if (curr_depth > curr->value) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	void comp_rec(node* current, int& counter) {
@@ -407,33 +451,33 @@ namespace Graphs
 	void accept_7(graph* gr) {
 
 		int comp = comp_cnt(gr);
-		if(comp != 1)
+		if (comp != 1)
 			return;
 
 		std::set<std::pair<int, std::pair<node*, node*>>> ns;
 
-		auto set_comparator = [](std::pair<int, std::pair<node*, node*>> first, std::pair<int, std::pair<node*, node*>> second) { 
-			if(first.first == second.first){
-				if(first.second.first == second.second.first)
+		auto set_comparator = [](std::pair<int, std::pair<node*, node*>> first, std::pair<int, std::pair<node*, node*>> second) {
+			if (first.first == second.first) {
+				if (first.second.first == second.second.first)
 					return first.second.second < second.second.second;
 				return first.second.first < second.second.first;
 			}
-			return first.first < second.first; 
-		};
+			return first.first < second.first;
+			};
 		std::set<std::pair<int, std::pair<node*, node*>>, decltype(set_comparator)> edges(set_comparator);
 
-		for(auto ed: gr->edges){
-			edges.insert({ed->value, {ed->point1, ed->point2}});
+		for (auto ed : gr->edges) {
+			edges.insert({ ed->value, {ed->point1, ed->point2} });
 		}
-		while(gr->edges.size()){
-			delete *gr->edges.begin();
+		while (gr->edges.size()) {
+			delete* gr->edges.begin();
 		}
 
-		for(auto ed: edges){
+		for (auto ed : edges) {
 			int comp = comp_cnt(gr);
-			if(comp == 1)
+			if (comp == 1)
 				break;
-			if(ed.second.first->mark == ed.second.second->mark){
+			if (ed.second.first->mark == ed.second.second->mark) {
 				continue;
 			}
 			ed.second.first->create_edge(ed.second.second)->value = ed.first;

@@ -5,6 +5,7 @@
 #include <string>
 #include <algorithm>
 #include <unordered_set>
+#include <map>
 
 
 
@@ -13,7 +14,11 @@ namespace Graphs
 	// Depth First Search - обход в глубину
 	void DFS(node* curr);
 
+	bool check_DFS(std::vector<int> traversal_order, graph& gr);
+
 	void BFS(node* curr);
+
+	bool check_BFS(std::vector<int> traversal_order, graph& gr);
 
 	int comp_cnt(graph* gr);
 

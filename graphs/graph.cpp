@@ -9,7 +9,7 @@ namespace Graphs
 		Gdiplus::Pen pen = Gdiplus::Pen(col, gr->edge_width);
 		int dradius = gr->node_radius / 2;
 		hdc.graphic->DrawLine(&pen, point1->x + dradius, point1->y + dradius, point2->x + dradius, point2->y + dradius);
-		if(!value)
+		if (!value)
 			return;
 		int rx = (point1->x + point2->x) / 2 + dradius, ry = (point1->y + point2->y) / 2 + dradius;
 		rx -= 15;
@@ -17,7 +17,7 @@ namespace Graphs
 		SolidBrush br(Color(255, 255, 255));
 		hdc.graphic->FillEllipse(&br, rx, ry, 30, 30);
 		Gdiplus::RectF rc(rx, ry, 30, 30);
-		br.SetColor(Color(0,0,0));
+		br.SetColor(Color(0, 0, 0));
 		Gdiplus::StringFormat format;
 		format.SetAlignment(Gdiplus::StringAlignment::StringAlignmentCenter);
 		format.SetLineAlignment(Gdiplus::StringAlignment::StringAlignmentCenter);
@@ -61,7 +61,7 @@ namespace Graphs
 		hdc.graphic->DrawString(char_, -1, get_font(12), rc, &format, &br);
 	}
 
-	void deikstra_node::draw(Graphs::BufferHDC& hdc){
+	void deikstra_node::draw(Graphs::BufferHDC& hdc) {
 		int radius = gr->node_radius;
 		//Gdiplus::Color col(255, 255, 80);
 		Gdiplus::SolidBrush br = Gdiplus::SolidBrush(*colors[(char)(mark - 'a')]);
@@ -141,4 +141,5 @@ namespace Graphs
 			}
 		}
 	}
+
 }

@@ -31,21 +31,52 @@ namespace Graphs
 		}
 	}
 
+	bool is_dead_end(node* curr) {
+		for (auto edge : curr->edges) {
+			node* next = edge->get_node1() != curr ? edge->get_node1() : edge->get_node2();
+			if (next->mark == 'a') {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	bool check_DFS(std::vector<int> traversal_order, graph& gr) {
 		if (traversal_order.size() != gr.nodes.size()) {
 			return false;
 		}
 
-		for (int i = 0; i < traversal_order.size(); i++) {
+		int order_cnt = 1;
 
+		node* curr = gr.find(traversal_order[0]);
+		curr->mark = 'a' + order_cnt;
+
+		check_DFS_rec(traversal_order, curr, order_cnt);
+
+	}
+
+	bool check_DFS_rec(std::vector<int>& trav_order, node* current, int& counter) {
+	back:
+		graph* gr = current->gr;
+		if (current->is_neighbour(gr->find(trav_order[counter]))) {
+			node* next = gr->find(trav_order[counter]);
+			next->mark = 'a' + counter;
+			counter++;
+			if (!check_DFS_rec(trav_order, next, counter)) {
+				return false;
+			}
+			goto back;
 		}
+		if (!is_dead_end(current)) {
+			return false;
+		}
+		return true;
 	}
 
 	// Breadth First Search - обход в ширину
 
 	void BFS(node* curr) {
-		int counter = 1;
-		int depth_cnt = 1;
+		int counter = 1; // Считаем уровни глубины
 		int sz = curr->gr->nodes.size();
 		curr->mark = 'a' + counter;
 		counter++;
@@ -69,6 +100,51 @@ namespace Graphs
 			cur_lvl = next_lvl;
 			next_lvl.clear();
 		}
+	}
+
+	bool check_BFS(std::vector<int> traversal_order, graph& gr) {
+		int sz = gr.nodes.size();
+		if (traversal_order.size() != sz) {
+			return false;
+		}
+		// Считаем уровни глубины для узлов
+		for (auto cur_node : gr.nodes) {
+			for (auto edge : cur_node->edges) {
+				edge->value = 1; // Добавляем ребрам вес, чтобы посчитать уровни глубины алгоритмом Дейкстры
+			}
+		}
+
+		deikstra_node* curr = gr.find(traversal_order[0]); // считаем уровни глубины как кратчайшие расстояния от стартовой точки
+		deikstra(&gr, { curr->id });
+
+		for (auto cur_node : gr.nodes) {
+			for (auto edge : cur_node->edges) {
+				edge->value = 0; // убираем вес обратно
+			}
+		}
+
+		int curr_depth = 1;
+		for (int i = 1; i < sz; i++) {
+			deikstra_node* curr = gr.find(traversal_order[i]);
+			curr->mark = 'a' + curr_depth;
+			if (curr_depth < curr->value) {
+				if (curr->value - curr_depth > 1) {
+					return false;
+				}
+				for (deikstra_node* c_node : gr.nodes) {
+					if (c_node->value == curr_depth) {
+						if (c_node->mark == 'a') {
+							return false;
+						}
+					}
+				}
+				curr_depth++;
+			}
+			else if (curr_depth > curr->value) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	void comp_rec(node* current, int& counter) {
@@ -144,7 +220,7 @@ namespace Graphs
 	bool is_tree(graph* gr) {
 		if (comp_cnt(gr) == 1)
 			return gr->nodes.size() - gr->edges.size() == 1;
-			//return !(has_cycle(gr));
+		//return !(has_cycle(gr));
 		return false;
 	}
 
@@ -179,15 +255,15 @@ namespace Graphs
 				it++;
 			}
 		}
-		while(gr.nodes.size())
+		while (gr.nodes.size())
 			gr.erase(*gr.nodes.begin());
 		return ans;
 	}
 
-	int get_anticode(std::set<int> s){
+	int get_anticode(std::set<int> s) {
 		int i = 1;
-		for(auto x: s){
-			if(x != i)
+		for (auto x : s) {
+			if (x != i)
 				return i;
 			i++;
 		}
@@ -207,12 +283,12 @@ namespace Graphs
 
 		std::set<int> s(prufer_code.begin(), prufer_code.end());
 
-		while(code.size()){
+		while (code.size()) {
 			int id1 = code.back();
 			int id2 = get_anticode(s);
-			if(!gr.find(id1))
+			if (!gr.find(id1))
 				gr.insert(new node(id1, 'a', &gr));
-			if(!gr.find(id2))
+			if (!gr.find(id2))
 				gr.insert(new node(id2, 'a', &gr));
 
 			gr.find(id1)->create_edge(gr.find(id2));
@@ -220,16 +296,16 @@ namespace Graphs
 			s.insert(id2);
 			s.erase(id1);
 			code.pop_back();
-			for(auto x: code)
+			for (auto x : code)
 				s.insert(x);
 		}
 		int id1 = get_anticode(s);
 		s.insert(id1);
 		int id2 = get_anticode(s);
-		if(!gr.find(id1))
-				gr.insert(new node(id1, 'a', &gr));
-			if(!gr.find(id2))
-				gr.insert(new node(id2, 'a', &gr));
+		if (!gr.find(id1))
+			gr.insert(new node(id1, 'a', &gr));
+		if (!gr.find(id2))
+			gr.insert(new node(id2, 'a', &gr));
 
 		gr.find(id1)->create_edge(gr.find(id2));
 	}
@@ -333,14 +409,14 @@ namespace Graphs
 		int n = gr->nodes.size();
 		std::vector<int> flags(n);
 		int cnt = 0;
-		for(int i = 0; i < n; i++){	
+		for (int i = 0; i < n; i++) {
 			mt.push_back(std::vector<int>());
-			for(int j = 0; j < n; j++){
+			for (int j = 0; j < n; j++) {
 				mt[i].push_back(0);
 			}
 			mt[i][i] = 1;
 		}
-		for(auto ed: gr->edges){
+		for (auto ed : gr->edges) {
 			int a = ed->point1->id;
 			int b = ed->point2->id;
 			--a;--b;
@@ -349,25 +425,25 @@ namespace Graphs
 		}
 		//матрицу заполнили
 		char colour = 'a' + 1;
-		while(cnt < n){
+		while (cnt < n) {
 			int f = 0;
-			for(;f < n && flags[f]; f++);
+			for (;f < n && flags[f]; f++);
 
 			gr->find(f + 1)->mark = colour;
 
 			int inx = 0;
-			for(;inx < n && (flags[inx] || mt[f][inx]); inx++);
+			for (;inx < n && (flags[inx] || mt[f][inx]); inx++);
 
-			if(inx == n){
+			if (inx == n) {
 				flags[f] = 1;
-				colour++;	
+				colour++;
 				cnt++;
 			}
-			else{
+			else {
 				gr->find(inx + 1)->mark = colour;
 				flags[inx] = 1;
 				cnt++;
-				for(int i = 0;i < n; i++) mt[f][i] |= mt[inx][i];
+				for (int i = 0;i < n; i++) mt[f][i] |= mt[inx][i];
 			}
 		}
 	}
@@ -375,33 +451,33 @@ namespace Graphs
 	void accept_7(graph* gr) {
 
 		int comp = comp_cnt(gr);
-		if(comp != 1)
+		if (comp != 1)
 			return;
 
 		std::set<std::pair<int, std::pair<node*, node*>>> ns;
 
-		auto set_comparator = [](std::pair<int, std::pair<node*, node*>> first, std::pair<int, std::pair<node*, node*>> second) { 
-			if(first.first == second.first){
-				if(first.second.first == second.second.first)
+		auto set_comparator = [](std::pair<int, std::pair<node*, node*>> first, std::pair<int, std::pair<node*, node*>> second) {
+			if (first.first == second.first) {
+				if (first.second.first == second.second.first)
 					return first.second.second < second.second.second;
 				return first.second.first < second.second.first;
 			}
-			return first.first < second.first; 
-		};
+			return first.first < second.first;
+			};
 		std::set<std::pair<int, std::pair<node*, node*>>, decltype(set_comparator)> edges(set_comparator);
 
-		for(auto ed: gr->edges){
-			edges.insert({ed->value, {ed->point1, ed->point2}});
+		for (auto ed : gr->edges) {
+			edges.insert({ ed->value, {ed->point1, ed->point2} });
 		}
-		while(gr->edges.size()){
-			delete *gr->edges.begin();
+		while (gr->edges.size()) {
+			delete* gr->edges.begin();
 		}
 
-		for(auto ed: edges){
+		for (auto ed : edges) {
 			int comp = comp_cnt(gr);
-			if(comp == 1)
+			if (comp == 1)
 				break;
-			if(ed.second.first->mark == ed.second.second->mark){
+			if (ed.second.first->mark == ed.second.second->mark) {
 				continue;
 			}
 			ed.second.first->create_edge(ed.second.second)->value = ed.first;

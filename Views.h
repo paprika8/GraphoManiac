@@ -183,6 +183,7 @@ namespace Graphs
 		View* parent = 0;
 		//цвет фона
 		Gdiplus::SolidBrush background = Gdiplus::SolidBrush(Gdiplus::Color(255, 0, 0));
+		Gdiplus::SolidBrush border = Gdiplus::SolidBrush(Gdiplus::Color(255, 255, 255));
 		//регион, ограничивающий область обработку событий мыши
 		RGN* rgn = new RGN_rect(0, 0, 0, 0);
 

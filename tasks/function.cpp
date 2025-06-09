@@ -41,20 +41,6 @@ namespace Graphs
 		return true;
 	}
 
-	bool check_DFS(std::vector<int> traversal_order, graph& gr) {
-		if (traversal_order.size() != gr.nodes.size()) {
-			return false;
-		}
-
-		int order_cnt = 1;
-
-		node* curr = gr.find(traversal_order[0]);
-		curr->mark = 'a' + order_cnt;
-
-		check_DFS_rec(traversal_order, curr, order_cnt);
-
-	}
-
 	bool check_DFS_rec(std::vector<int>& trav_order, node* current, int& counter) {
 	back:
 		graph* gr = current->gr;
@@ -72,6 +58,22 @@ namespace Graphs
 		}
 		return true;
 	}
+
+	bool check_DFS(std::vector<int> traversal_order, graph& gr) {
+		if (traversal_order.size() != gr.nodes.size()) {
+			return false;
+		}
+
+		int order_cnt = 1;
+
+		node* curr = gr.find(traversal_order[0]);
+		curr->mark = 'a' + order_cnt;
+
+		check_DFS_rec(traversal_order, curr, order_cnt);
+
+	}
+
+	
 
 	// Breadth First Search - обход в ширину
 
@@ -114,8 +116,9 @@ namespace Graphs
 			}
 		}
 
-		deikstra_node* curr = gr.find(traversal_order[0]); // считаем уровни глубины как кратчайшие расстояния от стартовой точки
-		deikstra(&gr, { curr->id });
+		deikstra_node* curr = gr.find(traversal_order[0] + 1); // считаем уровни глубины как кратчайшие расстояния от стартовой точки
+		std::vector<int> deik = { curr->id - 1 };
+		deikstra(&gr, deik);
 
 		for (auto cur_node : gr.nodes) {
 			for (auto edge : cur_node->edges) {
@@ -125,7 +128,7 @@ namespace Graphs
 
 		int curr_depth = 1;
 		for (int i = 1; i < sz; i++) {
-			deikstra_node* curr = gr.find(traversal_order[i]);
+			deikstra_node* curr = gr.find(traversal_order[i] + 1);
 			curr->mark = 'a' + curr_depth;
 			if (curr_depth < curr->value) {
 				if (curr->value - curr_depth > 1) {
@@ -360,7 +363,7 @@ namespace Graphs
 				}
 				if (ids[_n->id - 1] == -2);
 				else if (ids[_n->id - 1] == -1) {
-					ids[_n->id - 1] = current->value + ed->value;
+					ids[_n->id - 1] = res[current->id - 1] + ed->value;// current->value + ed->value;
 				}
 				else {
 					ids[_n->id - 1] = std::min(res[current->id - 1] + ed->value, ids[_n->id - 1]);

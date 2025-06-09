@@ -61,6 +61,15 @@ namespace Graphs
 		hdc.graphic->DrawString(char_, -1, get_font(12), rc, &format, &br);
 	}
 
+	bool node::is_neighbour(node* other) {
+		for (auto edge : edges) {
+			if (edge->point1 == other || edge->point2 == other) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	void deikstra_node::draw(Graphs::BufferHDC& hdc) {
 		int radius = gr->node_radius;
 		//Gdiplus::Color col(255, 255, 80);

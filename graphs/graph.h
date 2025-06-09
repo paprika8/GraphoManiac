@@ -39,14 +39,7 @@ namespace Graphs
 
         virtual void draw(Graphs::BufferHDC& hdc);
 
-        bool is_neighbour(node* other) {
-            for (auto edge : edges) {
-                if (edge->point1 == other || edge->point2 == other) {
-                    return true;
-                }
-            }
-            return false;
-        }
+        bool is_neighbour(node* other);
     };
 
     class deikstra_node : public node

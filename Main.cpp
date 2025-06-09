@@ -69,13 +69,13 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 	//создаём кнопку
 	Button* bt1 = new Button(screen);
 	bt1->size = Size_(pointUI(90, percent), pointUI(1000, fr));
-	bt1->margin = Margin(pointUI(5, percent),10,pointUI(5, percent),10);
+	bt1->margin = Margin(pointUI(5, percent), 10, pointUI(5, percent), 10);
 	screen->add(bt1);
 
 	//создаём кнопку
 	Button* bt2 = new Button(screen);
 	bt2->size = Size_(pointUI(90, percent), pointUI(1000, fr));
-	bt2->margin = Margin(pointUI(5, percent),10,pointUI(5, percent),10);
+	bt2->margin = Margin(pointUI(5, percent), 10, pointUI(5, percent), 10);
 	screen->add(bt2);
 
 	//создаём текстовый блок
@@ -84,9 +84,9 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 	//tx->margin = Margin(10,10,10,10);
 	screen->add(tx);*/
 
-	create_p4();
+	create_p5();
 
-	//отображаем окно снова... так работает лучше наверное...
+	//отображаем окно снова... так работает лучше, наверное...
 	win->show(SW_NORMAL);
 
 	int res = run();

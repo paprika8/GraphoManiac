@@ -83,13 +83,13 @@ namespace Graphs
 		BufferHDC(HDC asrc, Size_ size) {
 
 			block.lock();
-/*{
-			FILE* log = fopen("log.txt", "a");
-			std::stringstream str;
-			str << std::this_thread::get_id();
-			fprintf(log, "lock g %s\n", str.str().c_str());
-			fclose(log);
-}*/
+			/*{
+						FILE* log = fopen("log.txt", "a");
+						std::stringstream str;
+						str << std::this_thread::get_id();
+						fprintf(log, "lock g %s\n", str.str().c_str());
+						fclose(log);
+			}*/
 			src = asrc;
 
 			cx = size.width;
@@ -112,15 +112,15 @@ namespace Graphs
 		BufferHDC(HDC asrc, Size_ size, View*) {
 
 			block.lock();
-/*
-{
-			FILE* log = fopen("log.txt", "a");
-			std::stringstream str;
-			str << std::this_thread::get_id();
-			fprintf(log, "lock c %s\n", str.str().c_str());
-			fclose(log);
-}
-*/
+			/*
+			{
+						FILE* log = fopen("log.txt", "a");
+						std::stringstream str;
+						str << std::this_thread::get_id();
+						fprintf(log, "lock c %s\n", str.str().c_str());
+						fclose(log);
+			}
+			*/
 			src = asrc;
 
 			cx = size.width;
@@ -142,15 +142,15 @@ namespace Graphs
 		~BufferHDC() {
 
 			block.unlock();
-/*{
-			FILE* log = fopen("log.txt", "a");
-			std::stringstream str;
-			str << std::this_thread::get_id();
-			fprintf(log, "unlock %s\n", str.str().c_str());
-			fclose(log);
-}*/
+			/*{
+						FILE* log = fopen("log.txt", "a");
+						std::stringstream str;
+						str << std::this_thread::get_id();
+						fprintf(log, "unlock %s\n", str.str().c_str());
+						fclose(log);
+			}*/
 
-			if(!buffer)
+			if (!buffer)
 				return;
 
 			SetViewportOrgEx(buffer, ptOldOrigin.x, ptOldOrigin.y, NULL);
@@ -306,16 +306,16 @@ namespace Graphs
 				asize = children[i]->get_content_size(children[i]->size).toAbsolut(size);
 				amargin = children[i]->margin.toAbsolut(size);
 				if (!is_vert_orientation)
-					if(amargin.type & MarginType::HPARENT)
+					if (amargin.type & MarginType::HPARENT)
 						return size;
 					else
 						res = res.plusRight(asize, amargin);
 				else
-					if(amargin.type & MarginType::VPARENT)
+					if (amargin.type & MarginType::VPARENT)
 						return size;
 					else
 						res = res.plusBottom(asize, amargin);
-				
+
 			}
 			(-abs_padding).reSize(res);
 			return res;
@@ -360,7 +360,10 @@ namespace Graphs
 				x->paint(hdc);
 			return 0;
 		};
-		int paint_background_event(BufferHDC& hdc) override { return 0; };
+		int paint_background_event(BufferHDC& hdc) override {
+			hdc.graphic->FillRectangle(&background, abs_position.x, abs_position.y, abs_size.width, abs_size.height);
+			return 0;
+		};
 		int set_focus_event() override { return 0; };
 		int kill_focus_event() override { return 0; };
 	private:

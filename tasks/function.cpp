@@ -41,20 +41,6 @@ namespace Graphs
 		return true;
 	}
 
-	bool check_DFS(std::vector<int> traversal_order, graph& gr) {
-		if (traversal_order.size() != gr.nodes.size()) {
-			return false;
-		}
-
-		int order_cnt = 1;
-
-		node* curr = gr.find(traversal_order[0]);
-		curr->mark = 'a' + order_cnt;
-
-		check_DFS_rec(traversal_order, curr, order_cnt);
-
-	}
-
 	bool check_DFS_rec(std::vector<int>& trav_order, node* current, int& counter) {
 	back:
 		graph* gr = current->gr;
@@ -71,6 +57,20 @@ namespace Graphs
 			return false;
 		}
 		return true;
+	}
+
+	bool check_DFS(std::vector<int> traversal_order, graph& gr) {
+		if (traversal_order.size() != gr.nodes.size()) {
+			return false;
+		}
+
+		int order_cnt = 1;
+
+		node* curr = gr.find(traversal_order[0]);
+		curr->mark = 'a' + order_cnt;
+
+		check_DFS_rec(traversal_order, curr, order_cnt);
+
 	}
 
 	// Breadth First Search - обход в ширину
@@ -115,7 +115,8 @@ namespace Graphs
 		}
 
 		deikstra_node* curr = gr.find(traversal_order[0]); // считаем уровни глубины как кратчайшие расстояния от стартовой точки
-		deikstra(&gr, { curr->id });
+		std::vector<int> vec_id = { curr->id };
+		deikstra(&gr, vec_id);
 
 		for (auto cur_node : gr.nodes) {
 			for (auto edge : cur_node->edges) {

@@ -1,6 +1,8 @@
 #include "draw_graph.h"
 #include "../tasks/functions.h"
 
+#include "../consts.h"
+
 namespace Graphs
 {
 	GraphView::GraphView(View* aparent) : View(aparent) {
@@ -59,7 +61,7 @@ namespace Graphs
 
 		tr.detach();
 
-		background.SetColor(Color(40, 40, 180));
+		background.SetColor(WHITE);
 
 		aparent->key_capture(this);
 	}
@@ -72,24 +74,24 @@ namespace Graphs
 
 		int radius = gr.node_radius;
 
-		Gdiplus::Color col(80, 255, 255, 255);
+		Gdiplus::Color col(BLUE);
 		Gdiplus::SolidBrush br = Gdiplus::SolidBrush(col);
-		hdc.graphic->FillRectangle(&br, abs_size.width - radius - radius / 8, 0, radius + radius / 8, abs_size.height);
-		br.SetColor(Color(40, 180, 40));
+		//hdc.graphic->FillRectangle(&br, abs_size.width - radius - radius / 8, 0, radius + radius / 8, abs_size.height);
+		br.SetColor(BLUE);
 		hdc.graphic->FillEllipse(&br, abs_size.width - radius - radius / 16, radius / 16, radius, radius);
 		if (moving_obj == mt_new_node)
 			hdc.graphic->FillEllipse(&br, mouse_x + mouse_offset_x - radius / 2 + offset_x, mouse_y + mouse_offset_y - radius / 2 + offset_y, radius, radius);
 
 		if (is_seting_answer)
-			br.SetColor(Color(40, 180, 40));
+			br.SetColor(DARK_BLUE);
 		else
-			br.SetColor(Color(180, 40, 40));
+			br.SetColor(BLUE);
 		hdc.graphic->FillRectangle(&br, abs_size.width - radius - radius / 16, radius / 8 + radius, radius, radius);
 
 		if (is_enable_normalize)
-			br.SetColor(Color(40, 180, 40));
+			br.SetColor(DARK_BLUE);
 		else
-			br.SetColor(Color(180, 40, 40));
+			br.SetColor(BLUE);
 		hdc.graphic->FillRectangle(&br, abs_size.width - radius - radius / 16, radius / 16 + radius / 8 + 2 * radius, radius, radius);
 
 		hdc.graphic->TranslateTransform(-abs_position.x, -abs_position.y);

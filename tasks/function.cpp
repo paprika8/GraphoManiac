@@ -44,8 +44,8 @@ namespace Graphs
 	bool check_DFS_rec(std::vector<int>& trav_order, node* current, int& counter) {
 	back:
 		graph* gr = current->gr;
-		if (current->is_neighbour(gr->find(trav_order[counter]))) {
-			node* next = gr->find(trav_order[counter]);
+		if (current->is_neighbour(gr->find(trav_order[counter] + 1))) {
+			node* next = gr->find(trav_order[counter] + 1);
 			next->mark = 'a' + counter;
 			counter++;
 			if (!check_DFS_rec(trav_order, next, counter)) {
@@ -66,10 +66,10 @@ namespace Graphs
 
 		int order_cnt = 1;
 
-		node* curr = gr.find(traversal_order[0]);
+		node* curr = gr.find(traversal_order[0] + 1);
 		curr->mark = 'a' + order_cnt;
 
-		check_DFS_rec(traversal_order, curr, order_cnt);
+		return check_DFS_rec(traversal_order, curr, order_cnt);
 
 	}
 

@@ -33,12 +33,12 @@ namespace Graphs{
 		comp->add(bt1);
 
 		//создаём текстовый блок
-		GraphView* tx = new GraphView(screen);
+		deikstraGraphView* tx = new deikstraGraphView(screen);
 		tx->size = Size_(pointUI(400, percent), pointUI(1000, percent));
 		tx->margin = Margin(10,10,10,10, MarginType::PARENT);
 
 		bt1->click = [=](Button*)->void{
-			int cnt = comp_cnt(&tx->gr);
+			bool cnt = check_DFS(tx->ans_ids, tx->gr);
 			ct->text = std::to_wstring(cnt);
 			BufferHDC hdc = BufferHDC(win->getDC(), win->size, tx);
 			tx->paint(hdc);

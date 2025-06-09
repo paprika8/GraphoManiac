@@ -4,6 +4,8 @@ namespace Graphs
 
 	std::vector<Color*> colors;
 
+	Color text_color = Color(0, 0, 0);
+
 	void edge::draw(Graphs::BufferHDC& hdc) {
 		Gdiplus::Color col(255, 80, 80);
 		Gdiplus::Pen pen = Gdiplus::Pen(col, gr->edge_width);
@@ -51,7 +53,7 @@ namespace Graphs
 		Gdiplus::StringFormat format;
 		format.SetAlignment(Gdiplus::StringAlignment::StringAlignmentCenter);
 		format.SetLineAlignment(Gdiplus::StringAlignment::StringAlignmentCenter);
-		br.SetColor(Color(0, 0, 0));
+		br.SetColor(text_color);
 
 		Gdiplus::RectF rc(x, y, radius, radius);
 

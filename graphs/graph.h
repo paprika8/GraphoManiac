@@ -13,6 +13,7 @@ namespace Graphs
     class graph;
 
     extern std::vector<Color*> colors;
+    extern Color text_color;
 
     void init_colors();
 

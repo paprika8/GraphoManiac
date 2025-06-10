@@ -113,6 +113,10 @@ namespace Graphs
 			tx->paint(hdc);
 			};
 
+		re_but->click = [=](Button*)->void {
+			create_p1();
+			};
+
 		screen->add(comp);
 		b2->add(tx);
 		screen->add(b1);

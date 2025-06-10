@@ -87,7 +87,7 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 	//tx->margin = Margin(10,10,10,10);
 	screen->add(tx);*/
 
-	create_p5();
+	create_p1();
 
 	//отображаем окно снова... так работает лучше, наверное...
 	win->show(SW_NORMAL);

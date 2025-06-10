@@ -10,7 +10,7 @@
 namespace Graphs
 {
 
-	void create_p4() {
+	void create_p2() {
 		Composite* screen = dynamic_cast<Composite*>(win->screen);
 		screen->background.SetColor(LIGHT);
 		while (screen->children.size()) {
@@ -69,7 +69,7 @@ namespace Graphs
 		Line_Text* condition = new Line_Text(comp1);
 		condition->size = Size_(pointUI(100 * 10, percent), pointUI(15 * 10, percent));
 		condition->margin = Margin(0, 10, pointUI(5, percent), 10, MarginType::CONTENT);
-		condition->text = L"Условие задачи 4";
+		condition->text = L"Условие задачи 2";
 		condition->text_size = 11 * condition->size.height * 0.01;
 		condition->text_brush.SetColor(WHITE);
 		condition->background.SetColor(DARK);
@@ -108,8 +108,8 @@ namespace Graphs
 		tx->background.SetColor(WHITE);
 
 		check_but->click = [=](Button*)->void {
-			BFS(tx->gr.find(tx->ans_ids[0] + 1));
-			bool cnt = check_BFS(tx->ans_ids, tx->gr);
+			DFS(tx->gr.find(tx->ans_ids[0] + 1));
+			bool cnt = check_DFS(tx->ans_ids, tx->gr);
 			if (cnt) {
 				colors[0] = new Gdiplus::Color(0, 255, 0);
 				text_color = Color(0, 0, 0);

@@ -46,17 +46,17 @@ namespace Graphs
 		graph* gr = current->gr;
 		if (current->is_neighbour(gr->find(trav_order[counter] + 1))) {
 			node* next = gr->find(trav_order[counter] + 1);
-			next->mark = 'a' + counter;
 			counter++;
+			next->mark = 'a' + counter;
 			if (!check_DFS_rec(trav_order, next, counter)) {
-				return false;
+				return true;
 			}
 			goto back;
 		}
 		if (!is_dead_end(current)) {
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	bool check_DFS(std::vector<int> traversal_order, graph& gr) {
@@ -282,6 +282,10 @@ namespace Graphs
 				return;
 			}
 			code[j] = prufer_code[i]; // Переворачиваем кодовое слово для удобной работы
+		}
+
+		while(gr.nodes.size()){
+			gr.erase(*gr.nodes.begin());
 		}
 
 		std::set<int> s(prufer_code.begin(), prufer_code.end());

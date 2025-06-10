@@ -45,21 +45,21 @@ namespace Graphs
 		comp->background.SetColor(LIGHT);
 
 		Composite* comp1 = new Composite(comp);
-		comp1->size = Size_(pointUI(100 * 10, percent), pointUI(80 * 10, percent));
+		comp1->size = Size_(pointUI(100 * 10, percent), pointUI(90 * 10, percent));
 		comp1->margin.type = MarginType::TOP | MarginType::LEFT;
 		comp1->is_vert_orientation = 1;
 		comp1->background.SetColor(LIGHT);
 		comp->add(comp1);
 
 		Composite* comp2 = new Composite(comp);
-		comp2->size = Size_(pointUI(100 * 10, percent), pointUI(20 * 10, percent));
+		comp2->size = Size_(pointUI(100 * 10, percent), pointUI(10 * 10, percent));
 		comp2->margin.type = MarginType::BOTTOM | MarginType::LEFT;
 		comp2->is_vert_orientation = 1;
 		comp2->background.SetColor(LIGHT);
 		comp->add(comp2);
 
 		Button* back_but = new Button(comp1);
-		back_but->size = Size_(pointUI(4000, fr), pointUI(88, percent));
+		back_but->size = Size_(pointUI(4000, fr), pointUI(78, percent));
 		back_but->margin = Margin(0, 0, pointUI(5, percent), 0);
 		back_but->padding = Padding(5, 5, 5, 5);
 		back_but->background.SetColor(BLUE);
@@ -72,7 +72,7 @@ namespace Graphs
 		comp1->add(back_but);
 
 		Button* re_but = new Button(comp1);
-		re_but->size = Size_(pointUI(3600, fr), pointUI(88, percent));
+		re_but->size = Size_(pointUI(3600, fr), pointUI(78, percent));
 		re_but->margin = Margin(0, 0, pointUI(5, percent), 0);
 		re_but->padding = Padding(5, 5, 5, 5);
 		re_but->background.SetColor(BLUE);
@@ -85,7 +85,7 @@ namespace Graphs
 		comp1->add(re_but);
 
 		Line_Text* condition = new Line_Text(comp1);
-		condition->size = Size_(pointUI(100 * 10, percent), pointUI(17 * 10, percent));
+		condition->size = Size_(pointUI(100 * 10, percent), pointUI(15 * 10, percent));
 		condition->margin = Margin(0, 10, pointUI(5, percent), 10, MarginType::CONTENT);
 		condition->text = L"Задайте граф для вычисления матрицы кратчайших путей.";
 		condition->text_size = 11 * condition->size.height * 0.01;
@@ -94,24 +94,24 @@ namespace Graphs
 		comp1->add(condition);
 
 		Button* check_but1 = new Button(comp2);
-		check_but1->size = Size_(pointUI(3600, fr), pointUI(38 * 10, percent));
+		check_but1->size = Size_(pointUI(3600, fr), pointUI(75 * 10, percent));
 		check_but1->margin = Margin(0, 0, 0, 0);
 		check_but1->padding = Padding(5, 5, 5, 5);
 		check_but1->background.SetColor(BLUE);
 		check_but1->down_colour = DARK_BLUE;
 		check_but1->normal_colour = BLUE;
-		check_but1->text_size = 24 * check_but1->size.height * 0.002;
+		check_but1->text_size = 24 * check_but1->size.height * 0.001;
 		check_but1->text = L"Кодировать";
 		comp2->add(check_but1);
 
 		Button* check_but2 = new Button(comp2);
-		check_but2->size = Size_(pointUI(3600, fr), pointUI(38 * 10, percent));
+		check_but2->size = Size_(pointUI(3600, fr), pointUI(75 * 10, percent));
 		check_but2->margin = Margin(0, 0, 0, 0);
 		check_but2->padding = Padding(5, 5, 5, 5);
 		check_but2->background.SetColor(BLUE);
 		check_but2->down_colour = DARK_BLUE;
 		check_but2->normal_colour = BLUE;
-		check_but2->text_size = 24 * check_but2->size.height * 0.002;
+		check_but2->text_size = 24 * check_but2->size.height * 0.001;
 		check_but2->text = L"Декодировать";
 		comp2->add(check_but2);
 

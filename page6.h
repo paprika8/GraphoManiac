@@ -66,7 +66,7 @@ namespace Graphs
 		Button* re_but = new Button(comp1);
 		re_but->size = Size_(pointUI(3600, fr), pointUI(78, percent));
 		re_but->margin = Margin(0, 0, pointUI(5, percent), 0);
-		re_but->padding = Padding(5, 5, 5, 5);
+		re_but->padding = Padding(5, 0, 5, 5);
 		re_but->background.SetColor(BLUE);
 		re_but->down_colour = DARK_BLUE;
 		re_but->normal_colour = BLUE;

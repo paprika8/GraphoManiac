@@ -80,7 +80,7 @@ namespace Graphs
 		output->size = Size_(pointUI(100 * 10, percent), pointUI(60));
 		output->margin = Margin(0, 10, pointUI(5, percent), 10, MarginType::CONTENT);
 		output->text = L"Число компонент связности: ";
-		output->text_size = 24;
+		output->text_size = 24 * output->size.height * 0.01;
 		output->text_brush.SetColor(WHITE);
 		output->background.SetColor(DARK);
 		comp1->add(output);

@@ -25,6 +25,10 @@ namespace Graphs
 				}
 			}
 		}
+		if (i) {
+					res.push_back(i);
+					i = 0;
+				}
 		return res;
 	}
 

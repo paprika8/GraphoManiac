@@ -284,6 +284,10 @@ namespace Graphs
 			code[j] = prufer_code[i]; // Переворачиваем кодовое слово для удобной работы
 		}
 
+		while(gr.nodes.size()){
+			gr.erase(*gr.nodes.begin());
+		}
+
 		std::set<int> s(prufer_code.begin(), prufer_code.end());
 
 		while (code.size()) {

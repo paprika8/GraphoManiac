@@ -33,10 +33,12 @@ namespace Graphs
 		return 0;
 	};
 	void Composite::add(View *value) {
+		value->parent = this;
 		children.push_back(value);
 		Positioning(this);
 	}
 	void Composite::insert(int index, View *value) {
+		value->parent = this;
 		children.insert(children.begin() + index, value);
 		Positioning(this);
 	}

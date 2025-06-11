@@ -16,7 +16,7 @@ namespace Graphs
 		//правильно перенаправляет все события своим потомкам
 		int mouse_move_event(int x, int y, int virtual_key) override;
 		int mouse_event(mouse_buttons button, click_event type, int x, int y, int virtual_key) override;
-		int mouse_wheel_event(int x, int y, int delta, int virtual_key) override;
+		int mouse_wheel_event(int x, int y, short delta, int virtual_key) override;
 		int key_event(struct_key_event key, int virtual_key) override;
 		int char_event(struct_key_event key, wchar_t c) override;
 		int paint_background_event(BufferHDC &hdc) override;

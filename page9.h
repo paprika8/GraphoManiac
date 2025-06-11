@@ -65,6 +65,8 @@ namespace Graphs
 		re_but->text = L"Заново";
 		comp1->add(re_but);
 
+		re_but->click = [=](Button*)->void{ create_p9(); };
+
 		Line_Text* condition = new Line_Text(comp1);
 		condition->size = Size_(pointUI(100 * 10, percent), pointUI(15 * 10, percent));
 		condition->margin = Margin(0, 10, pointUI(5, percent), 10, MarginType::CONTENT);
@@ -94,7 +96,7 @@ namespace Graphs
 
 		//создаём текстовый блок
 
-		Composite* b1 = new Composite(comp);
+		Composite* b1 = new Composite(screen);
 		b1->size = Size_(pointUI(400, percent), pointUI(1000, percent));
 		b1->margin = Margin(10, 10, 10, 10, MarginType::PARENT);
 		b1->margin.type |= MarginType::PARENT;

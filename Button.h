@@ -8,11 +8,13 @@ namespace Graphs
 
 		std::function<void(Button*)> click = [](Button*)->void{};
 
+		StringFormat str_format; 
 		Color normal_colour = Color(200,200,0);
 		Color down_colour = Color(100,100,0);
 		std::wstring text = L"";
 		SolidBrush text_brush = SolidBrush(Color(0,0,0));
 		int text_size = 12;
+		int realy_text_size = 12;
 		bool is_down = 0;
 
 		Button(View* aparent) : View(aparent) {
@@ -28,41 +30,12 @@ namespace Graphs
 			return 0;
 		};
 		int paint_event(BufferHDC &hdc) override {
-			hdc.graphic->DrawString(text.c_str(), -1, get_font(text_size), PointF(abs_position.x + abs_padding.left, abs_position.y + abs_padding.top), &text_brush);
+			hdc.graphic->DrawString(text.c_str(), -1, get_font(realy_text_size), PointF(abs_position.x + abs_padding.left, abs_position.y + abs_padding.top), &text_brush);
 			return 0;
 		};
-		int mouse_event(mouse_buttons button, click_event type, int x, int y, int virtual_key) override {
-			if(button == L){
-				switch (type)
-				{
-				case down:
-				{
-					is_down = 1;
-					background.SetColor(down_colour);
-					BufferHDC hdc = BufferHDC(win->getDC(), win->size, this);
-					paint(hdc);
-					capture(this);
-				}
-					break;
-				case up:
-					if(is_down){
-						is_down = 0;
-						background.SetColor(normal_colour);
-						{
-							BufferHDC hdc = BufferHDC(win->getDC(), win->size, this);
-							paint(hdc);
-						}
-						re_capture(this);
-						click(this);
-					}
-					break;
-				
-				default:
-					break;
-				}
-			}
-			return 0;
-		};
+		int mouse_event(mouse_buttons button, click_event type, int x, int y, int virtual_key);
+
+		int Button::resize_event() override;
 
 	};
 }

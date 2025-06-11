@@ -54,7 +54,8 @@ namespace Graphs
 	}
 	
 	void Composite::child_deleted(View* child) {
-			for(int i = 0; i < children.size(); i++)
+		if(have_mouse == child) have_mouse = 0;
+		for(int i = 0; i < children.size(); i++)
 			if(children[i] == child){
 				children.erase(children.begin() + i);
 				Positioning(this);

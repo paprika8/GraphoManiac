@@ -219,7 +219,7 @@ namespace Graphs
 		//событие нажатия мыши в элементе
 		virtual int mouse_event(mouse_buttons button, click_event type, int x, int y, int virtual_key) { return 0; };
 		//событие скрола
-		virtual int mouse_wheel_event(int x, int y, int delta, int virtual_key) { return 0; };
+		virtual int mouse_wheel_event(int x, int y, short delta, int virtual_key) { return 0; };
 		//событие нажатия клавиши
 		virtual int key_event(struct_key_event key, int virtual_key) { return 0; };
 		//событие ввода букав с учётом зажатых shift и caps
@@ -348,7 +348,7 @@ namespace Graphs
 			if (have_mouse) return have_mouse->mouse_event(button, type, x, y, virtual_key);
 			return 0;
 		};
-		int mouse_wheel_event(int x, int y, int delta, int virtual_key) override {
+		int mouse_wheel_event(int x, int y, short delta, int virtual_key) override {
 			if (have_mouse) return have_mouse->mouse_wheel_event(x, y, delta, virtual_key);
 			return 0;
 		};

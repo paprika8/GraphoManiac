@@ -63,7 +63,7 @@ namespace Graphs{
 	}
 	int generate_text_size(HWND hwnd, std::wstring text, Gdiplus::StringFormat* format, int size, Size_ fill_size) {
 		Gdiplus::Graphics g(GetDC(hwnd));
-		if(format->GetFormatFlags() | Gdiplus::StringFormatFlags::StringFormatFlagsNoWrap)
+		if(format->GetFormatFlags() & Gdiplus::StringFormatFlags::StringFormatFlagsNoWrap)
 			return generate_text_size_no_wrap(&g, text, format, size, fill_size);
 		Gdiplus::RectF r_in(0., 0., fill_size.width, 100000.);
 		Gdiplus::RectF r_out;

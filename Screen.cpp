@@ -11,7 +11,7 @@ namespace Graphs {
 		if(view_mouse_capture) return view_mouse_capture->mouse_event(button, type, x, y, virtual_key);
 		return Composite::mouse_event(button, type, x, y, virtual_key);
 	};
-	int Screen::mouse_wheel_event(int x, int y, int delta, int virtual_key)  {
+	int Screen::mouse_wheel_event(int x, int y, short delta, int virtual_key)  {
 		if(view_mouse_capture) return view_mouse_capture->mouse_wheel_event(x, y, delta, virtual_key);
 		return Composite::mouse_wheel_event(x, y, delta, virtual_key);
 	};

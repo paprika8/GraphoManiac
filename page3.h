@@ -10,7 +10,7 @@
 namespace Graphs
 {
 
-	void create_p4() {
+	void create_p3() {
 		Composite* screen = dynamic_cast<Composite*>(win->screen);
 		screen->background.SetColor(LIGHT);
 		while (screen->children.size()) {
@@ -69,7 +69,7 @@ namespace Graphs
 		Line_Text* condition = new Line_Text(comp1);
 		condition->size = Size_(pointUI(100 * 10, percent), pointUI(15 * 10, percent));
 		condition->margin = Margin(0, 10, pointUI(5, percent), 10, MarginType::CONTENT);
-		condition->text = L"Введите обход в ширину, маркируя узлы графа.";
+		condition->text = L"Задайте граф для его обхода в ширину.";
 		condition->text_size = 11 * condition->size.height * 0.01;
 		condition->text_brush.SetColor(WHITE);
 		condition->background.SetColor(DARK);
@@ -83,7 +83,7 @@ namespace Graphs
 		check_but->down_colour = DARK_BLUE;
 		check_but->normal_colour = BLUE;
 		check_but->text_size = 24 * check_but->size.height * 0.001;
-		check_but->text = L"Проверить";
+		check_but->text = L"Обход";
 		comp2->add(check_but);
 
 		//создаём текстовый блок
@@ -109,18 +109,6 @@ namespace Graphs
 
 		check_but->click = [=](Button*)->void {
 			BFS(tx->gr.find(tx->ans_ids[0] + 1));
-			bool cnt = check_BFS(tx->ans_ids, tx->gr);
-			if (cnt) {
-				colors[0] = new Gdiplus::Color(0, 255, 0);
-				text_color = Color(0, 0, 0);
-			}
-			else {
-				colors[0] = new Gdiplus::Color(255, 0, 0);
-				text_color = Color(255, 255, 255);
-			}
-			for (auto node : tx->gr.nodes) {
-				node->mark = 'a';
-			}
 			BufferHDC hdc = BufferHDC(win->getDC(), win->size, tx);
 			tx->paint(hdc);
 			};

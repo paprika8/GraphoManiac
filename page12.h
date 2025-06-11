@@ -55,7 +55,7 @@ namespace Graphs
 		Button* re_but = new Button(comp1);
 		re_but->size = Size_(pointUI(3600, fr), pointUI(78, percent));
 		re_but->margin = Margin(0, 0, pointUI(5, percent), 0);
-		re_but->padding = Padding(5, 5, 5, 5);
+		re_but->padding = Padding(5, 0, 5, 5);
 		re_but->background.SetColor(BLUE);
 		re_but->down_colour = DARK_BLUE;
 		re_but->normal_colour = BLUE;
@@ -68,7 +68,7 @@ namespace Graphs
 		Line_Text* condition = new Line_Text(comp1);
 		condition->size = Size_(pointUI(100 * 10, percent), pointUI(15 * 10, percent));
 		condition->margin = Margin(0, 10, pointUI(5, percent), 10, MarginType::CONTENT);
-		condition->text = L"Условие 12 задачи";
+		condition->text = L"Задайте граф для его раскраски.";
 		condition->text_size = 11 * condition->size.height * 0.01;
 		condition->text_brush.SetColor(WHITE);
 		condition->background.SetColor(DARK);
@@ -82,7 +82,7 @@ namespace Graphs
 		check_but->down_colour = DARK_BLUE;
 		check_but->normal_colour = BLUE;
 		check_but->text_size = 24 * check_but->size.height * 0.001;
-		check_but->text = L"Проверить";
+		check_but->text = L"Раскрасить";
 		comp2->add(check_but);
 
 		//создаём текстовый блок

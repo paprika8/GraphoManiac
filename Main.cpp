@@ -4,7 +4,8 @@
 #include "Button.h"
 #include "graphs/draw_graph.h"
 #include "Text.h"
-#include "page1.h"
+#include "start_page.h"
+/*#include "page1.h"
 #include "page2.h"
 #include "page3.h"
 #include "page4.h"
@@ -14,7 +15,7 @@
 #include "page8.h"
 #include "page9.h"
 #include "page10_11.h"
-#include "page12.h"
+#include "page12.h"*/
 
 UINT GetSystemDpi() {
 	HDC hdc = GetDC(NULL);
@@ -62,7 +63,7 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 	//регистрация окна
 	win->regist();
 	//создание и отображение окна
-	win->show(SW_NORMAL);
+	win->show(SW_MAXIMIZE);
 
 	//получаем ссылку на screen из win
 	Composite* screen = dynamic_cast<Composite*>(win->screen);
@@ -86,11 +87,20 @@ int WinMain(HINSTANCE instance, HINSTANCE, LPSTR lpCmdLine, int nshow) {
 	tx->size = Size_(pointUI(800, percent), pointUI(1000, percent));
 	//tx->margin = Margin(10,10,10,10);
 	screen->add(tx);*/
+	win->show(SW_MAXIMIZE);
+	{
+		MSG msg = { 0 };
+		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+			if (msg.message == WM_QUIT) return 0;
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	}
 
-	create_p9();
+	create_ps();
 
 	//отображаем окно снова... так работает лучше, наверное...
-	win->show(SW_NORMAL);
+	
 
 	int res = run();
 	Gdiplus::GdiplusShutdown(gdiplusToken);

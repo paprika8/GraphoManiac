@@ -77,7 +77,7 @@ namespace Graphs
 		comp1->add(condition);
 
 		Console_Text* ct = new Console_Text(comp1);
-		ct->size = Size_(pointUI(100 * 10, percent), pointUI(60));
+		ct->size = Size_(pointUI(100 * 10, percent), pointUI(400, percent));
 		ct->margin = Margin(0, 10, pointUI(5, percent), 10, MarginType::CONTENT);
 		ct->text_brush.SetColor(WHITE);
 		ct->background.SetColor(DARK);

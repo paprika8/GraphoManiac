@@ -27,7 +27,7 @@ namespace Graphs
         int id;
         char mark = 'a'; // Для маркировки
 
-        int x = 0, y = 0;
+        double x = 0, y = 0;
         int old_x = 0, old_y = 0;
 
         node(graph* agr) : id(0), mark(0), gr(agr) {};
@@ -66,6 +66,7 @@ namespace Graphs
 
         int node_radius = 50;
         double edge_width = 2.5;
+        int text_size = 12;
 
         graph() {
             init_colors();

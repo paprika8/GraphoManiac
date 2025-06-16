@@ -1,5 +1,6 @@
 #include "start_page.h"
 
+#include "graphs/graph.h"
 #include "consts.h"
 #include "page1.h"
 #include "page2.h"
@@ -12,6 +13,8 @@
 #include "page9.h"
 #include "page10_11.h"
 #include "page12.h"
+
+
 
 namespace Graphs
 {
@@ -327,6 +330,10 @@ namespace Graphs
 		return 0;
 	};
 	void create_ps() {
+		if (colors.size() > 0) {
+			colors[0] = new Gdiplus::Color(255, 255, 40);
+		}
+
 		Composite* screen = dynamic_cast<Composite*>(win->screen);
 		screen->background.SetColor(LIGHT);
 		while (screen->children.size()) {

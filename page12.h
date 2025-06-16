@@ -1,5 +1,6 @@
 #pragma once
 
+#include "start_page.h"
 #include "graphs/graph.h"
 #include "graphs/draw_graph.h"
 #include "Button.h"
@@ -111,6 +112,14 @@ namespace Graphs
 			Positioning(screen);
 			BufferHDC hdc = BufferHDC(win->getDC(), win->size, tx);
 			tx->paint(hdc);
+			};
+
+		re_but->click = [=](Button*)->void {
+			create_p12();
+			};
+
+		back_but->click = [=](Button*)->void {
+			create_ps();
 			};
 
 		screen->add(comp);

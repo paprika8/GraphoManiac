@@ -16,18 +16,18 @@
 namespace Graphs
 {
 
-	std::map<int, std::wstring> descriptions = { 
-		{1, L"Производит обход графа в глубину"}, 
-		{2, L"Проверка обхода графа в глубину"}, 
-		{3, L"Производит обход графа в ширину"}, 
-		{4, L"Проверка обхода графа в ширину"}, 
-		{5, L"Вычисление числа компонент связности"}, 
+	std::map<int, std::wstring> descriptions = {
+		{1, L"Производит обход графа в глубину"},
+		{2, L"Проверка обхода графа в глубину"},
+		{3, L"Производит обход графа в ширину"},
+		{4, L"Проверка обхода графа в ширину"},
+		{5, L"Вычисление числа компонент связности"},
 		{6, L"Проверка числа компонент связности"},
-		{7, L"Построение минимального остовного дерева"}, 
+		{7, L"Построение минимального остовного дерева"},
 		{8, L"Нахождение кратчайших путей от заданной вершины до остальных вершин графа"},
-		{9, L"Построение матрицы кратчайших путей"}, 
-		{10, L"Кодирования Прюфера"}, 
-		{11, L"Декодирования Прюфера"}, 
+		{9, L"Построение матрицы кратчайших путей"},
+		{10, L"Кодирования Прюфера"},
+		{11, L"Декодирования Прюфера"},
 		{12, L"Раскраска графа"}
 	};
 
@@ -64,7 +64,7 @@ namespace Graphs
 						text_size = 14;
 						distance = 25;
 					}
-					else if (distance < 2000){
+					else if (distance < 2000) {
 						gr.node_radius = 80;
 						gr.edge_width = 3;
 						gr.text_size = 20;
@@ -73,7 +73,7 @@ namespace Graphs
 						text_size = 18;
 						distance = 35;
 					}
-					else{
+					else {
 						gr.node_radius = 90;
 						gr.edge_width = 3.5;
 						gr.text_size = 22;
@@ -83,7 +83,7 @@ namespace Graphs
 						distance = 45;
 					}
 					distance *= 3;
-					name_gr.normalize(name_gr.node_radius/ 1.3);
+					name_gr.normalize(name_gr.node_radius / 1.3);
 					if (is_enable_normalize) {
 						int min = gr.normalize(distance * kf);
 						min /= kf;
@@ -112,17 +112,17 @@ namespace Graphs
 
 		int step = 90;
 		int cursor = -80;
-		
-		
+
+
 
 		char* name = "GraphoManiac";
 		node* last = 0;
-		for(char* c = name; *c; c++){
+		for (char* c = name; *c; c++) {
 			node* nc = new nodeChar(0, *c, &name_gr);
 			nc->x = cursor += step;
 			nc->y = 0;
 			name_gr.insert(nc);
-			if(last)
+			if (last)
 				nc->create_edge(last);
 			last = nc;
 		}
@@ -181,16 +181,16 @@ namespace Graphs
 		gr.insert(n12);
 
 		n1->create_edge(n2);
+		n2->create_edge(n3);
 		n3->create_edge(n4);
-		n2->create_edge(n11);
-		n11->create_edge(n12);
-		n12->create_edge(n9);
-		n9->create_edge(n8);
-		n8->create_edge(n7);
-		n7->create_edge(n10);
-		n7->create_edge(n6);
-		n6->create_edge(n5);
-		n5->create_edge(n4);
+		n3->create_edge(n5);
+		n5->create_edge(n6);
+		n5->create_edge(n7);
+		n7->create_edge(n8);
+		n8->create_edge(n9);
+		n8->create_edge(n10);
+		n10->create_edge(n11);
+		n10->create_edge(n12);
 
 		tr.detach();
 
@@ -241,8 +241,7 @@ namespace Graphs
 			y -= offset_y;
 			node* n = gr.find(x, y);
 			if (n) {
-				switch (n->id)
-				{
+				switch (n->id) {
 				case 1:
 					create_p1();
 					break;
@@ -310,7 +309,7 @@ namespace Graphs
 				moving_obj = mt_node;
 				tmp_node = n;
 			}
-			else{
+			else {
 				node* n = name_gr.find(x, y);
 				if (n) {
 					moving_obj = mt_node;

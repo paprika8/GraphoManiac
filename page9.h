@@ -1,5 +1,6 @@
 #pragma once
 
+#include "start_page.h"
 #include "graphs/graph.h"
 #include "graphs/draw_graph.h"
 #include "Button.h"
@@ -65,7 +66,7 @@ namespace Graphs
 		re_but->text = L"Заново";
 		comp1->add(re_but);
 
-		re_but->click = [=](Button*)->void{ create_p9(); };
+		re_but->click = [=](Button*)->void { create_p9(); };
 
 		Line_Text* condition = new Line_Text(comp1);
 		condition->size = Size_(pointUI(100 * 10, percent), pointUI(15 * 10, percent));
@@ -121,6 +122,14 @@ namespace Graphs
 			Positioning(screen);
 			BufferHDC hdc = BufferHDC(win->getDC(), win->size, tx);
 			tx->paint(hdc);
+			};
+
+		re_but->click = [=](Button*)->void {
+			create_p9();
+			};
+
+		back_but->click = [=](Button*)->void {
+			create_ps();
 			};
 
 		screen->add(comp);

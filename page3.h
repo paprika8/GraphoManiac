@@ -1,5 +1,6 @@
 #pragma once
 
+#include "start_page.h"
 #include "consts.h"
 #include "graphs/graph.h"
 #include "graphs/draw_graph.h"
@@ -111,6 +112,14 @@ namespace Graphs
 			BFS(tx->gr.find(tx->ans_ids[0] + 1));
 			BufferHDC hdc = BufferHDC(win->getDC(), win->size, tx);
 			tx->paint(hdc);
+			};
+
+		re_but->click = [=](Button*)->void {
+			create_p3();
+			};
+
+		back_but->click = [=](Button*)->void {
+			create_ps();
 			};
 
 		screen->add(comp);

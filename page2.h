@@ -1,5 +1,6 @@
 #pragma once
 
+#include "start_page.h"
 #include "consts.h"
 #include "graphs/graph.h"
 #include "graphs/draw_graph.h"
@@ -123,6 +124,14 @@ namespace Graphs
 			}
 			BufferHDC hdc = BufferHDC(win->getDC(), win->size, tx);
 			tx->paint(hdc);
+			};
+
+		re_but->click = [=](Button*)->void {
+			create_p2();
+			};
+
+		back_but->click = [=](Button*)->void {
+			create_ps();
 			};
 
 		screen->add(comp);

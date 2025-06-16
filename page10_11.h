@@ -1,5 +1,6 @@
 #pragma once
 
+#include "start_page.h"
 #include "graphs/graph.h"
 #include "graphs/draw_graph.h"
 #include "Button.h"
@@ -26,9 +27,9 @@ namespace Graphs
 			}
 		}
 		if (i) {
-					res.push_back(i);
-					i = 0;
-				}
+			res.push_back(i);
+			i = 0;
+		}
 		return res;
 	}
 
@@ -182,6 +183,14 @@ namespace Graphs
 			BufferHDC hdc = BufferHDC(win->getDC(), win->size, tx);
 			tx->paint(hdc);
 			input->paint(hdc);
+			};
+
+		re_but->click = [=](Button*)->void {
+			create_p10_11();
+			};
+
+		back_but->click = [=](Button*)->void {
+			create_ps();
 			};
 
 		screen->add(comp);

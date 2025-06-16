@@ -1,6 +1,7 @@
 #pragma once
 
 #include "consts.h"
+#include "start_page.h"
 #include "graphs/graph.h"
 #include "graphs/draw_graph.h"
 #include "Button.h"
@@ -115,6 +116,10 @@ namespace Graphs
 
 		re_but->click = [=](Button*)->void {
 			create_p1();
+			};
+
+		back_but->click = [=](Button*)->void {
+			create_ps();
 			};
 
 		screen->add(comp);

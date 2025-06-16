@@ -114,6 +114,10 @@ namespace Graphs
 			if(!tx->ans_ids.size()){
 				tx->ans_ids.push_back((*tx->gr.nodes.begin())->id - 1);
 			}
+			if(!tx->gr.find(tx->ans_ids[0] + 1)){
+					tx->ans_ids.clear();
+					tx->ans_ids.push_back((*tx->gr.nodes.begin())->id - 1);
+				}
 			DFS(tx->gr.find(tx->ans_ids[0] + 1));
 			bool cnt = check_DFS(tx->ans_ids, tx->gr);
 			if (cnt) {

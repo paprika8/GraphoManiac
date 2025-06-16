@@ -73,6 +73,7 @@ namespace Graphs
 		std::vector<int> ans_ids;
 		bool is_enable_normalize = 1;
 		int text_size = 12;
+		std::recursive_mutex mutex;
 
 		virtual node* make_node(int _id, char mark) {
 			return new nodeV(_id, mark, &gr);
@@ -97,8 +98,10 @@ namespace Graphs
 				mouse_y = y - abs_position.y - offset_y;
 
 				int dradius = gr.node_radius / 2;
+				mutex.lock();
 				tmp_node->x = mouse_x - dradius;
 				tmp_node->y = mouse_y - dradius;
+				mutex.unlock();
 
 				BufferHDC hdc = BufferHDC(win->getDC(), win->size, this);
 				paint(hdc);
@@ -118,13 +121,17 @@ namespace Graphs
 				x = x - abs_position.x - offset_x;
 				y = y - abs_position.y - offset_y;
 				node* n = gr.find(x, y);
+				mutex.lock();
 				if (n) {
 					moving_obj = mt_card;
 					tmp_node = n;
 				}
 				else{
+					mutex.lock();
 					tmp_node = 0;
+					mutex.unlock();
 				}
+				mutex.unlock();
 			}
 			return 0;
 		};

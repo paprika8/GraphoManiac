@@ -202,7 +202,7 @@ namespace Graphs
 		hdc.graphic->TranslateTransform(abs_position.x + offset_x, abs_position.y + offset_y);
 		gr.draw(hdc);
 		name_gr.draw(hdc);
-
+		mutex.lock();
 		if (tmp_node && moving_obj == mt_card) {
 			Gdiplus::RectF rc = { 0, 0, 200, 100000 };
 			Gdiplus::RectF res = { 0, 0, 200, 100000 };
@@ -225,6 +225,7 @@ namespace Graphs
 			StringFormat format;
 			hdc.graphic->DrawString(descriptions[tmp_node->id].c_str(), -1, get_font(text_size), res, &format, &br);
 		}
+		mutex.unlock();
 
 		hdc.graphic->TranslateTransform(-offset_x, -offset_y);
 		hdc.graphic->TranslateTransform(-abs_position.x, -abs_position.y);
@@ -295,11 +296,13 @@ namespace Graphs
 		}
 		else if (type == click_event::down) {
 			parent->key_capture(this);
+
 			if (tmp_node && moving_obj != mt_none) {
 				moving_obj = mt_none;
 				BufferHDC hdc = BufferHDC(win->getDC(), win->size, this);
 				paint(hdc);
 			}
+
 			x -= offset_x;
 			y -= offset_y;
 			node* n = gr.find(x, y);
@@ -313,7 +316,7 @@ namespace Graphs
 					moving_obj = mt_node;
 					tmp_node = n;
 				}
-			}	
+			}
 		}
 
 		if (type == click_event::up) {

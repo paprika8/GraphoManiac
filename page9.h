@@ -117,6 +117,8 @@ namespace Graphs
 		tx->background.SetColor(WHITE);
 
 		check_but->click = [=](Button*)->void {
+			if(tx->gr.nodes.empty())
+				return;
 			std::wstring str = accept_9(&tx->gr);
 			ct->text = str;
 			Positioning(screen);

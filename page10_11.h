@@ -168,6 +168,8 @@ namespace Graphs
 			input->paint(hdc);
 			};
 		check_but2->click = [=](Button*)->void {
+			if(tx->gr.nodes.empty())
+					return;
 			std::wstring str = input->text;
 
 			std::vector<int> res = parsing10_11(str);

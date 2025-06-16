@@ -108,6 +108,8 @@ namespace Graphs
 		tx->background.SetColor(WHITE);
 
 		check_but->click = [=](Button*)->void {
+			if(tx->gr.nodes.empty())
+				return;
 			accept_12(&tx->gr);
 			Positioning(screen);
 			BufferHDC hdc = BufferHDC(win->getDC(), win->size, tx);

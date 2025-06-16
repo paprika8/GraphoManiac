@@ -109,6 +109,11 @@ namespace Graphs
 		tx->background.SetColor(WHITE);
 
 		check_but->click = [=](Button*)->void {
+			if(tx->gr.nodes.empty())
+				return;
+			if(!tx->ans_ids.size()){
+				tx->ans_ids.push_back((*tx->gr.nodes.begin())->id - 1);
+			}
 			BFS(tx->gr.find(tx->ans_ids[0] + 1));
 			BufferHDC hdc = BufferHDC(win->getDC(), win->size, tx);
 			tx->paint(hdc);

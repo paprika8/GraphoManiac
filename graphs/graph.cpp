@@ -68,8 +68,17 @@ namespace Graphs
 		Gdiplus::RectF rc(x, y, radius, radius);
 
 		hdc.graphic->DrawString(std::to_wstring(id).c_str(), -1, get_font(gr->text_size), rc, &format, &br);
-		rc.X += 10;
-		wchar_t* char_ = std::to_wstring(mark - 'a').data();
+		rc.X += radius - 10;
+		rc.Y += 10;
+		rc.Width = 20;
+		rc.Height = 20;
+		br.SetColor(Color(128, 128, 128));
+		hdc.graphic->FillEllipse(&br, rc.X, rc.Y, rc.Width, rc.Height);
+		br.SetColor(Color(255, 255, 255));
+		hdc.graphic->FillEllipse(&br, rc.X + 1, rc.Y + 1, rc.Width - 2, rc.Height - 2);
+		br.SetColor(Color(0, 0, 0));
+		int m = mark - 'a';
+		wchar_t* char_ = std::to_wstring(m).data();
 		hdc.graphic->DrawString(char_, -1, get_font(gr->text_size), rc, &format, &br);
 	}
 

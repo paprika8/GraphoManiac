@@ -6,7 +6,7 @@ SRC_NAME := $(subst ./,/,$(SRC))
 OBJS  := $(addprefix obj, $(SRC_NAME:.cpp=.o)) 
 DEPS := $(addprefix obj, $(SRC_NAME:.cpp=.d)) 
 LIB := -lgdiplus -lgdi32
-FLAGS := -g -fpermissive -Wextra -MMD -MP -w -DUNICODE -std=c++20 -Wl,--subsystem,windows -static-libgcc -static-libstdc++#-fcompare-debug-second
+FLAGS := -O2 -fpermissive -Wextra -MMD -MP -w -DUNICODE -std=c++20 -Wl,--subsystem,windows -static-libgcc -static-libstdc++#-fcompare-debug-second
 ARGS := $(FLAGS)
 TARGET := Graph
 .PHONY: all clear clear_all
